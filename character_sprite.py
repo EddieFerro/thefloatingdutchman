@@ -44,5 +44,5 @@ class EnemySprite(CharacterSprite):
         super().__init__(velx, vely, spawnx, spawny)
     
     #Enemy AI might go in here
-    def update(self):
-        print("Not done yet")
+    #def update(self):
+    
