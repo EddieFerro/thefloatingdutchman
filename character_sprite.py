@@ -1,27 +1,28 @@
 import pygame.sprite
 
+
 class CharacterSprite(pygame.sprite.Sprite):
-    
+
     def __init__(self, velx, vely, spawnx, spawny):
         pygame.sprite.Sprite.__init__(self)
-        
-        self.image = pygame.Surface((50, 50)) #sets the size of the sprite
-        self.image.fill((0,255,0)) #sets the color of the sprite, default green for visibility
 
-        #self.image = pygame.image.load("").convert()  ---- this will be used later to import an image for a sprite
+        self.image = pygame.Surface((50, 50))  # sets the size of the sprite
+        self.image.fill((0, 255, 0))  # sets the color of the sprite, default green for visibility
 
-        self.rect = self.image.get_rect() #creates the rectangle
-        self.rect.center = (spawnx, spawny) #sets the spawn point
-        
-        self._velx = velx #speed of movement along x axis
-        self._vely = vely #speed of movement along y axis
+        # self.image = pygame.image.load("").convert()  ---- this will be used later to import an image for a sprite
+
+        self.rect = self.image.get_rect()  # creates the rectangle
+        self.rect.center = (spawnx, spawny)  # sets the spawn point
+
+        self._velx = velx  # speed of movement along x axis
+        self._vely = vely  # speed of movement along y axis
 
 
 class PlayerSprite(CharacterSprite):
     def __init__(self, velx, vely, spawnx, spawny):
         super().__init__(velx, vely, spawnx, spawny)
 
-    #simple player movement
+    # simple player movement
     def update(self):
         pressed = pygame.key.get_pressed()
         speed = 0
@@ -42,7 +43,6 @@ class PlayerSprite(CharacterSprite):
 class EnemySprite(CharacterSprite):
     def __init__(self, velx, vely, spawnx, spawny):
         super().__init__(velx, vely, spawnx, spawny)
-    
-    #Enemy AI might go in here
-    #def update(self):
-    
+
+    # Enemy AI might go in here
+    # def update(self):
