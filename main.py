@@ -32,12 +32,12 @@ def main():
     spawn(True, 100, 2, 500, 500, 8, 8, enemies)
 
 
-    running = True
-    while running:
+    done = False
+    while not done:
         pygame.time.Clock().tick(60)  # setting fps not sure if it works tho
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                done = True
 
         # Used for basic spawning testing
 
