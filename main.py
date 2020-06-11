@@ -11,11 +11,13 @@ HEIGHT = 800
 
 def spawn(is_enemy, health, fire_rate, spawn_position_x, spawn_position_y, velx, vely, passed_list):
     if is_enemy is False:
-        player1 = character.Player(health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
-        passed_list.add(player1.player_sprite)
+        player1 = character.Player(
+            health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
+        passed_list.add(player1.sprite)
     else:
-        enemy1 = character.Enemy(health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
-        passed_list.add(enemy1.enemy_sprite)
+        enemy1 = character.Enemy(
+            health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
+        passed_list.add(enemy1.sprite)
 
 def newScreenHelper(screen, width, height, fontSize, text, textColor, resizeWidth, resizeHeight, fill): # inserts surface onto screen
     surface = pygame.Surface((width, height), pygame.SRCALPHA) # create surface

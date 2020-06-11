@@ -1,9 +1,17 @@
 import character_sprite
+from abc import ABC, abstractmethod
 
 
-class Character:
-    def __init__(self, health):
-        self.health = health
+class Character(ABC):
+    def __init__(self, health, attack_speed, spawnx, spawny, velx, vely):
+        self._health = health
+        self.attack_speed = attack_speed
+        self.velx = velx
+        self.vely = vely
+        self._spawnx = spawnx
+        self._spawny = spawny
+        self._sprite = None
+        self._sprite_creation()
 
     @property
     def health(self):
@@ -13,28 +21,13 @@ class Character:
     def health(self, health):
         self._health = health
 
-    def _sprite_creation(self):
-        print("Test")
-
-
-class Player(Character):
-    def __init__(self, health, fire_rate, spawnx, spawny, velx, vely):
-        super().__init__(health)
-        self.fire_rate = fire_rate
-        self.velx = velx
-        self.vely = vely
-        self._spawnx = spawnx
-        self._spawny = spawny
-        self._sprite_creation()
-
-    # setters and getters for fire rate
     @property
-    def fire_rate(self):
-        return self._fire_rate
+    def attack_speed(self):
+        return self._attack_speed
 
-    @fire_rate.setter
-    def fire_rate(self, fire_rate):
-        self._fire_rate = fire_rate
+    @attack_speed.setter
+    def attack_speed(self, attack_speed):
+        self._attack_speed = attack_speed
 
     # setters and getters for player velocity along the x axis
     @property
@@ -63,55 +56,33 @@ class Player(Character):
     def spawny(self):
         return self._spawny
 
-    # getter for player sprite
     @property
-    def player_sprite(self):
-        return self._player_sprite
+    def sprite(self):
+        return self._sprite
+
+    @abstractmethod
+    def _sprite_creation(self):
+        pass
+
+
+class Player(Character):
+    def __init__(self, health, attack_speed, spawnx, spawny, velx, vely):
+        super().__init__(health, attack_speed, spawnx, spawny, velx, vely)
 
     # creates player sprite
+
     def _sprite_creation(self):
-        self._player_sprite = character_sprite.PlayerSprite(self._velx, self._vely, self._spawnx, self._spawny)
+        self._sprite = character_sprite.PlayerSprite(
+            self._velx, self._vely, self._spawnx, self._spawny)
 
 
-# enemy class can be later subclassed to create specific types of enemies, where some values might be more static
+# enemy class can be later subclassed to create specific types of enemies
+# where some values might be more static
 class Enemy(Character):
-    def __init__(self, health, fire_rate, spawnx, spawny, velx, vely):
-        super().__init__(health)
-        self._fire_rate = fire_rate
-        self._velx = velx
-        self._vely = vely
-        self._spawnx = spawnx
-        self._spawny = spawny
-        self._sprite_creation()
-
-    # getters for fire rate
-    @property
-    def fire_rate(self):
-        return self._fire_rate
-
-    # getters for enemy velocity along the x axis
-    @property
-    def velx(self):
-        return self._velx
-
-    # getters for enemy velocity along the y axis
-    @property
-    def vely(self):
-        return self._vely
-
-    # setters for the enemy spawn point on the x axis and y axis
-    @property
-    def spawnx(self):
-        return self._spawnx
-
-    @property
-    def spawny(self):
-        return self._spawny
-
-    @property
-    def enemy_sprite(self):
-        return self._enemy_sprite
+    def __init__(self, health, attack_speed, spawnx, spawny, velx, vely):
+        super().__init__(health, attack_speed, spawnx, spawny, velx, vely)
 
     # creates enemy sprite
     def _sprite_creation(self):
-        self._enemy_sprite = character_sprite.EnemySprite(self._velx, self._vely, self._spawnx, self._spawny)
+        self._sprite = character_sprite.EnemySprite(
+            self._velx, self._vely, self._spawnx, self._spawny)
