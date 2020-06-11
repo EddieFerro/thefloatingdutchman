@@ -40,8 +40,8 @@ def gameOverScreen(screen):
     return screen
 
 def pauseScreen(screen):
-    pygame.draw.rect(screen, (255,255,255), (WIDTH/5, HEIGHT/5, WIDTH/(5/3), HEIGHT/(5/3)))
-    screen = newScreenHelper(screen, WIDTH/2, HEIGHT/5, 100, "PAUSE", (0,0,0), 2, 4, None) # game over
+    pygame.draw.rect(screen, (255,255,255), (WIDTH/4, HEIGHT/6, WIDTH/2, HEIGHT/(3/2)), border_radius=int(min(WIDTH/2,HEIGHT/(3/2))/4))
+    screen = newScreenHelper(screen, WIDTH/2, HEIGHT/5, 100, "PAUSED", (0,0,0), 2, 4, None) # game over
     screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "RESUME", (255,255,255), 2, 2, (0,255,0)) # play again
     screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "QUIT", (255,255,255), 2, 3/2, (0,0,0)) # quit
 
