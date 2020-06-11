@@ -11,11 +11,13 @@ HEIGHT = 800
 
 def spawn(is_enemy, health, fire_rate, spawn_position_x, spawn_position_y, velx, vely, passed_list):
     if is_enemy is False:
-        player1 = character.Player(health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
-        passed_list.add(player1.player_sprite)
+        player1 = character.Player(
+            health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
+        passed_list.add(player1.sprite)
     else:
-        enemy1 = character.Enemy(health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
-        passed_list.add(enemy1.enemy_sprite)
+        enemy1 = character.Enemy(
+            health, fire_rate, spawn_position_x, spawn_position_y, velx, vely)
+        passed_list.add(enemy1.sprite)
 
 
 def main():
@@ -30,7 +32,6 @@ def main():
     spawn(False, 100, 2, WIDTH / 2, HEIGHT / 2, 10, 10, players)
     spawn(True, 100, 2, 50, 50, 8, 8, enemies)
     spawn(True, 100, 2, 500, 500, 8, 8, enemies)
-
 
     done = False
     while not done:
