@@ -72,8 +72,7 @@ class Player(Character):
     # creates player sprite
 
     def _sprite_creation(self):
-        self._sprite = character_sprite.PlayerSprite(
-            self._velx, self._vely, self._spawnx, self._spawny)
+        self._sprite = character_sprite.PlayerSprite(self._spawnx, self._spawny)
 
 
 # enemy class can be later subclassed to create specific types of enemies
@@ -84,5 +83,4 @@ class Enemy(Character):
 
     # creates enemy sprite
     def _sprite_creation(self):
-        self._sprite = character_sprite.EnemySprite(
-            self._velx, self._vely, self._spawnx, self._spawny)
+        self._sprite = character_sprite.EnemySprite(self._spawnx, self._spawny)
