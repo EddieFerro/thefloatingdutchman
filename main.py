@@ -9,21 +9,16 @@ from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
 os.environ['SDL_AUDIODRIVER'] = 'dsp'  # this removes audio error warnings
 
 
-def spawn(is_enemy, health, fire_rate,
-          spawn_position_x, spawn_position_y, vel, passed_list):
+def spawn(is_enemy, health, fire_rate, spawn, vel, passed_list):
 
     if is_enemy is False:
         player1 = character.Player(
-            health, fire_rate, spawn_position_x, spawn_position_y, vel)
+            health, fire_rate, spawn, vel)
         passed_list.add(player1.sprite)
     else:
         enemy1 = character.Enemy(
-            health, fire_rate, spawn_position_x, spawn_position_y, vel)
+            health, fire_rate, spawn, vel)
         passed_list.add(enemy1.sprite)
-
-
-def restrict(player, screen):
-    player.rect.clamp_ip(screen.get_rect())
 
 
 def newScreenHelper(screen, width, height, fontSize, text,
@@ -134,9 +129,15 @@ def main():
     enemies = pygame.sprite.Group()
 
     # Used for basic spawning testing
-    spawn(False, 100, 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 10, players)
-    spawn(True, 100, 2, 50, 50, 8, enemies)
-    spawn(True, 100, 2, 500, 500, 8, enemies)
+    # spawn(False, 100, 2, pygame.Vector2(
+    #     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 10, players)
+    spawn(True, 100, 2, pygame.Vector2(50, 50), 8, enemies)
+    spawn(True, 100, 2, pygame.Vector2(500, 500), 8, enemies)
+
+    player1 = character.Player(
+        100, 2, pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 10)
+
+    players.add(player1.sprite)
 
     done = False
     while not done:
@@ -151,8 +152,7 @@ def main():
 
         # Used for basic spawning testing
 
-        players.update()
-        restrict(*players, screen)
+        player1.sprite.update(screen)
         enemies.update(*players, enemies)
         screen.fill((0, 0, 0))
         players.draw(screen)
