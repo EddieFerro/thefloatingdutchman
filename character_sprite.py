@@ -74,8 +74,8 @@ class EnemySprite(CharacterSprite):
         direction_vector = pygame.math.Vector2(- self.rect.x +players.rect.x, - self.rect.y + players.rect.y)
         try:
             direction_vector.scale_to_length(self._velx)
-            self.rect.move_ip(direction_vector)
             if self.rect.colliderect(players.rect):
                 enemies.remove(self)
+            self.rect.move_ip(direction_vector)
         except ValueError:
             return
