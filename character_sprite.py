@@ -1,14 +1,16 @@
 import pygame.sprite
 import math
 from GameSettings import *
+
 vector = pygame.math.Vector2
+
 
 class CharacterSprite(pygame.sprite.Sprite):
 
-    def __init__(self, spawnx, spawny):
+    def __init__(self, velx, vely, spawnx, spawny):
         pygame.sprite.Sprite.__init__(self)
 
-        self.original_image = pygame.Surface((20,50))
+        self.original_image = pygame.Surface((20, 50))
         self.original_image.fill(GREEN)
         self.image = pygame.Surface((20, 50))  # sets the size of the sprite
         self.image.fill(GREEN)  # sets the color of the sprite, default green for visibility
@@ -18,10 +20,13 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.rect.center = (spawnx, spawny)  # sets the spawn point
         self.pos = vector(spawnx, spawny)
 
+        self._velx = velx
+        self._vely = vely
+
 
 class PlayerSprite(CharacterSprite):
-    def __init__(self, spawnx, spawny):
-        super().__init__(spawnx, spawny)
+    def __init__(self, velx, vely, spawnx, spawny):
+        super().__init__(velx, vely, spawnx, spawny)
         # self.original_image = pygame.image.load("").convert()
         # self.original_image = pygame.transform.scale(self.original_image, (100, 100))
         # self.image = pygame.image.load("").convert()
@@ -38,7 +43,7 @@ class PlayerSprite(CharacterSprite):
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             self.vely = -PLAYER_SPEED
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.vely =  PLAYER_SPEED
+            self.vely = PLAYER_SPEED
         self.fix_diag_move()
         self.vel = (self.velx, self.vely)
 
@@ -59,9 +64,18 @@ class PlayerSprite(CharacterSprite):
         self.pos += self.vel
         self.rect.center = self.pos
 
+
 class EnemySprite(CharacterSprite):
-    def __init__(self, spawnx, spawny):
-        super().__init__(spawnx, spawny)
+    def __init__(self, velx, vely, spawnx, spawny):
+        super().__init__(velx, vely, spawnx, spawny)
 
     # Enemy AI might go in here
-    # def update(self):
+    def update(self, players, enemies):
+        direction_vector = pygame.math.Vector2(- self.rect.x +players.rect.x, - self.rect.y + players.rect.y)
+        try:
+            direction_vector.scale_to_length(self._velx)
+            self.rect.move_ip(direction_vector)
+            if self.rect.colliderect(players.rect):
+                enemies.remove(self)
+        except ValueError:
+            return
