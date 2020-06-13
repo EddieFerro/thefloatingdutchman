@@ -5,8 +5,6 @@ from game_settings import GREEN
 from pygame.math import Vector2
 
 
-
-
 class CharacterSprite(pygame.sprite.Sprite):
 
     def __init__(self, spawn, vel):
@@ -14,7 +12,6 @@ class CharacterSprite(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.pos = spawn
         self.vel = vel
-
 
 
 class PlayerSprite(CharacterSprite):
@@ -53,7 +50,6 @@ class PlayerSprite(CharacterSprite):
             y = -self.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self.vel
-
 
         if x != 0 and y != 0:
             x *= 0.7071

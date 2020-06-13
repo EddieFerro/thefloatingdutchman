@@ -60,7 +60,6 @@ def gameOverScreen(screen):
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
                              50, "QUIT", (255, 255, 255), 2, 3 / 2, (0, 0, 0))
 
-
     pygame.display.update()  # update screen
     return screen
 
@@ -74,7 +73,6 @@ def pauseScreen(screen):
                              (0, 255, 0))  # play again
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
                              50, "QUIT", (255, 255, 255), 2, 3 / 2, (0, 0, 0))  # quit
-
 
     pygame.display.update()
     return screen
