@@ -1,13 +1,11 @@
 import character
+import GameSettings
 
 import pygame
 
 import os
 
 os.environ['SDL_AUDIODRIVER'] = 'dsp' # this removes audio error warnings
-WIDTH = 1000
-HEIGHT = 800
-
 
 def spawn(is_enemy, health, fire_rate, spawn_position_x, spawn_position_y, velx, vely, passed_list):
     if is_enemy is False:
@@ -26,24 +24,24 @@ def newScreenHelper(screen, width, height, fontSize, text, textColor, resizeWidt
     font = pygame.font.SysFont('Comic Sans MS', fontSize) # font
     text = font.render(text, True, textColor) # create text
     surface.blit(text,((surface.get_rect().width - text.get_width()) / 2, (surface.get_rect().height - text.get_height()) / 2)) # center text onto surface
-    screen.blit(surface, ((WIDTH-surface.get_width())/resizeWidth, (HEIGHT-surface.get_height())/resizeHeight)) # position surface onto screen
+    screen.blit(surface, ((GameSettings.WIDTH-surface.get_width())/resizeWidth, (GameSettings.HEIGHT-surface.get_height())/resizeHeight)) # position surface onto screen
     return screen
 
 def gameOverScreen(screen):
-    screen.fill('black')
+    screen.fill(GameSettings.BLACK)
 
-    screen = newScreenHelper(screen, WIDTH/2, HEIGHT/5, 100, "GAME OVER!", (255,255,255), 2, 4, None) # game over
-    screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "PLAY AGAIN", (255,255,255), 2, 2, (0,255,0)) # play again
-    screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "QUIT", (255,255,255), 2, 3/2, (0,0,0)) # quit
+    screen = newScreenHelper(screen, GameSettings.WIDTH/2, GameSettings.HEIGHT/5, 100, "GAME OVER!", GameSettings.WHITE, 2, 4, None) # game over
+    screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, "PLAY AGAIN", GameSettings.WHITE, 2, 2, GameSettings.GREEN) # play again
+    screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, "QUIT", GameSettings.WHITE, 2, 3/2, GameSettings.BLACK) # quit
 
     pygame.display.update() #update screen
     return screen
 
 def pauseScreen(screen):
-    pygame.draw.rect(screen, (255,255,255), (WIDTH/4, HEIGHT/6, WIDTH/2, HEIGHT/(3/2)), border_radius=int(min(WIDTH/2,HEIGHT/(3/2))/4))
-    screen = newScreenHelper(screen, WIDTH/2, HEIGHT/5, 100, "PAUSED", (0,0,0), 2, 4, None) # game over
-    screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "RESUME", (255,255,255), 2, 2, (0,255,0)) # play again
-    screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "QUIT", (255,255,255), 2, 3/2, (0,0,0)) # quit
+    pygame.draw.rect(screen, GameSettings.WHITE, (GameSettings.WIDTH/4, GameSettings.HEIGHT/6, GameSettings.WIDTH/2, GameSettings.HEIGHT/(3/2)), border_radius=int(min(GameSettings.WIDTH/2,GameSettings.HEIGHT/(3/2))/4))
+    screen = newScreenHelper(screen, GameSettings.WIDTH/2, GameSettings.HEIGHT/5, 100, "PAUSED", GameSettings.BLACK, 2, 4, None) # game over
+    screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, "RESUME", GameSettings.WHITE, 2, 2, GameSettings.GREEN) # play again
+    screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, "QUIT", GameSettings.WHITE, 2, 3/2, GameSettings.BLACK) # quit
 
     pygame.display.update()
     return screen
@@ -67,17 +65,17 @@ def screenOptions(screen, gameOver):
 
         mouseDown = False
         mouse = pygame.mouse.get_pos()
-        if ((WIDTH*(5/8)) >= mouse[0] >= (WIDTH*(3/8)) or ev < 2): # user hovers over proper width
+        if ((GameSettings.WIDTH*(5/8)) >= mouse[0] >= (GameSettings.WIDTH*(3/8)) or ev < 2): # user hovers over proper width
             if gameOver: text = "PLAY AGAIN"
             else: text = "RESUME"
-            if ((HEIGHT*(11/20)) >= mouse[1] >= (HEIGHT*(9/20)) or ev == 0): # user hovers over Play Again button
-                screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, text, (255,255,255), 2, 2, (0,255,0)) # play again
-                screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "QUIT", (255,255,255), 2, 3/2, (0,0,0)) # quit
+            if ((GameSettings.HEIGHT*(11/20)) >= mouse[1] >= (GameSettings.HEIGHT*(9/20)) or ev == 0): # user hovers over Play Again button
+                screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, text, GameSettings.WHITE, 2, 2, GameSettings.GREEN) # play again
+                screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, "QUIT", GameSettings.WHITE, 2, 3/2, GameSettings.BLACK) # quit
                 playAgain = True
                 mouseDown = True
-            elif ((HEIGHT*(7/10)) >= mouse[1] >= (HEIGHT*(3/5)) or ev == 1): # user hovers over quit button
-                screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, "QUIT", (255,255,255), 2, 3/2, 'red') # quit
-                screen = newScreenHelper(screen, WIDTH/4, HEIGHT/10, 50, text, (255,255,255), 2, 2, (0,0,0)) # play again
+            elif ((GameSettings.HEIGHT*(7/10)) >= mouse[1] >= (GameSettings.HEIGHT*(3/5)) or ev == 1): # user hovers over quit button
+                screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, "QUIT", GameSettings.WHITE, 2, 3/2, GameSettings.RED) # quit
+                screen = newScreenHelper(screen, GameSettings.WIDTH/4, GameSettings.HEIGHT/10, 50, text, GameSettings.WHITE, 2, 2, GameSettings.BLACK) # play again
                 playAgain = False
                 mouseDown = True
         pygame.display.update() # update screen
@@ -85,13 +83,13 @@ def screenOptions(screen, gameOver):
 def main():
     pygame.init()
 
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((GameSettings.WIDTH, GameSettings.HEIGHT))
 
     players = pygame.sprite.Group()
     enemies = pygame.sprite.Group()
 
     # Used for basic spawning testing
-    spawn(False, 100, 2, WIDTH / 2, HEIGHT / 2, 10, 10, players)
+    spawn(False, 100, 2, GameSettings.WIDTH / 2, GameSettings.HEIGHT / 2, 10, 10, players)
     spawn(True, 100, 2, 50, 50, 8, 8, enemies)
     spawn(True, 100, 2, 500, 500, 8, 8, enemies)
 
@@ -110,7 +108,7 @@ def main():
 
         players.update()
         enemies.update()
-        screen.fill((0, 0, 0))
+        screen.fill(GameSettings.BLACK)
         players.draw(screen)
         enemies.draw(screen)
         pygame.display.flip()
