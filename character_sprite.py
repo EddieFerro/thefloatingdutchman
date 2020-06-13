@@ -5,11 +5,15 @@ from GameSettings import GREEN, PLAYER_SPEED
 from pygame.math import Vector2
 
 
+
 class CharacterSprite(pygame.sprite.Sprite):
 
-    def __init__(self, spawnx, spawny):
+    def __init__(self, velx, vely, spawnx, spawny):
         pygame.sprite.Sprite.__init__(self)
         self.pos = Vector2(spawnx, spawny)
+
+        self._velx = velx
+        self._vely = vely
 
 
 class PlayerSprite(CharacterSprite):
@@ -65,6 +69,7 @@ class PlayerSprite(CharacterSprite):
         self.rect.center = self.pos
  
 
+
 class EnemySprite(CharacterSprite):
     def __init__(self, spawnx, spawny):
         super().__init__(spawnx, spawny)
@@ -76,4 +81,12 @@ class EnemySprite(CharacterSprite):
         self.rect.center = (spawnx, spawny)  # sets the spawn point
 
     # Enemy AI might go in here
-    # def update(self):
+    def update(self, players, enemies):
+        direction_vector = pygame.math.Vector2(- self.rect.x +players.rect.x, - self.rect.y + players.rect.y)
+        try:
+            direction_vector.scale_to_length(self._velx)
+            self.rect.move_ip(direction_vector)
+            if self.rect.colliderect(players.rect):
+                enemies.remove(self)
+        except ValueError:
+            return

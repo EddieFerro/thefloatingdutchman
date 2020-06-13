@@ -82,8 +82,9 @@ def screenOptions(screen, gameOver):
 
         mouseDown = False
         mouse = pygame.mouse.get_pos()
+
         # user hovers over proper width
-        if ((WIDTH*(5/8)) >= mouse[0] >= (WIDTH*(3/8)) or ev < 2):
+kaytonf: the-floating-dutchman / (252ddd8✗) $
             if gameOver:
                 text = "PLAY AGAIN"
             else:
@@ -134,7 +135,8 @@ def main():
         # Used for basic spawning testing
 
         players.update()
-        enemies.update()
+        restrict(*players, screen)
+        enemies.update(*players, enemies)
         screen.fill((0, 0, 0))
         players.draw(screen)
         enemies.draw(screen)
