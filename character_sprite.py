@@ -5,12 +5,16 @@ from game_settings import GREEN
 from pygame.math import Vector2
 
 
+
+
 class CharacterSprite(pygame.sprite.Sprite):
 
     def __init__(self, spawn, vel):
+
         pygame.sprite.Sprite.__init__(self)
         self.pos = spawn
         self.vel = vel
+
 
 
 class PlayerSprite(CharacterSprite):
@@ -39,6 +43,7 @@ class PlayerSprite(CharacterSprite):
     def calc_movement(self, screen):
         x = 0
         y = 0
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             x = -self.vel
@@ -48,6 +53,7 @@ class PlayerSprite(CharacterSprite):
             y = -self.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self.vel
+
 
         if x != 0 and y != 0:
             x *= 0.7071
@@ -93,6 +99,7 @@ class EnemySprite(CharacterSprite):
             - self.rect.x + players.rect.x, - self.rect.y + players.rect.y)
         try:
             direction_vector.scale_to_length(self.vel)
+
             if self.rect.colliderect(players.rect):
                 enemies.remove(self)
             self.rect.move_ip(direction_vector)

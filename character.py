@@ -46,6 +46,7 @@ class Player(Character):
         self._sprite = character_sprite.PlayerSprite(spawn, vel)
 
 
+
 # enemy class can be later subclassed to create specific types of enemies
 # where some values might be more static
 class Enemy(Character):
@@ -55,3 +56,4 @@ class Enemy(Character):
     # creates enemy sprite
     def _sprite_creation(self, spawn, vel):
         self._sprite = character_sprite.EnemySprite(spawn, vel)
+

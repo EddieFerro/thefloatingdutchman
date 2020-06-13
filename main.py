@@ -6,6 +6,7 @@ import os
 
 from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
 
+
 os.environ['SDL_AUDIODRIVER'] = 'dsp'  # this removes audio error warnings
 
 
@@ -40,6 +41,7 @@ def newScreenHelper(screen, width, height, fontSize, text,
     # position surface onto screen
     screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / resizeWidth,
                           (WINDOW_HEIGHT - surface.get_height()) / resizeHeight))
+
     return screen
 
 
@@ -58,6 +60,7 @@ def gameOverScreen(screen):
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
                              50, "QUIT", (255, 255, 255), 2, 3 / 2, (0, 0, 0))
 
+
     pygame.display.update()  # update screen
     return screen
 
@@ -71,6 +74,7 @@ def pauseScreen(screen):
                              (0, 255, 0))  # play again
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
                              50, "QUIT", (255, 255, 255), 2, 3 / 2, (0, 0, 0))  # quit
+
 
     pygame.display.update()
     return screen
@@ -88,6 +92,7 @@ def screenOptions(screen, gameOver):
                 elif event.type != pygame.MOUSEBUTTONDOWN and event.key == pygame.K_UP:  # play again highlighted
                     ev = 0
                 if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or event.key == pygame.K_RETURN:  # button selected
+
                     if playAgain:
                         return False
                     else:
@@ -97,6 +102,7 @@ def screenOptions(screen, gameOver):
         mouse = pygame.mouse.get_pos()
         # user hovers over proper width
         if (WINDOW_WIDTH * (5 / 8)) >= mouse[0] >= (WINDOW_WIDTH * (3 / 8)) or ev < 2:
+
             if gameOver:
                 text = "PLAY AGAIN"
             else:
@@ -114,6 +120,7 @@ def screenOptions(screen, gameOver):
                 screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", (255, 255, 255), 2, 3 / 2,
                                          'red')  # quit
                 screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, (255, 255, 255), 2, 2,
+
                                          (0, 0, 0))  # play again
                 playAgain = False
                 mouseDown = True
@@ -153,6 +160,7 @@ def main():
         # Used for basic spawning testing
 
         player1.sprite.update(screen)
+
         enemies.update(*players, enemies)
         screen.fill((0, 0, 0))
         players.draw(screen)
