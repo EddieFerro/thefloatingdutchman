@@ -1,24 +1,21 @@
 import pygame.sprite
 import math
 import pygame
-from GameSettings import GREEN, PLAYER_SPEED
+from game_settings import GREEN
 from pygame.math import Vector2
-
 
 
 class CharacterSprite(pygame.sprite.Sprite):
 
-    def __init__(self, velx, vely, spawnx, spawny):
+    def __init__(self, spawnx, spawny, vel):
         pygame.sprite.Sprite.__init__(self)
         self.pos = Vector2(spawnx, spawny)
-
-        self._velx = velx
-        self._vely = vely
+        self.vel = vel
 
 
 class PlayerSprite(CharacterSprite):
-    def __init__(self, spawnx, spawny):
-        super().__init__(spawnx, spawny)
+    def __init__(self, spawnx, spawny, vel):
+        super().__init__(spawnx, spawny, vel)
         ss = pygame.image.load("topdown_sample.png").convert()
 
         # exact dimension of player sprite
@@ -44,20 +41,19 @@ class PlayerSprite(CharacterSprite):
         y = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            x = -PLAYER_SPEED
+            x = -self.vel
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            x = PLAYER_SPEED
+            x = self.vel
         if keys[pygame.K_UP] or keys[pygame.K_w]:
-            y = -PLAYER_SPEED
+            y = -self.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            y = PLAYER_SPEED
+            y = self.vel
 
         if x != 0 and y != 0:
             x *= 0.7071
             y *= 0.7071
 
-        self.vel = Vector2(x, y)
-        self.pos += self.vel
+        self.pos += Vector2(x, y)
         self.calc_rotation()
 
     def calc_rotation(self):
@@ -67,12 +63,11 @@ class PlayerSprite(CharacterSprite):
         self.image = pygame.transform.rotate(self.original_image, int(angle))
         self.rect = self.image.get_rect(center=self.pos)
         self.rect.center = self.pos
- 
 
 
 class EnemySprite(CharacterSprite):
-    def __init__(self, spawnx, spawny):
-        super().__init__(spawnx, spawny)
+    def __init__(self, spawnx, spawny, vel):
+        super().__init__(spawnx, spawny, vel)
         self.original_image = pygame.Surface((20, 50))
         self.original_image.fill(GREEN)
         self.image = self.original_image
@@ -82,9 +77,10 @@ class EnemySprite(CharacterSprite):
 
     # Enemy AI might go in here
     def update(self, players, enemies):
-        direction_vector = pygame.math.Vector2(- self.rect.x +players.rect.x, - self.rect.y + players.rect.y)
+        direction_vector = pygame.math.Vector2(
+            - self.rect.x + players.rect.x, - self.rect.y + players.rect.y)
         try:
-            direction_vector.scale_to_length(self._velx)
+            direction_vector.scale_to_length(self.vel)
             if self.rect.colliderect(players.rect):
                 enemies.remove(self)
             self.rect.move_ip(direction_vector)
