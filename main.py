@@ -4,7 +4,7 @@ import pygame
 
 import os
 
-from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, BLUE, FPS
 
 
 os.environ['SDL_AUDIODRIVER'] = 'dsp'  # this removes audio error warnings
@@ -46,33 +46,33 @@ def newScreenHelper(screen, width, height, fontSize, text,
 
 
 def gameOverScreen(screen):
-    screen.fill('black')
+    screen.fill(BLACK)
 
     # game over text
     screen = newScreenHelper(screen, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5, 100,
-                             "GAME OVER!", (255, 255, 255), 2, 4, None)
+                             "GAME OVER!", WHITE, 2, 4, None)
 
     # play again button
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "PLAY AGAIN", (255, 255, 255), 2, 2,
-                             (0, 255, 0))
+    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "PLAY AGAIN", WHITE, 2, 2,
+                             GREEN)
 
     # quit button
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
-                             50, "QUIT", (255, 255, 255), 2, 3 / 2, (0, 0, 0))
+                             50, "QUIT", WHITE, 2, 3 / 2, BLACK)
 
     pygame.display.update()  # update screen
     return screen
 
 
 def pauseScreen(screen):
-    pygame.draw.rect(screen, (255, 255, 255), (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
-                     border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
+    pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
+                        border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
     screen = newScreenHelper(screen, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5,
-                             100, "PAUSED", (0, 0, 0), 2, 4, None)  # game over
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "RESUME", (255, 255, 255), 2, 2,
-                             (0, 255, 0))  # play again
+                             100, "PAUSED", BLACK, 2, 4, None)  # game over
+    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "RESUME", WHITE, 2, 2,
+                             GREEN)  # play again
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
-                             50, "QUIT", (255, 255, 255), 2, 3 / 2, (0, 0, 0))  # quit
+                             50, "QUIT", WHITE, 2, 3 / 2, BLACK)  # quit
 
     pygame.display.update()
     return screen
@@ -107,19 +107,19 @@ def screenOptions(screen, gameOver):
                 text = "RESUME"
             if ((WINDOW_HEIGHT * (11 / 20)) >= mouse[1] >= (
                     WINDOW_HEIGHT * (9 / 20)) or ev == 0):  # user hovers over Play Again button
-                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, (255, 255, 255), 2, 2,
-                                         (0, 255, 0))  # play again
-                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", (255, 255, 255), 2, 3 / 2,
-                                         (0, 0, 0))  # quit
+                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, WHITE, 2, 2,
+                                         GREEN)  # play again
+                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, 2, 3 / 2,
+                                         BLACK)  # quit
                 playAgain = True
                 mouseDown = True
             # user hovers over quit button
             elif ((WINDOW_HEIGHT * (7 / 10)) >= mouse[1] >= (WINDOW_HEIGHT * (3 / 5)) or ev == 1):
-                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", (255, 255, 255), 2, 3 / 2,
-                                         'red')  # quit
-                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, (255, 255, 255), 2, 2,
+                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, 2, 3 / 2,
+                                         RED)  # quit
+                screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, WHITE, 2, 2,
 
-                                         (0, 0, 0))  # play again
+                                         BLACK)  # play again
                 playAgain = False
                 mouseDown = True
         pygame.display.update()  # update screen
@@ -146,7 +146,7 @@ def main():
 
     done = False
     while not done:
-        pygame.time.Clock().tick(60)  # setting fps not sure if it works tho
+        pygame.time.Clock().tick(FPS)  # setting fps not sure if it works tho
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # user closes application
                 screen = gameOverScreen(screen)  # game over screen
@@ -160,7 +160,7 @@ def main():
         player1.sprite.update(screen)
 
         enemies.update(*players, enemies)
-        screen.fill((0, 0, 0))
+        screen.fill(BLACK)
         players.draw(screen)
         enemies.draw(screen)
         pygame.display.flip()
