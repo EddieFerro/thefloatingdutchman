@@ -3,13 +3,14 @@ from pygame import Vector2
 from character.player.player_data import PlayerData
 from character.player.player_sprite import PlayerSprite
 from game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
+from manager import Manager
 
 
-class PlayerManager:
+class PlayerManager(Manager):
     def __init__(self):
         self._player = None
 
-    def spawn_player(self):
+    def spawn(self):
         player_data = PlayerData(100, 2, Vector2(
             WINDOW_WIDTH/2, WINDOW_HEIGHT/2), 10)
         self._player = PlayerSprite(player_data)
