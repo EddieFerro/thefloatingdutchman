@@ -23,7 +23,7 @@ def newScreenHelper(screen, width, height, fontSize, text,
     # position surface onto screen
     screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / resizeWidth,
                           (WINDOW_HEIGHT - surface.get_height()) / resizeHeight))
-
+    
     return screen
 
 
@@ -42,7 +42,8 @@ def gameOverScreen(screen):
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
                              50, "QUIT", WHITE, 2, 3 / 2, BLACK)
 
-    pygame.display.update()  # update screen
+    #pygame.display.update()  # update screen
+    
     return screen
 
 
@@ -56,13 +57,16 @@ def pauseScreen(screen):
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
                              50, "QUIT", WHITE, 2, 3 / 2, BLACK)  # quit
 
-    pygame.display.update()
+    #pygame.display.update()
+    
     return screen
 
 
 def screenOptions(screen, gameOver):
     playAgain = True  # indicates which option is highlighted
     mouseDown = False  # mouse action only activated when hovering over correct surface
+    pygame.display.update()
+    
     while True:
         ev = 2  # indicates option to select when user users arrow key
         for event in pygame.event.get():
@@ -95,6 +99,7 @@ def screenOptions(screen, gameOver):
                                          BLACK)  # quit
                 playAgain = True
                 mouseDown = True
+                pygame.display.update()  # update screen
             # user hovers over quit button
             elif ((WINDOW_HEIGHT * (7 / 10)) >= mouse[1] >= (WINDOW_HEIGHT * (3 / 5)) or ev == 1):
                 screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, 2, 3 / 2,
@@ -104,4 +109,4 @@ def screenOptions(screen, gameOver):
                                          BLACK)  # play again
                 playAgain = False
                 mouseDown = True
-        pygame.display.update()  # update screen
+                pygame.display.update()  # update screen
