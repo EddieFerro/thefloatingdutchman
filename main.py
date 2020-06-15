@@ -1,25 +1,13 @@
-import character
-
 import pygame
 
 import os
 
-from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, BLUE, FPS
+from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, FPS
+from character.player.player_manager import PlayerManager
+from character.enemy.enemy_manager import EnemyManager
 
 
 os.environ['SDL_AUDIODRIVER'] = 'dsp'  # this removes audio error warnings
-
-
-def spawn(is_enemy, health, fire_rate, spawn, vel, passed_list):
-
-    if is_enemy is False:
-        player1 = character.Player(
-            health, fire_rate, spawn, vel)
-        passed_list.add(player1.sprite)
-    else:
-        enemy1 = character.Enemy(
-            health, fire_rate, spawn, vel)
-        passed_list.add(enemy1.sprite)
 
 
 def newScreenHelper(screen, width, height, fontSize, text,
@@ -66,7 +54,7 @@ def gameOverScreen(screen):
 
 def pauseScreen(screen):
     pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
-                        border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
+                     border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
     screen = newScreenHelper(screen, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5,
                              100, "PAUSED", BLACK, 2, 4, None)  # game over
     screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "RESUME", WHITE, 2, 2,
@@ -130,19 +118,11 @@ def main():
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
-    players = pygame.sprite.Group()
-    enemies = pygame.sprite.Group()
+    player_manager = PlayerManager()
+    player_manager.spawn_player()
 
-    # Used for basic spawning testing
-    # spawn(False, 100, 2, pygame.Vector2(
-    #     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 10, players)
-    spawn(True, 100, 2, pygame.Vector2(50, 50), 8, enemies)
-    spawn(True, 100, 2, pygame.Vector2(500, 500), 8, enemies)
-
-    player1 = character.Player(
-        100, 2, pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 10)
-
-    players.add(player1.sprite)
+    enemy_manager = EnemyManager()
+    enemy_manager.spawn_enemies()
 
     done = False
     while not done:
@@ -157,12 +137,14 @@ def main():
 
         # Used for basic spawning testing
 
-        player1.sprite.update(screen)
-
-        enemies.update(*players, enemies)
+        # enemies.update(*players, enemies)
+        player_manager.update(screen)
+        enemy_manager.update(player_manager.player)
         screen.fill(BLACK)
-        players.draw(screen)
-        enemies.draw(screen)
+        player_manager.draw(screen)
+        enemy_manager.draw(screen)
+        # players.draw(screen)
+        # enemies.draw(screen)
         pygame.display.flip()
 
     pygame.quit()
