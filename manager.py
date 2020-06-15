@@ -6,12 +6,15 @@ class Manager(ABC):
 
     @abstractmethod
     def spawn(self):
-        """should initialize whatever sprites are managed"""
+        """Should reset state of whatever is being managed"""
 
     @abstractmethod
     def update(self):
-        """calls update on sprites managed"""
+        """
+        Updates objects being managed each clock cycle.
+        For sprites this is done by calling their update method
+        """
 
     @abstractmethod
     def draw(self):
-        """calls draw on sprites managed"""
+        """Draws sprites managed to screen"""
