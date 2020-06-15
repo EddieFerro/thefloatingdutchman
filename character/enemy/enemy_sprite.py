@@ -1,5 +1,3 @@
-
-
 from pygame import Surface, Vector2
 from pygame.sprite import Group
 

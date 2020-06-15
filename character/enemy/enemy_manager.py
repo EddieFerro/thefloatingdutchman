@@ -4,14 +4,15 @@ from character.enemy.enemy_sprite import EnemySprite
 from character.enemy.enemy_data import EnemyData
 from character.player.player_sprite import PlayerSprite
 from game_settings import WINDOW_HEIGHT
+from manager import Manager
 
 
-class EnemyManager:
+class EnemyManager(Manager):
     def __init__(self):
+        self._enemies = None
+
+    def spawn(self):
         self._enemies = sprite.Group()
-
-    def spawn_enemies(self):
-
         self._enemies.add(EnemySprite(EnemyData(50, 4, Vector2(10, 20), 6)))
         self._enemies.add(EnemySprite(
             EnemyData(60, 5, Vector2(300, WINDOW_HEIGHT - 50), 7)))
