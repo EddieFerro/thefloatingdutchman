@@ -1,6 +1,6 @@
-from pygame.sprite import Sprite
-
 from abc import ABC, abstractmethod
+
+from pygame.sprite import Sprite
 
 from character.character_data import CharacterData
 

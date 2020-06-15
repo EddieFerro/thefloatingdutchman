@@ -119,10 +119,10 @@ def main():
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
     player_manager = PlayerManager()
-    player_manager.spawn_player()
+    player_manager.spawn()
 
     enemy_manager = EnemyManager()
-    enemy_manager.spawn_enemies()
+    enemy_manager.spawn()
 
     done = False
     while not done:

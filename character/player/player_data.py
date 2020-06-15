@@ -1,4 +1,3 @@
-
 from character.character_data import CharacterData
 
 
