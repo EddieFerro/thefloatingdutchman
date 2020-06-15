@@ -10,6 +10,9 @@ import ui
 class GameManager(Manager):
     def __init__(self):
         self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self._gameOverScreen = ui.gameOverScreen(
+                        self._screen)  # game over screen
+        self._pauseScreen = ui.pauseScreen(self._screen)
         self._done = False
         self._level = 0
 
@@ -20,19 +23,22 @@ class GameManager(Manager):
 
     def run(self):
         self.spawn()
-
+        
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
             for e in event.get():
                 if e.type == QUIT:  # user closes application
+                    #self._done = True
                     self._screen = ui.gameOverScreen(
                         self._screen)  # game over screen
 
                     # will eventually be moved
                     self._done = ui.screenOptions(self._screen, True)
+                    #self._done = ui.screenOptions(self._gameOverScreen, True)
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     self._screen = ui.pauseScreen(self._screen)
                     self._done = ui.screenOptions(self._screen, False)
+                    #self._done = ui.screenOptions(self._pauseScreen, False)
 
             self.update()
             self.draw()
