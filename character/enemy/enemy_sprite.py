@@ -29,7 +29,7 @@ class EnemySprite(CharacterSprite):
                 if self.rect.colliderect(enemy.rect) and enemy != self:
                     direction_vector = Vector2(
                         (self.rect.x - enemy.rect.x),  (self.rect.y - enemy.rect.y))
-                    direction_vector.scale_to_length(self._data.vel *4)
+                    direction_vector.scale_to_length(self._data.vel * 2)
             self.rect.move_ip(direction_vector)
         except ValueError:
             return
