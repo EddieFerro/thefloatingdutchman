@@ -1,5 +1,5 @@
 
-
+import pygame
 from pygame import Surface, Vector2
 from pygame.sprite import Group
 
@@ -23,9 +23,14 @@ class EnemySprite(CharacterSprite):
             - self.rect.x + player.rect.x, - self.rect.y + player.rect.y)
         try:
             direction_vector.scale_to_length(self._data.vel)
-
             if self.rect.colliderect(player.rect):
                 enemies.remove(self)
+            for enemy in enemies:
+                if self.rect.colliderect(enemy.rect) and enemy != self:
+                    direction_vector = Vector2(
+                        (self.rect.x - enemy.rect.x),  (self.rect.y - enemy.rect.y))
+                    direction_vector.scale_to_length(self._data.vel)
             self.rect.move_ip(direction_vector)
         except ValueError:
             return
+

@@ -1,5 +1,4 @@
 from pygame import Vector2, sprite
-
 from character.enemy.enemy_sprite import EnemySprite
 from character.enemy.enemy_data import EnemyData
 from character.player.player_sprite import PlayerSprite
