@@ -2,7 +2,7 @@
 import pygame
 import time
 
-from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, BLUE, YELLOW, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND,
+from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND,
                            QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND)
 
 # create surface
@@ -28,6 +28,8 @@ def new_screen_helper(width, height, font_size, text,
 
 
 # initialize surfaces that compose the game over screen
+
+
 def initialize_game_over_screen():
     # game over text
     surfaces = []
@@ -46,6 +48,8 @@ def initialize_game_over_screen():
 
 
 # initialize surfaces that compose the pause screen
+
+
 def initialize_pause_screen():
     surfaces = []
     surfaces.append(new_screen_helper(WINDOW_WIDTH / 2,
@@ -59,6 +63,8 @@ def initialize_pause_screen():
 
 
 # draw pre-defined surfaces onto screen
+
+
 def draw_screens(screen, surfaces, three_elems):
     resize_heights = [4, 2, 3/2]
     if not three_elems:  # when only two surfaces are being attached
@@ -79,6 +85,8 @@ def draw_game_over_screen(screen, surfaces):
 
 
 # fill screen and return screen with surfaces drawn onto it
+
+
 def draw_pause_screen(screen, surfaces):
     pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
                      border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
