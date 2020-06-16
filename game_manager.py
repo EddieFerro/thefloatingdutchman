@@ -11,6 +11,7 @@ class GameManager(Manager):
     def __init__(self):
         self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self._done = False
+        self._level = 0
 
         # can go ahead and construct managers
         # since their spawn function controls their state
@@ -39,8 +40,9 @@ class GameManager(Manager):
     # resets game
 
     def spawn(self):
+        self._level = 0
         self._player_manager.spawn()
-        self._enemy_manager.spawn()
+        self._enemy_manager.spawn(self._level)
 
     def update(self):
         self._player_manager.update(self._screen)
