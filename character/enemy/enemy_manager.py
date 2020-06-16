@@ -1,6 +1,6 @@
 import random
 
-from pygame import Vector2, sprite
+from pygame import Vector2, sprite, Surface
 
 from character.enemy.enemy_sprite import EnemySprite
 from character.enemy.enemy_data import EnemyData
@@ -17,10 +17,11 @@ class EnemyManager(Manager):
         self._enemies = sprite.Group()
         self._add_enemies(level)
 
-    def _add_enemies(self, level):
+    def _add_enemies(self, level: int):
 
         for i in range(random.randint(2, 4) + level):
 
+            # picking position a fair distance away from player
             rand_pos_x: int = random.randint(40, WINDOW_WIDTH/2 - 200) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_WIDTH/2 + 200, WINDOW_WIDTH - 40)
 
@@ -38,9 +39,12 @@ class EnemyManager(Manager):
                 )
             )
 
+    def get_enemy_count(self) -> int:
+        return len(self._enemies.sprites())
+
     def update(self, player: PlayerSprite):
         # enemies need reference to other enemies and the player
         self._enemies.update(player, self._enemies)
 
-    def draw(self, screen):
+    def draw(self, screen: Surface):
         self._enemies.draw(screen)
