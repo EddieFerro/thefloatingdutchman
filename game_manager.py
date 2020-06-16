@@ -29,16 +29,15 @@ class GameManager(Manager):
             for e in event.get():
                 if e.type == QUIT:  # user closes application
                     #self._done = True
-                    self._screen = ui.gameOverScreen(
-                        self._screen)  # game over screen
-
+                    #self._screen = ui.gameOverScreen(
+                        #self._screen)  # game over screen
+                    self._screen = self._gameOverScreen
                     # will eventually be moved
                     self._done = ui.screenOptions(self._screen, True)
-                    #self._done = ui.screenOptions(self._gameOverScreen, True)
                 elif e.type == KEYDOWN and e.key == K_TAB:
-                    self._screen = ui.pauseScreen(self._screen)
+                    #self._screen = ui.pauseScreen(self._screen)
+                    self._screen = self._pauseScreen
                     self._done = ui.screenOptions(self._screen, False)
-                    #self._done = ui.screenOptions(self._pauseScreen, False)
 
             self.update()
             self.draw()
