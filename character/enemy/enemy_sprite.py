@@ -1,5 +1,3 @@
-import pygame
-
 from pygame import Surface, Vector2
 from pygame.sprite import Group
 
@@ -33,4 +31,3 @@ class EnemySprite(CharacterSprite):
             self.rect.move_ip(direction_vector)
         except ValueError:
             return
-

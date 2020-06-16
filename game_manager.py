@@ -1,9 +1,9 @@
 from pygame import display, event, time, QUIT, KEYDOWN, K_TAB
 
 from character.player.player_manager import PlayerManager
-from character.enemy.enemy_manager import EnemyManager
 from manager import Manager
 from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, FPS
+from level.room.room import Room
 import ui
 
 
@@ -11,11 +11,12 @@ class GameManager(Manager):
     def __init__(self):
         self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self._done = False
+        self._level = 0
 
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
-        self._enemy_manager = EnemyManager()
+        self._room = Room()
 
     def run(self):
         self.spawn()
@@ -39,15 +40,16 @@ class GameManager(Manager):
     # resets game
 
     def spawn(self):
+        self._level = 0
         self._player_manager.spawn()
-        self._enemy_manager.spawn()
+        self._room.spawn(self._level)
 
     def update(self):
         self._player_manager.update(self._screen)
-        self._enemy_manager.update(self._player_manager.player)
+        self._room.update(self._player_manager.player)
 
     def draw(self):
         self._screen.fill(BLACK)
         self._player_manager.draw(self._screen)
-        self._enemy_manager.draw(self._screen)
+        self._room.draw(self._screen)
         display.flip()
