@@ -70,8 +70,16 @@ def draw_screens(screen, surfaces, three_elems):
     pygame.display.update()  # update screen
     return screen
 
+# fill screen and return screen with surfaces drawn onto it
+
+
+def drawGameOverScreen(screen, surfaces):
+    screen.fill(BLACK)
+    return drawScreens(screen, surfaces, True)
 
 # fill screen and return screen with surfaces drawn onto it
+
+
 def draw_game_over_screen(screen, surfaces):
     screen.fill(BLACK)
     return draw_screens(screen, surfaces, True)
