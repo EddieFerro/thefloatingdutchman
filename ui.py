@@ -1,11 +1,12 @@
 
 import pygame
 
-from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN
+from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND, 
+QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND)
 
-
-def newScreenHelper(screen, width, height, fontSize, text,
-                    textColor, resizeWidth, resizeHeight, fill):
+# create surface
+def newScreenHelper(width, height, fontSize, text,
+                    textColor, fill):
     
     # inserts surface onto screen
     surface = pygame.Surface(
@@ -20,98 +21,91 @@ def newScreenHelper(screen, width, height, fontSize, text,
     surface.blit(text, ((surface.get_rect().width - text.get_width()) / 2,
                         (surface.get_rect().height - text.get_height()) / 2))
 
-    # position surface onto screen
-    screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / resizeWidth,
-                          (WINDOW_HEIGHT - surface.get_height()) / resizeHeight))
+    return surface
 
-    return screen
-
-
-def gameOverScreen(screen):
-    screen.fill(BLACK)
-
+# initialize surfaces that compose the game over screen
+def initializeGameOverScreen():
     # game over text
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5, 100,
-                             "GAME OVER!", WHITE, 2, 4, None)
+    surfaces = []
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5, 100, "GAME OVER!", WHITE, None))
 
     # play again button
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "PLAY AGAIN", WHITE, 2, 2,
-                             GREEN)
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "PLAY AGAIN", WHITE, GREEN))
 
     # quit button
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
-                             50, "QUIT", WHITE, 2, 3 / 2, BLACK)
-
-    #pygame.display.update()  # update screen
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, BLACK))
     
+    return surfaces
+
+# initialize surfaces that compose the pause screen
+def initializePauseScreen():
+    surfaces = []
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5, 100, "PAUSED", BLACK, None))  # pause
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "RESUME", WHITE, GREEN))  # play again
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, BLACK))  # quit
+    
+    return surfaces
+
+# draw pre-defined surfaces onto screen
+def drawScreens(screen, surfaces, threeElems):
+    resizeHeights = [4,2,3/2] 
+    if not threeElems: #when only two surfaces are being attached
+        resizeHeights.pop(0)
+    for surface, height in zip(surfaces, resizeHeights): #attach surfaces onto screen
+        screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
+                          (WINDOW_HEIGHT - surface.get_height()) / height))
+    pygame.display.update()  # update screen
     return screen
 
+# fill screen and return screen with surfaces drawn onto it
+def drawGameOverScreen(screen, surfaces):
+    screen.fill(BLACK)
+    return drawScreens(screen, surfaces, True)
 
-def pauseScreen(screen):
+# fill screen and return screen with surfaces drawn onto it
+def drawPauseScreen(screen, surfaces):
     pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
                      border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5,
-                             100, "PAUSED", BLACK, 2, 4, None)  # game over
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "RESUME", WHITE, 2, 2,
-                             GREEN)  # play again
-    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10,
-                             50, "QUIT", WHITE, 2, 3 / 2, BLACK)  # quit
+    return drawScreens(screen, surfaces, True)
 
-    #pygame.display.update()
-    
-    return screen
+# fill screen and return screen with surfaces drawn onto it
+def updateScreenOptions(screen, text, color1, color2):
+    surfaces = []
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, WHITE, color1))  # play again
+    surfaces.append(newScreenHelper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, color2))  # quit
+    return drawScreens(screen, surfaces, False)
 
 
-def screenOptions(screen, gameOver):
-    playAgain = True  # indicates which option is highlighted
-    mouseDown = False  # mouse action only activated when hovering over correct surface
-    mostRecentIsContinue = True
-    pygame.display.update()
+def screenOptions(screen, text):
+    mostRecentIsContinue = True # used to determine whether the user just changed options
     
     while True:
-        ev = 2  # indicates option to select when user users arrow key
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN or (event.type == pygame.MOUSEBUTTONDOWN and mouseDown):
-                if event.type != pygame.MOUSEBUTTONDOWN and event.key == pygame.K_DOWN:  # quit highlighted
-                    ev = 1
-                elif event.type != pygame.MOUSEBUTTONDOWN and event.key == pygame.K_UP:  # play again highlighted
-                    ev = 0
-                if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or event.key == pygame.K_RETURN:  # button selected
+            mouse = pygame.mouse.get_pos() # mouse position
+            if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION: # event has occurred
 
-                    if playAgain:
+                # player has chosen an option
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:  #(event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or 
+                    if mostRecentIsContinue: # either end program or continue it
                         return False
                     else:
                         return True
 
-        mouseDown = False
-        mouse = pygame.mouse.get_pos()
-        # user hovers over proper width
-        if (WINDOW_WIDTH * (5 / 8)) >= mouse[0] >= (WINDOW_WIDTH * (3 / 8)) or ev < 2:
+                # button may be highlighted/selected, user hovers over proper width
+                if (event.type == pygame.KEYDOWN and (event.key == pygame.K_DOWN or event.key == pygame.K_UP)) or (WIDTH_RIGHT_BOUND >= mouse[0] >= WIDTH_LEFT_BOUND):
+                    
+                    # user hovers over Play Again button
+                    if CONTINUE_HEIGHT_UPPER_BOUND >= mouse[1] >= CONTINUE_HEIGHT_LOWER_BOUND or (event.type == pygame.KEYDOWN and event.key == pygame.K_UP):
+                        if not mostRecentIsContinue: # user selects Play Again/Resume after selecting Quit
+                            screen = updateScreenOptions(screen, text, GREEN, BLACK)
+                        mostRecentIsContinue = True
+                        if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Continue button
+                            return False
 
-            if gameOver:
-                text = "PLAY AGAIN"
-            else:
-                text = "RESUME"
-            if ((WINDOW_HEIGHT * (11 / 20)) >= mouse[1] >= (
-                    WINDOW_HEIGHT * (9 / 20)) or ev == 0):  # user hovers over Play Again button
-                if not mostRecentIsContinue:
-                    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, WHITE, 2, 2,
-                                            GREEN)  # play again
-                    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, 2, 3 / 2,
-                                            BLACK)  # quit
-                    pygame.display.update() # update screen
-                playAgain = True
-                mouseDown = True
-                mostRecentIsContinue = True
-            # user hovers over quit button
-            elif ((WINDOW_HEIGHT * (7 / 10)) >= mouse[1] >= (WINDOW_HEIGHT * (3 / 5)) or ev == 1):
-                if mostRecentIsContinue:
-                    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, 2, 3 / 2,
-                                            RED)  # quit
-                    screen = newScreenHelper(screen, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, text, WHITE, 2, 2,
-
-                                            BLACK)  # play again
-                    pygame.display.update() # update screen
-                playAgain = False
-                mouseDown = True
-                mostRecentIsContinue = False
+                    # user hovers over quit button
+                    elif QUIT_HEIGHT_UPPER_BOUND >= mouse[1] >= QUIT_HEIGHT_LOWER_BOUND or (event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN): # user hovers over Quit Button
+                        if mostRecentIsContinue: # user selects Quit after selecting Play Again/Resume
+                            screen = updateScreenOptions(screen, text, BLACK, RED)
+                        mostRecentIsContinue = False
+                        if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Quit button
+                            return True
