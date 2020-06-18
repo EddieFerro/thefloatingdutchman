@@ -11,8 +11,8 @@ import ui
 class GameManager(Manager):
     def __init__(self):
         self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        self._gameOverScreen = ui.initializeGameOverScreen()  # game over screen
-        self._pauseScreen = ui.initializePauseScreen()
+        self._game_over_screen = ui.initialize_game_over_screen()  # game over screen
+        self._pause_screen = ui.initialize_pause_screen()
         self._done = False
         self._level = 0
 
@@ -29,10 +29,10 @@ class GameManager(Manager):
             for e in event.get():
                 if e.type == QUIT:  # user closes application
                     # will eventually be moved
-                    self._done = ui.screenOptions(ui.drawGameOverScreen(self._screen, self._gameOverScreen), "PLAY AGAIN")
+                    self._done = ui.screen_options(ui.draw_game_over_screen(self._screen, self._game_over_screen), "PLAY AGAIN") # game over
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
-                    self._done = ui.screenOptions(ui.drawPauseScreen(self._screen, self._pauseScreen), "RESUME")
+                    self._done = ui.screen_options(ui.draw_pause_screen(self._screen, self._pause_screen), "RESUME") # pause
 
             self.update()
             self.draw()
