@@ -73,13 +73,6 @@ def draw_screens(screen, surfaces, three_elems):
 # fill screen and return screen with surfaces drawn onto it
 
 
-def drawGameOverScreen(screen, surfaces):
-    screen.fill(BLACK)
-    return drawScreens(screen, surfaces, True)
-
-# fill screen and return screen with surfaces drawn onto it
-
-
 def draw_game_over_screen(screen, surfaces):
     screen.fill(BLACK)
     return draw_screens(screen, surfaces, True)
@@ -91,8 +84,9 @@ def draw_pause_screen(screen, surfaces):
                      border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
     return draw_screens(screen, surfaces, True)
 
-
 # fill screen and return screen with surfaces drawn onto it
+
+
 def update_screen_options(screen, text, color1, color2):
     surfaces = []
     surfaces.append(new_screen_helper(WINDOW_WIDTH / 4,
