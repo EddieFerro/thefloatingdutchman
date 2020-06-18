@@ -23,6 +23,7 @@ def new_screen_helper(width, height, font_size, text,
 
     return surface
 
+  
 # initialize surfaces that compose the game over screen
 def initialize_game_over_screen():
     # game over text
@@ -34,9 +35,11 @@ def initialize_game_over_screen():
 
     # quit button
     surfaces.append(new_screen_helper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, BLACK))
+
     
     return surfaces
 
+  
 # initialize surfaces that compose the pause screen
 def initialize_pause_screen():
     surfaces = []
@@ -46,28 +49,33 @@ def initialize_pause_screen():
     
     return surfaces
 
+  
 # draw pre-defined surfaces onto screen
 def draw_screens(screen, surfaces, three_elems):
     resize_heights = [4,2,3/2] 
     if not three_elems: #when only two surfaces are being attached
         resize_heights.pop(0)
     for surface, height in zip(surfaces, resize_heights): #attach surfaces onto screen
+
         screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
                           (WINDOW_HEIGHT - surface.get_height()) / height))
     pygame.display.update()  # update screen
     return screen
 
+  
 # fill screen and return screen with surfaces drawn onto it
 def draw_game_over_screen(screen, surfaces):
     screen.fill(BLACK)
     return draw_screens(screen, surfaces, True)
 
+  
 # fill screen and return screen with surfaces drawn onto it
 def draw_pause_screen(screen, surfaces):
     pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
                      border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
     return draw_screens(screen, surfaces, True)
 
+  
 # fill screen and return screen with surfaces drawn onto it
 def update_screen_options(screen, text, color1, color2):
     surfaces = []
@@ -99,6 +107,7 @@ def screen_options(screen, text):
                         if not most_recent_is_continue: # user selects Play Again/Resume after selecting Quit
                             screen = update_screen_options(screen, text, GREEN, BLACK)
                         most_recent_is_continue = True
+
                         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Continue button
                             return False
 
@@ -107,5 +116,6 @@ def screen_options(screen, text):
                         if most_recent_is_continue: # user selects Quit after selecting Play Again/Resume
                             screen = update_screen_options(screen, text, BLACK, RED)
                         most_recent_is_continue = False
+
                         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Quit button
                             return True
