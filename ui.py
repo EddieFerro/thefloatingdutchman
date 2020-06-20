@@ -23,6 +23,7 @@ def new_screen_helper(width, height, font_size, text,
 
     return surface
 
+  
 # initialize surfaces that compose the game over screen
 def initialize_game_over_screen():
     # game over text
@@ -37,6 +38,7 @@ def initialize_game_over_screen():
     
     return surfaces
 
+  
 # initialize surfaces that compose the pause screen
 def initialize_pause_screen():
     surfaces = []
@@ -46,6 +48,7 @@ def initialize_pause_screen():
     
     return surfaces
 
+  
 # draw pre-defined surfaces onto screen
 def draw_screens(screen, surfaces, three_elems):
     resize_heights = [4,2,3/2] 
@@ -57,17 +60,20 @@ def draw_screens(screen, surfaces, three_elems):
     pygame.display.update()  # update screen
     return screen
 
+  
 # fill screen and return screen with surfaces drawn onto it
 def draw_game_over_screen(screen, surfaces):
     screen.fill(BLACK)
     return draw_screens(screen, surfaces, True)
 
+  
 # fill screen and return screen with surfaces drawn onto it
 def draw_pause_screen(screen, surfaces):
     pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
                      border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
     return draw_screens(screen, surfaces, True)
 
+  
 # fill screen and return screen with surfaces drawn onto it
 def update_screen_options(screen, text, color1, color2):
     surfaces = []
