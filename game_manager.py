@@ -30,12 +30,21 @@ class GameManager(Manager):
                 if e.type == QUIT:  # user closes application
                     # will eventually be moved
                     self._done = ui.screen_options(ui.draw_game_over_screen(self._screen, self._game_over_screen), "PLAY AGAIN") # game over
+
+                    if self._done is False:
+                        self.spawn()
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
                     self._done = ui.screen_options(ui.draw_pause_screen(self._screen, self._pause_screen), "RESUME") # pause
 
             self.update()
             self.draw()
+
+            if len(self._room._enemy_manager._enemies) is 0:
+                self._done = ui.screen_options(ui.draw_game_over_screen(self._screen, self._game_over_screen),"PLAY AGAIN")  # game over
+                if self._done is False:
+                    self.spawn()
+
     # resets game
 
     def spawn(self):
