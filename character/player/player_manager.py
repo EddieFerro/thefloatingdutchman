@@ -8,6 +8,7 @@ from manager import Manager
 
 class PlayerManager(Manager):
     def __init__(self):
+        super().__init__()
         self._player = None
 
     def spawn(self):
