@@ -28,10 +28,17 @@ class EnemySprite(CharacterSprite):
             direction_vector.scale_to_length(self._data.vel)
             if self.rect.colliderect(player.rect):
                 enemies.remove(self)
+
+
             for enemy in enemies:
                 if pygame.sprite.collide_circle(self, enemy) and enemy != self:
                     direction_vector = Vector2(
                         (self.rect.x - enemy.rect.x),  (self.rect.y - enemy.rect.y))
+                    direction_vector.scale_to_length(self._data.vel*2)
+            if self._data._type2:
+                if pygame.sprite.collide_circle(self, player):
+                    direction_vector = Vector2(
+                        (self.rect.x - player.rect.x),  (self.rect.y - player.rect.y))
                     direction_vector.scale_to_length(self._data.vel*2)
             self.rect.move_ip(direction_vector)
         except ValueError:

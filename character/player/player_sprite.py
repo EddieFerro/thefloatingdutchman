@@ -10,6 +10,8 @@ from character.player.player_data import PlayerData
 class PlayerSprite(CharacterSprite):
     def __init__(self, player_data: PlayerData):
         super().__init__(player_data)
+        self.radius = 100
+
 
     def _set_original_image(self):
         sprite_sheet = image.load("topdown_sample.png").convert()
