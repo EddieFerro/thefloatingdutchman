@@ -40,6 +40,8 @@ class EnemySprite(CharacterSprite):
                     direction_vector = Vector2(
                         (self.rect.x - player.rect.x),  (self.rect.y - player.rect.y))
                     direction_vector.scale_to_length(self._data.vel*2)
-            self.rect.move_ip(direction_vector)
+            self.rect.x += direction_vector.x
+            self.rect.y += direction_vector.y
+
         except ValueError:
             return
