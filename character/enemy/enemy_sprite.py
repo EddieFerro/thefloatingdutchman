@@ -43,5 +43,6 @@ class EnemySprite(CharacterSprite):
             self.rect.x += direction_vector.x
             self.rect.y += direction_vector.y
 
+
         except ValueError:
             return
