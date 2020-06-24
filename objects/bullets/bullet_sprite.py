@@ -22,4 +22,4 @@ class BulletSprite(ObjectSprite):
     
     def update(self):
         self._data.pos += (self._data.direction * self._data.vel)
-        self._rect.center = self._data.pos
+        self.rect.center = self._data.pos

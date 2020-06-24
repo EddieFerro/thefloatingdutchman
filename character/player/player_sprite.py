@@ -1,6 +1,6 @@
 import math
 
-from pygame import image, Rect, Surface, key, Vector2, mouse, transform
+from pygame import image, Rect, Surface, key, Vector2, mouse, transform, sprite
 import pygame
 
 from character.character_sprite import CharacterSprite
@@ -15,6 +15,7 @@ class PlayerSprite(CharacterSprite):
         self.radius = 100
         self._angle = 0
         self._prev_shot = 0
+        self._bullets = sprite.Group()
 
 
     def _set_original_image(self):
@@ -35,9 +36,10 @@ class PlayerSprite(CharacterSprite):
 
     def update(self, screen):
         # TODO: Do we need this?
-        #Not really i was testing some fixes for event issues and it was just left in 
+        # Not really i was testing some fixes for event issues and it was just left in 
         # pygame.event.pump()
         self._calc_movement(screen)
+        self._bullets.update()
 
     def _calc_movement(self, screen):
         x = 0
@@ -56,8 +58,8 @@ class PlayerSprite(CharacterSprite):
             t = pygame.time.get_ticks()
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
-                direction = Vector2(1,0).rotate(self._angle)
-                BulletSprite(BulletData(10, direction, 0, self._data.pos, 100))
+                direction = Vector2(1,0).rotate(-self._angle)
+                BulletSprite(BulletData(10, direction, 0, self._data.pos, 25)).add(self._bullets)
 
 
         if x != 0 and y != 0:
