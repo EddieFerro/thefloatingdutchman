@@ -5,12 +5,16 @@ import pygame
 
 from character.character_sprite import CharacterSprite
 from character.player.player_data import PlayerData
+from objects.bullets.bullet_data import BulletData
+from objects.bullets.bullet_sprite import BulletSprite
 
 
 class PlayerSprite(CharacterSprite):
     def __init__(self, player_data: PlayerData):
         super().__init__(player_data)
         self.radius = 100
+        self._angle = 0
+        self._prev_shot = 0
 
 
     def _set_original_image(self):
@@ -31,6 +35,7 @@ class PlayerSprite(CharacterSprite):
 
     def update(self, screen):
         # TODO: Do we need this?
+        #Not really i was testing some fixes for event issues and it was just left in 
         # pygame.event.pump()
         self._calc_movement(screen)
 
@@ -47,6 +52,13 @@ class PlayerSprite(CharacterSprite):
             y = -self._data.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self._data.vel
+        if keys[pygame.K_SPACE]:
+            t = pygame.time.get_ticks()
+            if (t - self._prev_shot) > self._data.attack_speed:
+                self._prev_shot = t
+                direction = Vector2(1,0).rotate(self._angle)
+                BulletSprite(BulletData(10, direction, 0, self._data.pos, 100))
+
 
         if x != 0 and y != 0:
             x *= 0.7071
@@ -70,7 +82,7 @@ class PlayerSprite(CharacterSprite):
     def _calc_rotation(self):
         mouse_x, mouse_y = mouse.get_pos()
         rel_x, rel_y = mouse_x - self._data.pos.x, mouse_y - self._data.pos.y
-        angle = (180 / math.pi) * -math.atan2(rel_y, rel_x) + 5
-        self.image = transform.rotate(self._original_image, int(angle))
+        self._angle = (180 / math.pi) * -math.atan2(rel_y, rel_x) + 5
+        self.image = transform.rotate(self._original_image, int(self._angle))
         self.rect = self.image.get_rect(center=self._data.pos)
         self.rect.center = self._data.pos
