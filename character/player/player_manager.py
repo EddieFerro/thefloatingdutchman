@@ -11,12 +11,13 @@ class PlayerManager(Manager):
         self._player = None
 
     def spawn(self):
-        player_data = PlayerData(100, 2, Vector2(
+        player_data = PlayerData(100, 1000, Vector2(
             WINDOW_WIDTH/2, WINDOW_HEIGHT/2), 10)
         self._player = PlayerSprite(player_data)
 
     def draw(self, screen):
         screen.blit(self._player.image, self._player.rect)
+        self._player._bullets.draw(screen)
 
     def update(self, screen):
         self._player.update(screen)
