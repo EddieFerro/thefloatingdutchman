@@ -1,4 +1,5 @@
-from pygame import Surface, Vector2
+import math
+
 from pygame.sprite import Group
 from pygame import Vector2, sprite, Surface
 
@@ -45,8 +46,10 @@ class EnemySprite(CharacterSprite):
                 t = pygame.time.get_ticks()
                 if (t - self._prev_shot) > 10:
                     self._prev_shot = t
+                    self._angle = math.atan2(player.rect.y - self.rect.y, player.rect.x - self.rect.x)
+                    self._angle = math.degrees(self._angle)
                     direction = Vector2(
-                        0, 1).rotate(-self._angle)
+                        1, 0).rotate(self._angle)
                     BulletSprite(BulletData(10, direction, 0, Vector2(self.rect.x, self.rect.y), 50)).add(self._bullets)
                     self._bullets.update()
                 if pygame.sprite.collide_circle(self, player):
