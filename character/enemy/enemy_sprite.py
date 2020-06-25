@@ -41,7 +41,7 @@ class EnemySprite(CharacterSprite):
                 if pygame.sprite.collide_circle(self, enemy) and enemy != self:
                     direction_vector = Vector2(
                         (self.rect.x - enemy.rect.x),  (self.rect.y - enemy.rect.y))
-                    direction_vector.scale_to_length(self._data.vel*2)
+                    direction_vector.scale_to_length(self._data.vel*1.1)
             if self._data._type2:
                 t = pygame.time.get_ticks()
                 if (t - self._prev_shot) > 10:
@@ -55,7 +55,7 @@ class EnemySprite(CharacterSprite):
                 if pygame.sprite.collide_circle(self, player):
                     direction_vector = Vector2(
                         (self.rect.x - player.rect.x),  (self.rect.y - player.rect.y))
-                    direction_vector.scale_to_length(self._data.vel*2)
+                    direction_vector.scale_to_length(self._data.vel*1.1)
             self.rect.x += direction_vector.x
             self.rect.y += direction_vector.y
 
