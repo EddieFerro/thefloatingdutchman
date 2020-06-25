@@ -12,7 +12,7 @@ from objects.bullets.bullet_sprite import BulletSprite
 class PlayerSprite(CharacterSprite):
     def __init__(self, player_data: PlayerData):
         super().__init__(player_data)
-        self.radius = 100
+        self.radius = 200
         self._angle = 0
         self._prev_shot = 0
         self._bullets = sprite.Group()
