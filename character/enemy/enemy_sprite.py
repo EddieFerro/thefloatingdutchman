@@ -52,7 +52,7 @@ class EnemySprite(CharacterSprite):
                     if(distance < 400):
                         direction_vector = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y -enemy.rect.y))
-                        direction_vector.scale_to_length(self._data.vel * 1.1)
+                        direction_vector.scale_to_length(self._data.vel * 1.01)
                         self.rect.x += direction_vector.x
                         self.rect.y += direction_vector.y
             if self._data._type2:
