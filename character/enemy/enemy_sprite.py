@@ -29,6 +29,16 @@ class EnemySprite(CharacterSprite):
 
     # Enemy AI might go in here
     def update(self, player: PlayerSprite, enemies: Group):
+        for enemy in enemies:
+            if pygame.sprite.collide_circle(self, enemy) and enemy != self:
+                distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.x))
+                print(distance)
+                if (distance < 400):
+                    direction_vector = Vector2(
+                        (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
+                    direction_vector.scale_to_length(self._data.vel * 1.01)
+                    self.rect.x += direction_vector.x
+                    self.rect.y += direction_vector.y
         distance = math.hypot((player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
         if (distance > 300 and self._data._type2):
             self._data._stopMoving = False
@@ -45,16 +55,7 @@ class EnemySprite(CharacterSprite):
             if self.rect.colliderect(player.rect):
                 enemies.remove(self)
 
-            for enemy in enemies:
-                if pygame.sprite.collide_circle(self, enemy) and enemy != self:
-                    distance = math.hypot((enemy.rect.x-self.rect.x),(enemy.rect.y - self.rect.x))
-                    print(distance)
-                    if(distance < 400):
-                        direction_vector = Vector2(
-                            (self.rect.x - enemy.rect.x), (self.rect.y -enemy.rect.y))
-                        direction_vector.scale_to_length(self._data.vel * 1.01)
-                        self.rect.x += direction_vector.x
-                        self.rect.y += direction_vector.y
+
             if self._data._type2:
                 t = pygame.time.get_ticks()
                 if (t - self._prev_shot) > 1000:
