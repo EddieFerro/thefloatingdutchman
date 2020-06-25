@@ -48,3 +48,5 @@ class EnemyManager(Manager):
 
     def draw(self, screen: Surface):
         self._enemies.draw(screen)
+        for enemy in self._enemies:
+            enemy._bullets.draw(screen)
