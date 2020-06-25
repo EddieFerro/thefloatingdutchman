@@ -23,6 +23,7 @@ class GameManager(Manager):
 
     def run(self):
         self.spawn()
+        ui.tutorial(self._screen) # comment out this line to remove the tutorial
         
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho

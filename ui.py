@@ -115,3 +115,18 @@ def screen_options(screen, text):
                         most_recent_is_continue = False
                         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Quit button
                             return True
+import time
+
+def tutorial(screen):
+    text = ["You are the Captain of the Flying Dutchman"]
+    arr =  ["you have ended up in space",
+            "and your crew has been captured by the Ghost Bustas.",
+            "It is up to you to rescue your crew",
+            "and defeat the Ghost Bustas"
+            ]
+    for txt in text:
+        surface = new_screen_helper(WINDOW_WIDTH / (4/3), WINDOW_HEIGHT, 60, txt, WHITE, 'red')
+        screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
+                          (WINDOW_HEIGHT - surface.get_height()) / 4))
+    pygame.display.update()
+    time.sleep(4)
