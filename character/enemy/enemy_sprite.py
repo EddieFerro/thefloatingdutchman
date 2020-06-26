@@ -21,7 +21,7 @@ class EnemySprite(CharacterSprite):
         self._angle = 0
 
 
-        self.radius = 100
+        self.radius = 50
 
     def _set_original_image(self):
         self._original_image = Surface((20, 50))
@@ -61,7 +61,7 @@ class EnemySprite(CharacterSprite):
 
             # Tyoe 2 enemy specification
             if self._data._type2:
-                # Auto fire towards player
+                # Auto fire towards player at a given rate
                 t = pygame.time.get_ticks()
                 if (t - self._prev_shot) > 1000:
                     self._prev_shot = t
@@ -71,15 +71,15 @@ class EnemySprite(CharacterSprite):
                         1, 0).rotate(self._angle)
                     BulletSprite(BulletData(10, direction, 0, Vector2(self.rect.x, self.rect.y), 25)).add(self._bullets)
 
-                    # Stop moving towards player at a certain distance
+            # Stop moving towards player at a certain distance
                 if pygame.sprite.collide_circle(self, player):
                     self._data._stopMoving = True
                     distance = math.hypot((player.rect.x-self.rect.x),(player.rect.y - self.rect.y))
-                    # Move forward if out of danger zone
-                    if(distance < 590):
+                    # Move back if in danger zone
+                    if(distance < 300):
                         target_direction = Vector2(
                             (self.rect.x - player.rect.x), (self.rect.y -player.rect.y))
-                        target_direction.scale_to_length(self._data.vel * 1.1)
+                        target_direction.scale_to_length(self._data.vel * 1.01)
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
 
