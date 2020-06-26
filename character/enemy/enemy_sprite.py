@@ -75,8 +75,8 @@ class EnemySprite(CharacterSprite):
                 if pygame.sprite.collide_circle(self, player):
                     self._data._stopMoving = True
                     distance = math.hypot((player.rect.x-self.rect.x),(player.rect.y - self.rect.y))
-                    # Back up until edge of danger zone
-                    if(distance < 490):
+                    # Move forward if out of danger zone
+                    if(distance < 590):
                         target_direction = Vector2(
                             (self.rect.x - player.rect.x), (self.rect.y -player.rect.y))
                         target_direction.scale_to_length(self._data.vel * 1.1)
