@@ -117,6 +117,11 @@ def screen_options(screen, text):
                         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Quit button
                             return True
 
+def image_fill_background(image_name):
+    image = pygame.image.load(image_name)
+    image = pygame.transform.scale(image, (WINDOW_WIDTH, WINDOW_HEIGHT))
+    return image
+
 def wait_for_user(sleep_time):
     t0 = time.time()
     while True:
@@ -137,6 +142,8 @@ def spawn_tutorial(screen, text):
     wait_for_user(float('inf'))
 
 def tutorial(screen):
+    image = image_fill_background("space_images/space14.png")
+    screen.blit(image, image.get_rect())
     text1 = [("THE FLOATING DUTCHMAN", -WINDOW_HEIGHT/3, 2.5, YELLOW, 100),
             ("You Are the Captain of the Flying Dutchman", -WINDOW_HEIGHT/5, 3, YELLOW, 60),
             ("You have ended up in space and your crew", -WINDOW_HEIGHT/(35/2), 0, YELLOW, 60),
@@ -150,5 +157,5 @@ def tutorial(screen):
             ("Use the Mouse to Aim at Your Target", WINDOW_HEIGHT/12, 1.5, YELLOW, 60),
             ("Press the Spacebar to Begin", WINDOW_HEIGHT/3, 0, BLUE, 60)]
     spawn_tutorial(screen, text1)
-    screen.fill('black')
+    screen.blit(image, image.get_rect())
     spawn_tutorial(screen, text2)
