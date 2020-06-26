@@ -1,7 +1,8 @@
 
 import pygame
+import time
 
-from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND, 
+from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, BLUE, YELLOW, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND, 
 QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND)
 
 # create surface
@@ -35,7 +36,6 @@ def initialize_game_over_screen():
 
     # quit button
     surfaces.append(new_screen_helper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, BLACK))
-
     
     return surfaces
 
@@ -56,7 +56,6 @@ def draw_screens(screen, surfaces, three_elems):
     if not three_elems: #when only two surfaces are being attached
         resize_heights.pop(0)
     for surface, height in zip(surfaces, resize_heights): #attach surfaces onto screen
-
         screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
                           (WINDOW_HEIGHT - surface.get_height()) / height))
     pygame.display.update()  # update screen
@@ -107,7 +106,6 @@ def screen_options(screen, text):
                         if not most_recent_is_continue: # user selects Play Again/Resume after selecting Quit
                             screen = update_screen_options(screen, text, GREEN, BLACK)
                         most_recent_is_continue = True
-
                         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Continue button
                             return False
 
@@ -116,6 +114,48 @@ def screen_options(screen, text):
                         if most_recent_is_continue: # user selects Quit after selecting Play Again/Resume
                             screen = update_screen_options(screen, text, BLACK, RED)
                         most_recent_is_continue = False
-
                         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Quit button
                             return True
+
+def image_fill_background(image_name):
+    image = pygame.image.load(image_name)
+    image = pygame.transform.scale(image, (WINDOW_WIDTH, WINDOW_HEIGHT))
+    return image
+
+def wait_for_user(sleep_time):
+    t0 = time.time()
+    while True:
+        if (time.time() - t0 > sleep_time): return
+        for event in pygame.event.get():
+            if (event.type == pygame.KEYDOWN and (event.key == pygame.K_SPACE)):
+                return
+
+def spawn_tutorial(screen, text):
+    for txt, height, sleep_time, color, text_size in text:
+        surface = new_screen_helper(WINDOW_WIDTH, WINDOW_HEIGHT, text_size, txt, color, None)
+        screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
+                          height))
+        if sleep_time > 0:
+            pygame.display.update()
+            wait_for_user(sleep_time)
+    pygame.display.update()
+    wait_for_user(float('inf'))
+
+def tutorial(screen):
+    image = image_fill_background("space_images/space14.png")
+    screen.blit(image, image.get_rect())
+    text1 = [("THE FLOATING DUTCHMAN", -WINDOW_HEIGHT/3, 2.5, YELLOW, 100),
+            ("You Are the Captain of the Flying Dutchman", -WINDOW_HEIGHT/5, 3, YELLOW, 60),
+            ("You have ended up in space and your crew", -WINDOW_HEIGHT/(35/2), 0, YELLOW, 60),
+            ("has been captured by the Ghost Bustas", 3, 3, YELLOW, 60),
+            ("It is up to you to rescue your crew", WINDOW_HEIGHT/7, 0, YELLOW, 60),
+            ("and defeat the Ghost Bustas", WINDOW_HEIGHT/5, 1.5, YELLOW, 60),
+            ("Press the Spacebar to Continue", WINDOW_HEIGHT/3, 0, BLUE, 60)]
+    text2 = [("Read Carefully For the Sake of Your Crew", -WINDOW_HEIGHT/4, 2.5, YELLOW, 80),
+            ("Use the Arrow Pad or WASD Keys to Move", -WINDOW_HEIGHT/12, 0, YELLOW, 60),
+            ("Use the Spacebar to Fire", 0, 0, YELLOW, 60),
+            ("Use the Mouse to Aim at Your Target", WINDOW_HEIGHT/12, 1.5, YELLOW, 60),
+            ("Press the Spacebar to Begin", WINDOW_HEIGHT/3, 0, BLUE, 60)]
+    spawn_tutorial(screen, text1)
+    screen.blit(image, image.get_rect())
+    spawn_tutorial(screen, text2)

@@ -15,6 +15,7 @@ class GameManager(Manager):
         self._pause_screen = ui.initialize_pause_screen()
         self._done = False
         self._level = 0
+        self._background = ui.image_fill_background("space_images/space8.jpg")
 
         # can go ahead and construct managers
         # since their spawn function controls their state
@@ -23,13 +24,15 @@ class GameManager(Manager):
 
     def run(self):
         self.spawn()
+        ui.tutorial(self._screen) # comment out this line to remove the tutorial
         
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
             for e in event.get():
                 if e.type == QUIT:  # user closes application
                     # will eventually be moved
-                    self._done = True# game over
+                    self._done = True # game over
+                    
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
                     self._done = ui.screen_options(ui.draw_pause_screen(self._screen, self._pause_screen), "RESUME") # pause
@@ -37,7 +40,7 @@ class GameManager(Manager):
             self.update()
             self.draw()
 
-            if len(self._room._enemy_manager._enemies) is 0:
+            if len(self._room._enemy_manager._enemies) == 0: # enemies gone
                 self._done = ui.screen_options(ui.draw_game_over_screen(self._screen, self._game_over_screen),"PLAY AGAIN")  # game over
                 if self._done is False:
                     self.spawn()
@@ -54,7 +57,8 @@ class GameManager(Manager):
         self._room.update(self._player_manager.player)
 
     def draw(self):
-        self._screen.fill(BLACK)
+        #self._screen.fill(BLACK)
+        self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         self._room.draw(self._screen)
         display.flip()
