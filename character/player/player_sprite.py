@@ -3,6 +3,7 @@ import math
 from pygame import image, Rect, Surface, key, Vector2, mouse, transform, sprite
 import pygame
 
+from game_settings import BLACK
 from character.character_sprite import CharacterSprite
 from character.player.player_data import PlayerData
 from objects.bullets.bullet_data import BulletData
@@ -23,7 +24,8 @@ class PlayerSprite(CharacterSprite):
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 549, 549))
-        self._original_image = Surface(temp_rect.size).convert()
+        self._original_image = Surface(temp_rect.size)
+        self._original_image.set_colorkey(BLACK)
 
         # sets image to a portion of spritesheet (surface)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
