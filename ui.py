@@ -1,7 +1,8 @@
 
 import pygame
+import time
 
-from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND, 
+from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, WHITE, RED, GREEN, BLUE, YELLOW, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND, 
 QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND)
 
 # create surface
@@ -115,18 +116,39 @@ def screen_options(screen, text):
                         most_recent_is_continue = False
                         if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1): # player clicked on Quit button
                             return True
-import time
+
+def wait_for_user(sleep_time):
+    t0 = time.time()
+    while True:
+        if (time.time() - t0 > sleep_time): return
+        for event in pygame.event.get():
+            if (event.type == pygame.KEYDOWN and (event.key == pygame.K_SPACE)):
+                return
+
+def spawn_tutorial(screen, text):
+    for txt, height, sleep_time, color, text_size in text:
+        surface = new_screen_helper(WINDOW_WIDTH, WINDOW_HEIGHT, text_size, txt, color, None)
+        screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
+                          height))
+        if sleep_time > 0:
+            pygame.display.update()
+            wait_for_user(sleep_time)
+    pygame.display.update()
+    wait_for_user(float('inf'))
 
 def tutorial(screen):
-    text = ["You are the Captain of the Flying Dutchman"]
-    arr =  ["you have ended up in space",
-            "and your crew has been captured by the Ghost Bustas.",
-            "It is up to you to rescue your crew",
-            "and defeat the Ghost Bustas"
-            ]
-    for txt in text:
-        surface = new_screen_helper(WINDOW_WIDTH / (4/3), WINDOW_HEIGHT, 60, txt, WHITE, 'red')
-        screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
-                          (WINDOW_HEIGHT - surface.get_height()) / 4))
-    pygame.display.update()
-    time.sleep(4)
+    text1 = [("THE FLOATING DUTCHMAN", -WINDOW_HEIGHT/3, 2.5, YELLOW, 100),
+            ("You Are the Captain of the Flying Dutchman", -WINDOW_HEIGHT/5, 3, YELLOW, 60),
+            ("You have ended up in space and your crew", -WINDOW_HEIGHT/(35/2), 0, YELLOW, 60),
+            ("has been captured by the Ghost Bustas", 3, 3, YELLOW, 60),
+            ("It is up to you to rescue your crew", WINDOW_HEIGHT/7, 0, YELLOW, 60),
+            ("and defeat the Ghost Bustas", WINDOW_HEIGHT/5, 1.5, YELLOW, 60),
+            ("Press the Spacebar to Continue", WINDOW_HEIGHT/3, 0, BLUE, 60)]
+    text2 = [("Read Carefully For the Sake of Your Crew", -WINDOW_HEIGHT/4, 2.5, YELLOW, 80),
+            ("Use the Arrow Pad or WASD Keys to Move", -WINDOW_HEIGHT/12, 0, YELLOW, 60),
+            ("Use the Spacebar to Fire", 0, 0, YELLOW, 60),
+            ("Use the Mouse to Aim at Your Target", WINDOW_HEIGHT/12, 1.5, YELLOW, 60),
+            ("Press the Spacebar to Begin", WINDOW_HEIGHT/3, 0, BLUE, 60)]
+    spawn_tutorial(screen, text1)
+    screen.fill('black')
+    spawn_tutorial(screen, text2)

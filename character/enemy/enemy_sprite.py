@@ -32,7 +32,6 @@ class EnemySprite(CharacterSprite):
         for enemy in enemies:
             if pygame.sprite.collide_circle(self, enemy) and enemy != self:
                 distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.x))
-                print(distance)
                 if (distance < 400):
                     direction_vector = Vector2(
                         (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
@@ -68,7 +67,6 @@ class EnemySprite(CharacterSprite):
                 if pygame.sprite.collide_circle(self, player):
                     self._data._stopMoving = True
                     distance = math.hypot((player.rect.x-self.rect.x),(player.rect.y - self.rect.y))
-                    print(distance)
                     if(distance < 490):
                         direction_vector = Vector2(
                             (self.rect.x - player.rect.x), (self.rect.y -player.rect.y))
