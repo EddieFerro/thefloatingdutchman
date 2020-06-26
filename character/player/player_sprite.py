@@ -19,10 +19,10 @@ class PlayerSprite(CharacterSprite):
 
 
     def _set_original_image(self):
-        sprite_sheet = image.load("topdown_sample.png").convert()
+        sprite_sheet = image.load("pirate_ship_00000.png").convert()
 
         # exact dimension of player sprite
-        temp_rect = Rect((0, 0, 313, 207))
+        temp_rect = Rect((0, 0, 549, 549))
         self._original_image = Surface(temp_rect.size).convert()
 
         # sets image to a portion of spritesheet (surface)
@@ -30,7 +30,8 @@ class PlayerSprite(CharacterSprite):
 
         # makes player appropriate size
         self._original_image = transform.scale(
-            self._original_image, (int(313/4), int(207/4)))
+            self._original_image, (int(549/5), int(549/5)))
+        self._original_image = transform.rotate(self._original_image, 90)
 
     # simple player movement
 
