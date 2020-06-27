@@ -28,7 +28,7 @@ class EnemySprite(CharacterSprite):
         self._original_image.fill(GREEN)
 
     # Enemy AI might go in here
-    def update(self, player: PlayerSprite, enemies: Group):
+    def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         # Check for nearby enemies, only move in certain case
         for enemy in enemies:
             if pygame.sprite.collide_circle(self, enemy) and enemy != self:
@@ -88,6 +88,11 @@ class EnemySprite(CharacterSprite):
                 self.rect.x += target_direction.x
                 self.rect.y += target_direction.y
 
+            screen_rect = screen.get_rect()
+
+            self.rect.clamp_ip(screen_rect)
+
+            self._data.pos = Vector2(self.rect.center)
 
         except ValueError:
             return

@@ -42,9 +42,9 @@ class EnemyManager(Manager):
     def get_enemy_count(self) -> int:
         return len(self._enemies.sprites())
 
-    def update(self, player: PlayerSprite):
+    def update(self, player: PlayerSprite, screen: Surface):
         # enemies need reference to other enemies and the player
-        self._enemies.update(player, self._enemies)
+        self._enemies.update(player, self._enemies, screen)
 
     def draw(self, screen: Surface):
         self._enemies.draw(screen)

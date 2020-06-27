@@ -14,9 +14,9 @@ class Room(Manager):
         self._level = level
         self._enemy_manager.spawn(level)
 
-    def update(self, player: PlayerSprite):
+    def update(self, player: PlayerSprite, screen: Surface):
         if self._enemy_manager.get_enemy_count():
-            self._enemy_manager.update(player)
+            self._enemy_manager.update(player, screen)
         else:
             keys = key.get_pressed()
 
