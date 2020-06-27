@@ -54,7 +54,7 @@ class GameManager(Manager):
 
     def update(self):
         self._player_manager.update(self._screen)
-        self._room.update(self._player_manager.player)
+        self._room.update(self._player_manager.player, self._screen)
 
     def draw(self):
         #self._screen.fill(BLACK)
