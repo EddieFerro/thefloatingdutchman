@@ -3,7 +3,7 @@ from pygame import display, event, time, QUIT, KEYDOWN, K_TAB
 
 from character.player.player_manager import PlayerManager
 from manager import Manager
-from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, FPS
+from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, FPS, WHITE
 from level.room.room import Room
 import ui
 
