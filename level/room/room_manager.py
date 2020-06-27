@@ -1,4 +1,5 @@
-# import random
+from typing import List
+
 import networkx as nx
 
 from manager import Manager
@@ -42,7 +43,7 @@ class RoomManager(Manager):
         for i, room in enumerate(self._rooms):
             room.spawn(level, i)
 
-    def get_available_rooms(self):
+    def get_available_rooms(self) -> List[int]:
 
         # room must be cleared to move on
         if not self._rooms[self._current_room_id].cleared():
@@ -52,7 +53,11 @@ class RoomManager(Manager):
         edges = self._room_graph.edges(self._current_room_id)
 
         # gets list of rooms player can move to next
-        return [self._rooms[v2] for v1, v2 in edges]
+        return [v2 for v1, v2 in edges]
+
+    def set_current_room(self, _id: int):
+        # TODO(kayton): Add checks to ensure id is valid
+        self._current_room_id = _id
 
     def update(self, player: PlayerSprite):
         self._rooms[self._current_room_id].update(player)
@@ -61,21 +66,13 @@ class RoomManager(Manager):
         self._rooms[self._current_room_id].draw(screen)
 
     @property
-    def rooms(self):
+    def current_room_id(self):
+        return self._current_room_id
+
+    @property
+    def rooms(self) -> List[Room]:
         return self._rooms
 
     @property
-    def rooms_per_row(self):
+    def rooms_per_row(self) -> List[int]:
         return self._rooms_per_row
-    # rooms_left = self._number_of_rooms - 1
-    # prev_row = [self._starting_id]
-
-    # rooms_in_row = random.randint(2, 4)
-
-    # for i in range(prev_row[-1], prev_row[-1]+rooms_in_row):
-
-    # while rooms_left != 0:
-
-    # self._rooms.add_edge
-
-    # self._rooms.

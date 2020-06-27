@@ -41,7 +41,11 @@ class GameManager(Manager):
                     self._done = ui.screen_options(ui.draw_pause_screen(
                         self._screen, self._pause_screen), "RESUME")  # pause
                 elif e.type == KEYDOWN and e.key == K_n:
-                    self._map.render(self._screen, self._room_manager.rooms)
+                    self._map.render(self._screen,
+                                     self._room_manager.rooms,
+                                     self._room_manager.get_available_rooms(),
+                                     self._room_manager.current_room_id,
+                                     self._room_manager.set_current_room)
 
             self.update()
             self.draw()
