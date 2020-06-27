@@ -1,6 +1,7 @@
 from typing import List
 
 import networkx as nx
+from pygame import Surface
 
 from manager import Manager
 from level.room.room import Room
@@ -59,8 +60,8 @@ class RoomManager(Manager):
         # TODO(kayton): Add checks to ensure id is valid
         self._current_room_id = _id
 
-    def update(self, player: PlayerSprite):
-        self._rooms[self._current_room_id].update(player)
+    def update(self, player: PlayerSprite, screen: Surface):
+        self._rooms[self._current_room_id].update(player, screen)
 
     def draw(self, screen):
         self._rooms[self._current_room_id].draw(screen)

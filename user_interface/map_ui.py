@@ -1,6 +1,6 @@
 from typing import List
 
-from pygame import sprite, Surface, draw, mouse, key, K_n, event, KEYDOWN, MOUSEBUTTONDOWN, display
+from pygame import sprite, Surface, draw, mouse, K_n, event, KEYDOWN, MOUSEBUTTONDOWN, display
 from pygame.math import Vector2
 
 from level.room.room import Room
@@ -34,9 +34,6 @@ class MapUI:
         pass
 
     def spawn(self, room_manager):
-
-        num_rooms = len(room_manager.rooms)
-        print(num_rooms)
         self._dots = sprite.Group()
         num_rows = len(room_manager.rooms_per_row)
 
