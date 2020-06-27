@@ -11,6 +11,7 @@ from manager import Manager
 
 class EnemyManager(Manager):
     def __init__(self):
+        super().__init__()
         self._enemies = None
 
     def spawn(self, level: int):
