@@ -3,6 +3,7 @@ import math
 from pygame import image, Rect, Surface, key, Vector2, mouse, transform, sprite
 import pygame
 
+from game_settings import BLACK
 from character.character_sprite import CharacterSprite
 from character.player.player_data import PlayerData
 from objects.bullets.bullet_data import BulletData
