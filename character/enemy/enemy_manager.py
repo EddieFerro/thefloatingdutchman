@@ -46,8 +46,11 @@ class EnemyManager(Manager):
     def update(self, player: PlayerSprite, screen: Surface):
         # enemies need reference to other enemies and the player
         self._enemies.update(player, self._enemies, screen)
-
+        hit = sprite.groupcollide(self._enemies, player.bullets, False, True)
+        for enemy in hit:
+            enemy.take_damage(player._damage)
+    
     def draw(self, screen: Surface):
         self._enemies.draw(screen)
         for enemy in self._enemies:
-            enemy._bullets.draw(screen)
+            enemy.bullets.draw(screen)
