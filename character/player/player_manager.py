@@ -1,4 +1,5 @@
 from pygame import Vector2
+from pygame import sprite, time
 
 from character.player.player_data import PlayerData
 from character.player.player_sprite import PlayerSprite
@@ -18,10 +19,17 @@ class PlayerManager(Manager):
 
     def draw(self, screen):
         screen.blit(self._player.image, self._player.rect)
-        self._player._bullets.draw(screen)
+        self._player.bullets.draw(screen)
 
-    def update(self, screen):
+    def update(self, screen, enemies: sprite.Group()):
         self._player.update(screen)
+        for enemy in enemies:
+            hits = sprite.spritecollide(self._player, enemy.bullets, True)
+            for bullet in hits:
+                self._player.take_damage(enemy._damage)
+                print(self._player._data.health)
+
+
 
     @property
     def player(self):
