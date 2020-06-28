@@ -20,12 +20,10 @@ class PlayerSprite(CharacterSprite):
 
 
     def _set_original_image(self):
-        #sprite_sheet = image.load("pirate_ship_00000.png").convert()
         sprite_sheet = image.load("pirate_ship_00000.png").convert_alpha()
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 549, 549))
-        #self._original_image = Surface(temp_rect.size).convert()
         self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
 
         # sets image to a portion of spritesheet (surface)

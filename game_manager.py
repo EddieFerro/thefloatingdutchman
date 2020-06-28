@@ -69,7 +69,6 @@ class GameManager(Manager):
         self._room_manager.update(self._player_manager.player, self._screen)
 
     def draw(self):
-        # self._screen.fill(BLACK)
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         self._room_manager.draw(self._screen)
