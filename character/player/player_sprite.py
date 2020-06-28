@@ -14,9 +14,9 @@ class PlayerSprite(CharacterSprite):
     def __init__(self, player_data: PlayerData):
         super().__init__(player_data)
         self.radius = 200
-        self._angle = 0
-        self._prev_shot = 0
-        self._bullets = sprite.Group()
+        self._damage = 10
+        self._dead = False
+
 
 
     def _set_original_image(self):
@@ -37,9 +37,9 @@ class PlayerSprite(CharacterSprite):
     # simple player movement
 
     def update(self, screen):
-        # TODO: Do we need this?
-        # Not really i was testing some fixes for event issues and it was just left in 
-        # pygame.event.pump()
+        if(self._data.health <= 0):
+            self._dead = True
+            self.kill
         self._calc_movement(screen)
         self._bullets.update()
 
@@ -61,7 +61,7 @@ class PlayerSprite(CharacterSprite):
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
                 direction = Vector2(1,0).rotate(-self._angle)
-                BulletSprite(BulletData(10, direction, 0, self._data.pos, 25)).add(self._bullets)
+                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(self._bullets)
 
 
         if x != 0 and y != 0:
@@ -90,3 +90,7 @@ class PlayerSprite(CharacterSprite):
         self.image = transform.rotate(self._original_image, int(self._angle))
         self.rect = self.image.get_rect(center=self._data.pos)
         self.rect.center = self._data.pos
+
+    @property
+    def dead(self) ->bool:
+        return self._dead

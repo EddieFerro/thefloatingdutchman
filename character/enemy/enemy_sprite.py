@@ -16,12 +16,8 @@ from game_settings import GREEN
 class EnemySprite(CharacterSprite):
     def __init__(self, enemy_data: EnemyData):
         super().__init__(enemy_data)
-        self._prev_shot = 0
-        self._bullets = sprite.Group()
-        self._angle = 0
-
-
         self.radius = 50
+        self._damage = 10
 
     def _set_original_image(self):
         self._original_image = Surface((20, 50))
@@ -30,6 +26,8 @@ class EnemySprite(CharacterSprite):
     # Enemy AI might go in here
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         # Check for nearby enemies, only move in certain case
+        if(self._data.health <= 0):
+            self.kill()
         for enemy in enemies:
             if pygame.sprite.collide_circle(self, enemy) and enemy != self:
                 distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.x))
@@ -68,9 +66,8 @@ class EnemySprite(CharacterSprite):
                     self._prev_shot = t
                     self._angle = math.atan2(player.rect.y - self.rect.y, player.rect.x - self.rect.x)
                     self._angle = math.degrees(self._angle)
-                    direction = Vector2(
-                        1, 0).rotate(self._angle)
-                    BulletSprite(BulletData(10, direction, 0, Vector2(self.rect.x, self.rect.y), 25)).add(self._bullets)
+                    direction = Vector2(1, 0).rotate(self._angle)
+                    BulletSprite(BulletData(direction, 0, Vector2(self.rect.x, self.rect.y), 25)).add(self._bullets)
 
             # Stop moving towards player at a certain distance
                 if pygame.sprite.collide_circle(self, player):
@@ -97,3 +94,4 @@ class EnemySprite(CharacterSprite):
 
         except ValueError:
             return
+        
