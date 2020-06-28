@@ -1,4 +1,6 @@
 import pygame
+
+from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
 from pygame import image, Rect, Surface, key, Vector2, transform
 from objects.object_sprite import ObjectSprite
 from objects.bullets.bullet_data import BulletData
@@ -8,12 +10,11 @@ class BulletSprite(ObjectSprite):
         super().__init__(bullet_data)
     
     def _set_original_image(self):
-        sprite_sheet = image.load("Cannonball.png").convert()
+        sprite_sheet = image.load("Cannonball.png").convert_alpha()
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 18, 18))
-        self._original_image = Surface(temp_rect.size).convert()
-
+        self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
         # sets image to a portion of spritesheet (surface)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
 
@@ -23,3 +24,6 @@ class BulletSprite(ObjectSprite):
     def update(self):
         self._data.pos += (self._data.direction * self._data.vel)
         self.rect.center = self._data.pos
+
+        if(self.rect.right > WINDOW_WIDTH or self.rect.bottom > WINDOW_HEIGHT or self.rect.left < 0 or self.rect.top < 0):
+            self.kill()
