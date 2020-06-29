@@ -176,7 +176,7 @@ def spawn_tutorial(screen, text):
 
 
 def tutorial(screen):
-    image = image_fill_background("space_images/space14.png")
+    image = image_fill_background("space_images/space6.jpg")
     screen.blit(image, image.get_rect())
     text1 = [("THE FLOATING DUTCHMAN", -WINDOW_HEIGHT/3, 2.5, YELLOW, 100),
              ("You Are the Captain of the Flying Dutchman", -
