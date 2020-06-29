@@ -51,7 +51,7 @@ class EnemySprite(CharacterSprite):
         # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
         if self._data._stopMoving == False:
             target_direction = Vector2(
-                - self.rect.x + player.rect.x, - self.rect.y + player.rect.y)
+                - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y +random.randrange(0, 30))
             if self._data._type2:
                 target_direction.scale_to_length(self._data.vel * 0.9)
 
