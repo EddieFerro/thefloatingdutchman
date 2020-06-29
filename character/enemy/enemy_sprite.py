@@ -30,7 +30,7 @@ class EnemySprite(CharacterSprite):
             self.kill()
         for enemy in enemies:
             if pygame.sprite.collide_circle(self, enemy) and enemy != self:
-                distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.x))
+                distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
                 # print(distance)
                 if (distance < 400):
                     target_direction = Vector2(
