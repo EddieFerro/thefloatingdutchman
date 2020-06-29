@@ -7,6 +7,6 @@ class EnemyData(CharacterData):
 
     def __init__(self, health, attack_speed, spawn, vel):
         super().__init__(health, attack_speed, spawn, vel)
-        self._type2 = random.getrandbits(1)
+        self._type2 = random.choices([True,False], weights=[0.4, 0.6], k = 1)[0]
         self._stopMoving = False
 
