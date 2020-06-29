@@ -27,7 +27,6 @@ class PlayerManager(Manager):
             hits = sprite.spritecollide(self._player, enemy.bullets, True)
             for bullet in hits:
                 self._player.take_damage(enemy._damage)
-                print(self._player._data.health)
 
 
 
