@@ -26,6 +26,9 @@ class Room(Manager):
             if keys[K_m]:
                 self._enemy_manager.spawn(self._level)
 
+    def get_enemies(self):
+        return self._enemy_manager._enemies
+
     def cleared(self) -> bool:
         return not self._enemy_manager.get_enemy_count()
 

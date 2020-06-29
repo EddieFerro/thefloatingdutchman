@@ -49,7 +49,7 @@ class EnemyManager(Manager):
         hit = sprite.groupcollide(self._enemies, player.bullets, False, True)
         for enemy in hit:
             enemy.take_damage(player._damage)
-    
+
     def draw(self, screen: Surface):
         self._enemies.draw(screen)
         for enemy in self._enemies:
