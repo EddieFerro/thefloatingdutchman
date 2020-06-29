@@ -1,5 +1,4 @@
-from pygame import Vector2
-from pygame import sprite, time
+from pygame import Vector2, sprite
 
 from character.player.player_data import PlayerData
 from character.player.player_sprite import PlayerSprite
@@ -28,8 +27,6 @@ class PlayerManager(Manager):
             for bullet in hits:
                 self._player.take_damage(enemy._damage)
                 print(self._player._data.health)
-
-
 
     @property
     def player(self):
