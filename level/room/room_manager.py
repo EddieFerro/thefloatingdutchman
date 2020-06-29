@@ -6,6 +6,7 @@ from pygame import Surface
 from manager import Manager
 from level.room.room import Room
 from character.player.player_sprite import PlayerSprite
+from character.enemy.enemy_sprite import EnemySprite
 
 
 class RoomManager(Manager):
@@ -65,6 +66,9 @@ class RoomManager(Manager):
 
     def draw(self, screen):
         self._rooms[self._current_room_id].draw(screen)
+
+    def get_current_enemies(self) -> List[EnemySprite]:
+        return self.rooms[self.current_room_id].get_enemies()
 
     @property
     def current_room_id(self):
