@@ -84,9 +84,8 @@ class EnemySprite(CharacterSprite):
                 if (t - self._prev_shot) > self._data.attack_speed:
                     self._prev_shot = t
                     temp_angle = math.atan2(player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-                    temp_angle = math.degrees(self._angle)
+                    temp_angle = math.degrees(temp_angle)
                     direction = Vector2(1, 0).rotate(temp_angle)
-                    #################################################
                     BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(self._bullets)
 
             # Stop moving towards player at a certain distance
