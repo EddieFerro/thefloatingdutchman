@@ -59,6 +59,8 @@ class GameManager(Manager):
                                  self._room_manager.get_available_rooms(),
                                  self._room_manager.current_room_id,
                                  self._room_manager.set_current_room)
+                time.wait(200)
+                
 
     # resets game
 
