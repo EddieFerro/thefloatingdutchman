@@ -1,7 +1,7 @@
 import math
 import random
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, Rect, image
+from pygame import Vector2, sprite, Surface, transform, Rect, image, mask
 
 import pygame
 from objects.bullets.bullet_data import BulletData
@@ -19,6 +19,7 @@ class EnemySprite(CharacterSprite):
         super().__init__(enemy_data)
         self.radius = 80
         self._damage = 10
+        self.mask = mask.from_surface(self.image)
 
     def _set_original_image(self):
         # self._original_image = Surface((20, 50))

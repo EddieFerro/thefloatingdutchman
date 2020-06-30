@@ -49,7 +49,7 @@ class PlayerSprite(CharacterSprite):
     def _calc_movement(self, screen):
         x = 0
         y = 0
-
+        buttons = mouse.get_pressed()
         keys = key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             x = -self._data.vel
@@ -59,7 +59,7 @@ class PlayerSprite(CharacterSprite):
             y = -self._data.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self._data.vel
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] or buttons[0] == True:
             t = pygame.time.get_ticks()
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
