@@ -8,8 +8,8 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
 # Game Settings
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 1024
+WINDOW_WIDTH = 1920
+WINDOW_HEIGHT = 1080
 FPS = 60
 
 # Menu Button Bounds
