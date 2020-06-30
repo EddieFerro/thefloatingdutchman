@@ -34,7 +34,7 @@ class EnemyManager(Manager):
                 EnemySprite(
                     EnemyData(
                         random.randint(30, 50) + (level*5),
-                        random.randint(5, 15) + random.randint(0, level*2),
+                        1500, # random.randint(5, 15) + random.randint(0, level*2), 
                         Vector2(rand_pos_x, rand_pos_y),
                         5
                     )
