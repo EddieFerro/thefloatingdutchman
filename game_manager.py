@@ -1,4 +1,4 @@
-from pygame import display, event, time, K_n, QUIT, KEYDOWN, K_TAB
+from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
 
 from character.player.player_manager import PlayerManager
 from manager import Manager
@@ -40,12 +40,14 @@ class GameManager(Manager):
                     # will eventually be moved
                     self._done = ui.screen_options(ui.draw_pause_screen(
                         self._screen, self._pause_screen), "RESUME")  # pause
-                elif e.type == KEYDOWN and e.key == K_n:
-                    self._map.render(self._screen,
-                                     self._room_manager.rooms,
-                                     self._room_manager.get_available_rooms(),
-                                     self._room_manager.current_room_id,
-                                     self._room_manager.set_current_room)
+                elif e.type == KEYDOWN and e.key == K_m:
+                    self._done = self._map.render(
+                        self._screen,
+                        self._room_manager.rooms,
+                        self._room_manager.get_available_rooms(),
+                        self._room_manager.current_room_id,
+                        self._room_manager.set_current_room
+                    )
 
             self.update()
             self.draw()
