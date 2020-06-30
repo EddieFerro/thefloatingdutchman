@@ -1,9 +1,10 @@
 
 import pygame
 import time
-
+from character.character_data import CharacterData
 from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND,
                            QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND)
+
 
 # create surface
 
@@ -160,6 +161,14 @@ def wait_for_user(sleep_time):
         for event in pygame.event.get():
             if (event.type == pygame.KEYDOWN and (event.key == pygame.K_SPACE)):
                 return
+
+def health_bar(screen, playermanager):
+    color1 = 255, 255, 255
+    color2 = 0, 255, 0
+    current_hp = playermanager.player._data.health
+    temp1 = pygame.draw.rect(screen, color1, (WINDOW_WIDTH/2 - 150, 97.5, 300, 50))
+    temp2 = pygame.draw.rect(screen, color2, (WINDOW_WIDTH/2 - 140, 100, 280 * (current_hp/100), 45))
+
 
 
 def spawn_tutorial(screen, text):
