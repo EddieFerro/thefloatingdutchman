@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 
 from pygame.sprite import Sprite
-from pygame import sprite
+from pygame import sprite, surfarray
+import numpy
+import time
 
 from character.character_data import CharacterData
 
@@ -30,3 +32,8 @@ class CharacterSprite(Sprite, ABC):
 
     def take_damage(self, damage: int):
         self._data.health = self._data.health - damage
+        arr = surfarray.pixels3d(self.image)
+        arr[:,:,0] = 255
+        arr[:,:,1] = 0
+        arr[:,:,2] = 0
+        time.sleep(.020)
