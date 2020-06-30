@@ -195,15 +195,18 @@ def tutorial(screen):
               WINDOW_HEIGHT/7, 0, YELLOW, 60),
              ("and defeat the Ghost Bustas", WINDOW_HEIGHT/5, 1.5, YELLOW, 60),
              ("Press the Spacebar to Continue", WINDOW_HEIGHT/3, 0, BLUE, 60)]
-    text2 = [("Read Carefully For the Sake of Your Crew", -WINDOW_HEIGHT/4, 2.5, YELLOW, 80),
+    text2 = [("Read Carefully For the Sake of Your Crew", -WINDOW_HEIGHT/4, 2.5, YELLOW, 70),
              ("Use the Arrow Pad or WASD Keys to Move",
               -WINDOW_HEIGHT/12, 0, YELLOW, 60),
-             ("Use the Spacebar to Fire", 0, 0, YELLOW, 60),
+             ("Use the Spacebar or the Left Mouse Button to Fire", 0, 0, YELLOW, 60),
              ("Use the Mouse to Aim at Your Target",
-              WINDOW_HEIGHT/12, 1.5, YELLOW, 60),
+              WINDOW_HEIGHT/12, 0, YELLOW, 60),
              ("Press M to Open the Map",
               WINDOW_HEIGHT/6, 0, YELLOW, 60),
-             ("Press the Spacebar to Begin", WINDOW_HEIGHT/3, 0, BLUE, 60)]
+             ("Press Tab to Pause",
+              WINDOW_HEIGHT / 4, 0, YELLOW, 60),
+             ("Press the Spacebar to Begin",
+               WINDOW_HEIGHT/3, 0, BLUE, 60)]
     spawn_tutorial(screen, text1)
     screen.blit(image, image.get_rect())
     spawn_tutorial(screen, text2)
