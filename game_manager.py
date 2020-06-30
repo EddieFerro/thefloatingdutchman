@@ -56,14 +56,21 @@ class GameManager(Manager):
                     self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
                 if self._done is False:
                     self.spawn()
-            if self._room_manager._rooms[self._room_manager._current_room_id].cleared() and not self._player_manager.player.dead:
-                self._done = self._map.render(
-                    self._screen,
-                    self._room_manager.rooms,
-                    self._room_manager.get_available_rooms(),
-                    self._room_manager.current_room_id,
-                    self._room_manager.set_current_room
-                )
+            if self._room_manager._rooms[self._room_manager._current_room_id].cleared():
+                self.update()
+                if self._player_manager.player.dead:  # enemies gone
+                    self._done = ui.screen_options(ui.draw_game_over_screen(
+                        self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
+                    if self._done is False:
+                        self.spawn()
+                else:
+                    self._done = self._map.render(
+                        self._screen,
+                        self._room_manager.rooms,
+                        self._room_manager.get_available_rooms(),
+                        self._room_manager.current_room_id,
+                        self._room_manager.set_current_room
+                    )
                 time.wait(200)
 
     # resets game
