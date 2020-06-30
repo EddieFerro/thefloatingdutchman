@@ -6,7 +6,6 @@ from pygame.math import Vector2
 from level.room.room import Room
 from game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
 
-
 class RoomMarkerUI(sprite.Sprite):
     def __init__(self, x: int, y: int, radius: int, id: int):
         sprite.Sprite.__init__(self)

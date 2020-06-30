@@ -7,7 +7,6 @@ from level.room.room_manager import RoomManager
 from user_interface.map_ui import MapUI
 import ui
 
-
 class GameManager(Manager):
     def __init__(self):
         super().__init__()
@@ -54,6 +53,15 @@ class GameManager(Manager):
                     self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
                 if self._done is False:
                     self.spawn()
+            if self._room_manager._rooms[self._room_manager._current_room_id].cleared() and not self._player_manager.player.dead:
+                self._map.render(self._screen,
+                                 self._room_manager.rooms,
+                                 self._room_manager.get_available_rooms(),
+                                 self._room_manager.current_room_id,
+                                 self._room_manager.set_current_room)
+                self.update()
+                self.draw()
+                time.wait(500)
 
     # resets game
 

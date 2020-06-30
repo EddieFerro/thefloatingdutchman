@@ -18,6 +18,7 @@ class EnemyManager(Manager):
         self._enemies = sprite.Group()
         self._add_enemies(level)
 
+
     def _add_enemies(self, level: int):
 
         for i in range(random.randint(2, 4) + level):
