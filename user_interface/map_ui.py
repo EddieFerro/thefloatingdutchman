@@ -48,6 +48,7 @@ class MapUI:
         elif room.id == current_room_id:
             sprite.image.fill(RED)
         elif room.id in moveable_rooms:
+            print("WE ARE GOOD")
             if sprite.rect.collidepoint(mouse.get_pos()):
                 sprite.image.fill(RED)
             else:
@@ -103,14 +104,14 @@ class MapUI:
             display.flip()
 
             for e in event.get():
-                if e.type == KEYDOWN and e.key == K_m:
+                if e.type == KEYDOWN and e.key == K_m and not rooms[current_room_id].cleared():
                     return False
                 elif e.type == MOUSEBUTTONDOWN:
                     x, y = e.pos
-                    for i, dot in enumerate(self._dot_list):
+                    for _id in moveable_rooms:
 
-                        if dot.rect.collidepoint(x, y):
-                            set_current_room(i)
+                        if self._dot_list[_id].rect.collidepoint(x, y):
+                            set_current_room(_id)
                             return False
                 elif e.type == QUIT:
                     return True
