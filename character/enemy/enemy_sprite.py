@@ -39,7 +39,7 @@ class EnemySprite(CharacterSprite):
                 if (distance < 400):
                     target_direction = Vector2(
                         (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
-                    target_direction.scale_to_length(self._data.vel * 1.01)
+                    target_direction.scale_to_length(self._data.vel * 1.001)
                     self.rect.x += target_direction.x
                     self.rect.y += target_direction.y
 
@@ -56,7 +56,7 @@ class EnemySprite(CharacterSprite):
                 target_direction.scale_to_length(self._data.vel * 0.9)
 
             else:
-                target_direction.scale_to_length(self._data.vel * 0.8)
+                target_direction.scale_to_length(self._data.vel * 0.7)
 
         try:
             # Update bullets
@@ -64,6 +64,7 @@ class EnemySprite(CharacterSprite):
 
             # Delete enemy when it comes into contact with player
             if self.rect.colliderect(player.rect):
+                player.take_damage(10)
                 enemies.remove(self)
 
             # Type 2 enemy specification
@@ -107,4 +108,3 @@ class EnemySprite(CharacterSprite):
 
         except ValueError:
             return
-        
