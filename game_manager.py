@@ -18,7 +18,6 @@ class GameManager(Manager):
         self._done = False
         self._level = 0
         self._background = ui.image_fill_background("space_images/space8.jpg")
-
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
@@ -70,10 +69,13 @@ class GameManager(Manager):
         self._player_manager.update(
             self._screen, self._room_manager.get_current_enemies())
         self._room_manager.update(self._player_manager.player, self._screen)
+        ui.health_bar(self._screen, self._player_manager)
 
     def draw(self):
         # self._screen.fill(BLACK)
         self._screen.blit(self._background, self._background.get_rect())
+        self._screen.blit(self._background, self._background.get_rect())
+        ui.health_bar(self._screen, self._player_manager)
         self._player_manager.draw(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()
