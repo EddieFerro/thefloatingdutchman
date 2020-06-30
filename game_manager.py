@@ -61,7 +61,6 @@ class GameManager(Manager):
                                  self._room_manager.set_current_room)
                 self.update()
                 self.draw()
-                time.wait(500)
 
     # resets game
 
