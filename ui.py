@@ -163,11 +163,9 @@ def wait_for_user(sleep_time):
                 return
 
 def health_bar(screen, playermanager):
-    color1 = 255, 255, 255
-    color2 = 0, 255, 0
     current_hp = playermanager.player._data.health
-    temp1 = pygame.draw.rect(screen, color1, (WINDOW_WIDTH/2 - 150, 97.5, 300, 50))
-    temp2 = pygame.draw.rect(screen, color2, (WINDOW_WIDTH/2 - 140, 100, 280 * (current_hp/100), 45))
+    temp1 = pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH/2 - 150, 97.5, 300, 50))
+    temp2 = pygame.draw.rect(screen, GREEN, (WINDOW_WIDTH/2 - 140, 100, 280 * (current_hp/100), 45))
 
 
 
