@@ -1,7 +1,7 @@
 # TheFloatingDutchman
 The Floating Dutchman is a Rouguelike, Shoot-Em-Up game where you play as the captain of The Flying Dutchman and you've just been lost in space. Travel the galaxies in search of your missing crew members while fighting off the waves of Ghost Bustas as they try and stop you.
 ## Version Control
-https://github.com/EddieFerro/the-floating-dutchman
+https://github.com/EddieFerro/thefloatingdutchman
 
 ## Installing package through pip
 Ensure you have the latest python installed (3.8.3) and pip
@@ -24,7 +24,7 @@ Ensure you have the latest python installed (3.8.3) and pip
 
 Then clone the repository
     
->git clone https://github.com/EddieFerro/the-floating-dutchman.git
+>git clone https://github.com/EddieFerro/thefloatingdutchman.git
 
 And install dependencies
 
