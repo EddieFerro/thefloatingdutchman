@@ -50,7 +50,6 @@ class MapUI:
         elif room.id == current_room_id:
             sprite.image.fill(RED)
         elif room.id in moveable_rooms:
-            print("WE ARE GOOD")
             if sprite.rect.collidepoint(mouse.get_pos()):
                 sprite.image.fill(RED)
             else:
