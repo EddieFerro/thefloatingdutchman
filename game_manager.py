@@ -1,4 +1,4 @@
-from pygame import display, event, time, K_n, QUIT, KEYDOWN, K_TAB
+from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
 
 from character.player.player_manager import PlayerManager
 from manager import Manager
@@ -17,7 +17,7 @@ class GameManager(Manager):
         self._map = MapUI()
         self._done = False
         self._level = 0
-        self._background = ui.image_fill_background("space_images/space8.jpg")
+        self._background = ui.image_fill_background("space_images/space11.jpg")
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
@@ -39,12 +39,14 @@ class GameManager(Manager):
                     # will eventually be moved
                     self._done = ui.screen_options(ui.draw_pause_screen(
                         self._screen, self._pause_screen), "RESUME")  # pause
-                elif e.type == KEYDOWN and e.key == K_n:
-                    self._map.render(self._screen,
-                                     self._room_manager.rooms,
-                                     self._room_manager.get_available_rooms(),
-                                     self._room_manager.current_room_id,
-                                     self._room_manager.set_current_room)
+                elif e.type == KEYDOWN and e.key == K_m:
+                    self._done = self._map.render(
+                        self._screen,
+                        self._room_manager.rooms,
+                        self._room_manager.get_available_rooms(),
+                        self._room_manager.current_room_id,
+                        self._room_manager.set_current_room
+                    )
 
             self.update()
             self.draw()
@@ -54,6 +56,22 @@ class GameManager(Manager):
                     self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
                 if self._done is False:
                     self.spawn()
+            if self._room_manager._rooms[self._room_manager._current_room_id].cleared():
+                self.update()
+                if self._player_manager.player.dead:  # enemies gone
+                    self._done = ui.screen_options(ui.draw_game_over_screen(
+                        self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
+                    if self._done is False:
+                        self.spawn()
+                else:
+                    self._done = self._map.render(
+                        self._screen,
+                        self._room_manager.rooms,
+                        self._room_manager.get_available_rooms(),
+                        self._room_manager.current_room_id,
+                        self._room_manager.set_current_room
+                    )
+                time.wait(200)
 
     # resets game
 

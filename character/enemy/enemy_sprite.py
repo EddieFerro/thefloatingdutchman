@@ -1,7 +1,7 @@
 import math
 import random
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform
+from pygame import Vector2, sprite, Surface, transform, Rect, image, mask
 
 import pygame
 from objects.bullets.bullet_data import BulletData
@@ -19,13 +19,24 @@ class EnemySprite(CharacterSprite):
         super().__init__(enemy_data)
         self.radius = 80
         self._damage = 10
+        self.mask = mask.from_surface(self.image)
 
     def _set_original_image(self):
-        self._original_image = Surface((20, 50))
+        # self._original_image = Surface((20, 50))
         if self._data._type2:
-            self._original_image.fill(RED)
+            sprite_sheet = image.load("Red Fighter.png").convert_alpha()
+            temp_rect = Rect((0,0,32,32))
+            self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
+            self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
+            self._original_image = transform.scale(self._original_image, (int(32*2.5), int(32*2.5)))
+            self._original_image = transform.rotate(self._original_image, -90)
         else:
-            self._original_image.fill(GREEN)
+            sprite_sheet = image.load("Green Fighter.png").convert_alpha()
+            temp_rect = Rect((0,0,32,32))
+            self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
+            self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
+            self._original_image = transform.scale(self._original_image, (int(32*2.5), int(32*2.5)))
+            self._original_image = transform.rotate(self._original_image, -90)
 
     # Enemy AI might go in here
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
@@ -39,7 +50,7 @@ class EnemySprite(CharacterSprite):
                 if (distance < 400):
                     target_direction = Vector2(
                         (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
-                    target_direction.scale_to_length(self._data.vel * 1.01)
+                    target_direction.scale_to_length(self._data.vel * 1.001)
                     self.rect.x += target_direction.x
                     self.rect.y += target_direction.y
 
@@ -56,31 +67,27 @@ class EnemySprite(CharacterSprite):
                 target_direction.scale_to_length(self._data.vel * 0.9)
 
             else:
-                target_direction.scale_to_length(self._data.vel * 0.8)
+                target_direction.scale_to_length(self._data.vel * 0.7)
 
         try:
             # Update bullets
             self._bullets.update()
 
             # Delete enemy when it comes into contact with player
-            if self.rect.colliderect(player.rect):
+            if sprite.collide_mask(player, self) is not None:
+                player.take_damage(30)
                 enemies.remove(self)
 
             # Type 2 enemy specification
             if self._data._type2:
                 # Auto fire towards player at a given rate
                 t = pygame.time.get_ticks()
-                if (t - self._prev_shot) > 1000:
+                if (t - self._prev_shot) > self._data.attack_speed:
                     self._prev_shot = t
-                    self._angle = math.atan2(player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-                    self._angle = math.degrees(self._angle) + random.randrange(0, 30)
-                    # rotate image ##################################
-                    self.image = transform.rotate(self._original_image, int(self._angle))
-                    self.rect = self.image.get_rect(center=self._data.pos)
-                    self.rect.center = self._data.pos
-                    direction = Vector2(1, 0).rotate(self._angle)
-                    #################################################
-                    BulletSprite(BulletData(direction, 0, Vector2(self.rect.x, self.rect.y), 25)).add(self._bullets)
+                    temp_angle = math.atan2(player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
+                    temp_angle = math.degrees(temp_angle)
+                    direction = Vector2(1, 0).rotate(temp_angle)
+                    BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(self._bullets)
 
             # Stop moving towards player at a certain distance
                 if pygame.sprite.collide_circle(self, player):
@@ -105,6 +112,13 @@ class EnemySprite(CharacterSprite):
 
             self._data.pos = Vector2(self.rect.center)
 
+            self._calc_rotation(player)
+
         except ValueError:
             return
-        
+
+    def _calc_rotation(self, player: PlayerSprite):
+        self._angle = (player._data.pos - self._data.pos).angle_to(Vector2(1,0))
+        self.image = transform.rotate(self._original_image, self._angle)
+        self.rect = self.image.get_rect(center=self._data.pos)
+        self.rect.center = self._data.pos

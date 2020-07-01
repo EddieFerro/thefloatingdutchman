@@ -1,4 +1,4 @@
-from pygame import key, K_m, Surface
+from pygame import Surface
 
 from character.enemy.enemy_manager import EnemyManager
 from character.player.player_sprite import PlayerSprite
@@ -20,11 +20,6 @@ class Room(Manager):
     def update(self, player: PlayerSprite, screen: Surface):
         if self._enemy_manager.get_enemy_count():
             self._enemy_manager.update(player, screen)
-        else:
-            keys = key.get_pressed()
-
-            if keys[K_m]:
-                self._enemy_manager.spawn(self._level)
 
     def get_enemies(self):
         return self._enemy_manager._enemies
