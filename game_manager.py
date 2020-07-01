@@ -96,7 +96,7 @@ class GameManager(Manager):
         # self._screen.fill(BLACK)
         self._screen.blit(self._background, self._background.get_rect())
         self._screen.blit(self._background, self._background.get_rect())
-        ui.health_bar(self._screen, self._player_manager)
         self._player_manager.draw(self._screen)
+        ui.health_bar(self._screen, self._player_manager)
         self._room_manager.draw(self._screen)
         display.flip()
