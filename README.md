@@ -5,9 +5,10 @@ Source code for the Rougelike Shoot-Em-Up, The Floating Dutchman
 https://github.com/EddieFerro/the-floating-dutchman
 
 ## PyPI Package
-
-
-## How to Run Game
-'''python
-python3 main.py
+'''bash
+pip3 install TheFloatingDutchman
 '''
+## How to Run Game
+```bash
+python3 main.py
+```

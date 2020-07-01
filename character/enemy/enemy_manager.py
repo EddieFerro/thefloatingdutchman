@@ -18,6 +18,7 @@ class EnemyManager(Manager):
         self._enemies = sprite.Group()
         self._add_enemies(level)
 
+
     def _add_enemies(self, level: int):
 
         for i in range(random.randint(2, 4) + level):
@@ -33,7 +34,7 @@ class EnemyManager(Manager):
                 EnemySprite(
                     EnemyData(
                         random.randint(30, 50) + (level*5),
-                        random.randint(5, 15) + random.randint(0, level*2),
+                        1500, # random.randint(5, 15) + random.randint(0, level*2), 
                         Vector2(rand_pos_x, rand_pos_y),
                         5
                     )
@@ -46,7 +47,7 @@ class EnemyManager(Manager):
     def update(self, player: PlayerSprite, screen: Surface):
         # enemies need reference to other enemies and the player
         self._enemies.update(player, self._enemies, screen)
-        hit = sprite.groupcollide(self._enemies, player.bullets, False, True)
+        hit = sprite.groupcollide(self._enemies, player.bullets, False, True, sprite.collide_mask)
         for enemy in hit:
             enemy.take_damage(player._damage)
 

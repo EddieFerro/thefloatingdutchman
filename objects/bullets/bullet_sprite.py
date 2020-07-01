@@ -1,13 +1,14 @@
 import pygame
 
 from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
-from pygame import image, Rect, Surface, key, Vector2, transform
+from pygame import image, Rect, Surface, key, Vector2, transform, mask
 from objects.object_sprite import ObjectSprite
 from objects.bullets.bullet_data import BulletData
 
 class BulletSprite(ObjectSprite):
     def __init__(self, bullet_data: BulletData):
         super().__init__(bullet_data)
+        self.mask = mask.from_surface(self.image)
     
     def _set_original_image(self):
         sprite_sheet = image.load("Cannonball.png").convert_alpha()

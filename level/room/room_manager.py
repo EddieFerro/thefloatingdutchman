@@ -15,7 +15,7 @@ class RoomManager(Manager):
         self._number_of_rooms = 0
         self._rooms = []
         self._rooms_per_row = []
-        self._room_graph = nx.Graph()
+        self._room_graph = nx.DiGraph()
         self._current_room_id = 0
 
     def _generate_room_graph(self):
@@ -39,6 +39,10 @@ class RoomManager(Manager):
              ])
 
     def spawn(self, level: int):
+        self._rooms = []
+        self._rooms_per_row = []
+        self._current_room_id = 0
+
         self._room_graph.clear()
         self._generate_room_graph()
 
@@ -56,6 +60,10 @@ class RoomManager(Manager):
 
         # gets list of rooms player can move to next
         return [v2 for v1, v2 in edges]
+
+    def is_level_cleared(self) -> bool:
+
+        return self._rooms[self.current_room_id].cleared() and not self.get_available_rooms()
 
     def set_current_room(self, _id: int):
         # TODO(kayton): Add checks to ensure id is valid
