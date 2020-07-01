@@ -87,6 +87,11 @@ class GameManager(Manager):
         self._room_manager.update(self._player_manager.player, self._screen)
         ui.health_bar(self._screen, self._player_manager)
 
+        if self._room_manager.is_level_cleared():
+            self._level += 1
+            self._room_manager.spawn(self._level)
+            self._map.spawn(self._room_manager)
+
     def draw(self):
         # self._screen.fill(BLACK)
         self._screen.blit(self._background, self._background.get_rect())
