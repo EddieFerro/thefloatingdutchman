@@ -17,12 +17,8 @@ class GameManager(Manager):
         self._map = MapUI()
         self._done = False
         self._level = 0
-<<<<<<< HEAD
         self._background = ui.image_fill_background("space_images/space4.jpg")
 
-=======
-        self._background = ui.image_fill_background("space_images/space8.jpg")
->>>>>>> master
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
