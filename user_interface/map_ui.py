@@ -7,6 +7,7 @@ from pygame.math import Vector2
 from level.room.room import Room
 from game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
 
+
 class RoomMarkerUI(sprite.Sprite):
     def __init__(self, x: int, y: int, width: int):
         sprite.Sprite.__init__(self)
@@ -35,7 +36,8 @@ class RoomPathUI(sprite.Sprite):
 
 class MapUI:
     def __init__(self):
-        pass
+        self._dots = sprite.Group()
+        self._paths = sprite.Group()
 
     def _fill_shape(self,
                     sprite,
@@ -57,9 +59,9 @@ class MapUI:
             sprite.image.fill(GREEN)
 
     def spawn(self, room_manager):
-        self._dots = sprite.Group()
+        self._dots.empty()
         self._dot_list = []
-        self._paths = sprite.Group()
+        self._paths.empty()
 
         num_rows = len(room_manager.rooms_per_row)
 
