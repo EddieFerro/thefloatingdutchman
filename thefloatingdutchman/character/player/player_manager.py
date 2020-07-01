@@ -1,9 +1,9 @@
 from pygame import Vector2, sprite
 
-from character.player.player_data import PlayerData
-from character.player.player_sprite import PlayerSprite
-from game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
-from manager import Manager
+from thefloatingdutchman.character.player.player_data import PlayerData
+from thefloatingdutchman.character.player.player_sprite import PlayerSprite
+from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
+from thefloatingdutchman.manager import Manager
 
 
 class PlayerManager(Manager):

@@ -4,8 +4,8 @@ from math import sqrt, atan, degrees
 from pygame import sprite, Surface, mouse, K_m, event, display, transform, KEYDOWN, MOUSEBUTTONDOWN, QUIT
 from pygame.math import Vector2
 
-from level.room.room import Room
-from game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
+from thefloatingdutchman.level.room.room import Room
+from thefloatingdutchman.game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class RoomMarkerUI(sprite.Sprite):

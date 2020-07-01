@@ -2,7 +2,7 @@ import os
 
 import pygame
 
-from game_manager import GameManager
+from thefloatingdutchman.game_manager import GameManager
 
 os.environ['SDL_AUDIODRIVER'] = 'dsp'  # this removes audio error warnings
 

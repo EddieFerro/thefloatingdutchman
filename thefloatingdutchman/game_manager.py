@@ -1,11 +1,12 @@
+import os
 from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
 
-from character.player.player_manager import PlayerManager
-from manager import Manager
-from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
-from level.room.room_manager import RoomManager
-from user_interface.map_ui import MapUI
-import ui
+from thefloatingdutchman.character.player.player_manager import PlayerManager
+from thefloatingdutchman.manager import Manager
+from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
+from thefloatingdutchman.level.room.room_manager import RoomManager
+from thefloatingdutchman.user_interface.map_ui import MapUI
+import thefloatingdutchman.ui as ui
 
 
 class GameManager(Manager):
@@ -17,7 +18,8 @@ class GameManager(Manager):
         self._map = MapUI()
         self._done = False
         self._level = 0
-        self._background = ui.image_fill_background("space_images/space11.jpg")
+        path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"space_images/space11.jpg")
+        self._background = ui.image_fill_background(path)
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()

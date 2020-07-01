@@ -1,5 +1,5 @@
 from pygame.math import Vector2 as vec
-from objects.object_data import ObjectData
+from thefloatingdutchman.objects.object_data import ObjectData
 
 class BulletData(ObjectData):
     def __init__(self, direction : vec, life_time, spawn, vel):

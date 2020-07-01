@@ -1,13 +1,13 @@
 import math
-
+import os
 from pygame import image, Rect, Surface, key, Vector2, mouse, transform, sprite
 import pygame
 
-from game_settings import BLACK
-from character.character_sprite import CharacterSprite
-from character.player.player_data import PlayerData
-from objects.bullets.bullet_data import BulletData
-from objects.bullets.bullet_sprite import BulletSprite
+from thefloatingdutchman.game_settings import BLACK
+from thefloatingdutchman.character.character_sprite import CharacterSprite
+from thefloatingdutchman.character.player.player_data import PlayerData
+from thefloatingdutchman.objects.bullets.bullet_data import BulletData
+from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
 
 
 class PlayerSprite(CharacterSprite):
@@ -22,7 +22,8 @@ class PlayerSprite(CharacterSprite):
 
     def _set_original_image(self):
         #sprite_sheet = image.load("pirate_ship_00000.png").convert()
-        sprite_sheet = image.load("pirate_ship_00000.png").convert_alpha()
+        path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"pirate_ship_00000.png")
+        sprite_sheet = image.load(path).convert_alpha()
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 549, 549))
