@@ -1,9 +1,9 @@
 import pygame
-
-from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
+import os
+from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
 from pygame import image, Rect, Surface, key, Vector2, transform, mask
-from objects.object_sprite import ObjectSprite
-from objects.bullets.bullet_data import BulletData
+from thefloatingdutchman.objects.object_sprite import ObjectSprite
+from thefloatingdutchman.objects.bullets.bullet_data import BulletData
 
 class BulletSprite(ObjectSprite):
     def __init__(self, bullet_data: BulletData):
@@ -11,7 +11,7 @@ class BulletSprite(ObjectSprite):
         self.mask = mask.from_surface(self.image)
     
     def _set_original_image(self):
-        sprite_sheet = image.load("Cannonball.png").convert_alpha()
+        sprite_sheet = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"Cannonball.png")).convert_alpha()
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 18, 18))

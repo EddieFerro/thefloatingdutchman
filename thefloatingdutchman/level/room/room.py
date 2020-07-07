@@ -1,8 +1,8 @@
 from pygame import Surface
 
-from character.enemy.enemy_manager import EnemyManager
-from character.player.player_sprite import PlayerSprite
-from manager import Manager
+from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
+from thefloatingdutchman.character.player.player_sprite import PlayerSprite
+from thefloatingdutchman.manager import Manager
 
 
 class Room(Manager):

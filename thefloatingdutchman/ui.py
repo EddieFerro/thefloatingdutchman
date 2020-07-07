@@ -1,8 +1,9 @@
 
 import pygame
 import time
-from character.character_data import CharacterData
-from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND,
+import os
+from thefloatingdutchman.character.character_data import CharacterData
+from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND,
                            QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND)
 
 
@@ -183,7 +184,7 @@ def spawn_tutorial(screen, text):
 
 
 def tutorial(screen):
-    image = image_fill_background("space_images/space14.png")
+    image = image_fill_background(os.path.join(os.path.dirname(os.path.realpath(__file__)),"space_images/space14.png"))
     screen.blit(image, image.get_rect())
     text1 = [("THE FLOATING DUTCHMAN", -WINDOW_HEIGHT/3, 2.5, YELLOW, 100),
              ("You Are the Captain of the Flying Dutchman", -

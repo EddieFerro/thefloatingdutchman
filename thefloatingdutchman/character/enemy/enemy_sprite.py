@@ -1,17 +1,17 @@
 import math
 import random
+import os
 from pygame.sprite import Group
 from pygame import Vector2, sprite, Surface, transform, Rect, image, mask
 
 import pygame
-from objects.bullets.bullet_data import BulletData
-from objects.bullets.bullet_sprite import BulletSprite
+from thefloatingdutchman.objects.bullets.bullet_data import BulletData
+from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
 
-from character.character_sprite import CharacterSprite
-from character.player.player_sprite import PlayerSprite
-from character.enemy.enemy_data import EnemyData
-from game_settings import GREEN
-from game_settings import RED
+from thefloatingdutchman.character.character_sprite import CharacterSprite
+from thefloatingdutchman.character.player.player_sprite import PlayerSprite
+from thefloatingdutchman.character.enemy.enemy_data import EnemyData
+from thefloatingdutchman.game_settings import GREEN, RED
 
 
 class EnemySprite(CharacterSprite):
@@ -24,14 +24,14 @@ class EnemySprite(CharacterSprite):
     def _set_original_image(self):
         # self._original_image = Surface((20, 50))
         if self._data._type2:
-            sprite_sheet = image.load("Red Fighter.png").convert_alpha()
+            sprite_sheet = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"Red Fighter.png")).convert_alpha()
             temp_rect = Rect((0,0,32,32))
             self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
             self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
             self._original_image = transform.scale(self._original_image, (int(32*2.5), int(32*2.5)))
             self._original_image = transform.rotate(self._original_image, -90)
         else:
-            sprite_sheet = image.load("Green Fighter.png").convert_alpha()
+            sprite_sheet = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"Green Fighter.png")).convert_alpha()
             temp_rect = Rect((0,0,32,32))
             self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
             self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
