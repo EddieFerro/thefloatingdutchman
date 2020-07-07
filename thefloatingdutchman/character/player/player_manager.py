@@ -12,8 +12,7 @@ class PlayerManager(Manager):
         self._player = None
 
     def spawn(self):
-        healthValue = 100 if self._player is None else self._player._data.health
-        player_data = PlayerData(healthValue, 750, Vector2(
+        player_data = PlayerData(100, 750, Vector2(
             WINDOW_WIDTH/2, WINDOW_HEIGHT/2), 10)
         self._player = PlayerSprite(player_data)
 

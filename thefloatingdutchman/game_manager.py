@@ -73,7 +73,7 @@ class GameManager(Manager):
                         self._room_manager.current_room_id,
                         self._room_manager.set_current_room
                     )
-                    self._player_manager.spawn()
+                    self._player_manager.player._data.pos.update(WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
                 time.wait(200)
 
     # resets game
