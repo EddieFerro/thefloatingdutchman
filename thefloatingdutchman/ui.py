@@ -58,6 +58,12 @@ def initialize_pause_screen():
                                       WINDOW_HEIGHT / 5, 100, "PAUSED", BLACK, None))  # pause
     surfaces.append(new_screen_helper(
         WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "RESUME", WHITE, GREEN))  # play again
+    surfaces.append(new_screen_helper(
+        WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "RESTART GAME", WHITE, BLACK))  # play again
+    surfaces.append(new_screen_helper(
+        WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "VIEW MAP", WHITE, BLACK))  # play again
+    surfaces.append(new_screen_helper(
+        WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, 50, "VIEW GAME CONTROLS", WHITE, BLACK))  # play again
     surfaces.append(new_screen_helper(WINDOW_WIDTH / 4,
                                       WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, BLACK))  # quit
 
@@ -67,12 +73,9 @@ def initialize_pause_screen():
 # draw pre-defined surfaces onto screen
 
 
-def draw_screens(screen, surfaces, three_elems):
-    resize_heights = [4, 2, 3/2]
-    if not three_elems:  # when only two surfaces are being attached
-        resize_heights.pop(0)
+def draw_screens(screen, surfaces, y_locations): #screen, surfaces being attached to screen, y_value of surfaces being attached
     # attach surfaces onto screen
-    for surface, height in zip(surfaces, resize_heights):
+    for surface, height in zip(surfaces, y_locations):
         screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
                               (WINDOW_HEIGHT - surface.get_height()) / height))
     pygame.display.update()  # update screen
@@ -83,16 +86,17 @@ def draw_screens(screen, surfaces, three_elems):
 
 def draw_game_over_screen(screen, surfaces):
     screen.fill(BLACK)
-    return draw_screens(screen, surfaces, True)
+    return draw_screens(screen, surfaces, [4, 2, 3/2])
 
 
 # fill screen and return screen with surfaces drawn onto it
 
 
 def draw_pause_screen(screen, surfaces):
+    print(len(surfaces))
     pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 6, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)),
                      border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
-    return draw_screens(screen, surfaces, True)
+    return draw_screens(screen, surfaces, [5, 4, 2, 3/2, 4/3])
 
 # fill screen and return screen with surfaces drawn onto it
 
@@ -103,7 +107,7 @@ def update_screen_options(screen, text, color1, color2):
                                       WINDOW_HEIGHT / 10, 50, text, WHITE, color1))  # play again
     surfaces.append(new_screen_helper(WINDOW_WIDTH / 4,
                                       WINDOW_HEIGHT / 10, 50, "QUIT", WHITE, color2))  # quit
-    return draw_screens(screen, surfaces, False)
+    return draw_screens(screen, surfaces, [2, 3/2]])
 
 
 def screen_options(screen, text):
