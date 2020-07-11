@@ -1,6 +1,8 @@
 import random
 
 from pygame import Vector2, sprite, Surface
+from thefloatingdutchman.character.enemy.enemyType1 import EnemyType1
+from thefloatingdutchman.character.enemy.enemyType2 import EnemyType2
 
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
@@ -29,17 +31,33 @@ class EnemyManager(Manager):
 
             rand_pos_y: int = random.randint(40, WINDOW_HEIGHT/2 - 100) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_HEIGHT/2 + 100, WINDOW_HEIGHT - 40)
-
-            self._enemies.add(
-                EnemySprite(
-                    EnemyData(
-                        random.randint(30, 50) + (level*5),
-                        1500, # random.randint(5, 15) + random.randint(0, level*2), 
-                        Vector2(rand_pos_x, rand_pos_y),
-                        5
+            type2Chance = 0.2 + (level * 0.03)
+            type1Chance = 1 - type2Chance
+            enemyChooser = random.choices([True, False], weights=[type2Chance, type1Chance], k=1)[0]
+            if not enemyChooser:
+                self._enemies.add(
+                    EnemyType1(
+                        EnemyData(
+                            random.randint(30, 50) + (level*5),
+                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            Vector2(rand_pos_x, rand_pos_y),
+                            5,
+                            level
+                        )
                     )
                 )
-            )
+            else:
+                self._enemies.add(
+                    EnemyType2(
+                        EnemyData(
+                            random.randint(30, 50) + (level*5),
+                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            Vector2(rand_pos_x, rand_pos_y),
+                            5,
+                            level
+                        )
+                    )
+                )
 
     def get_enemy_count(self) -> int:
         return len(self._enemies.sprites())
