@@ -31,7 +31,9 @@ class EnemyManager(Manager):
 
             rand_pos_y: int = random.randint(40, WINDOW_HEIGHT/2 - 100) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_HEIGHT/2 + 100, WINDOW_HEIGHT - 40)
-            enemyChooser = random.choices([True, False], weights=[0.2, 0.8], k=1)[0]
+            type2Chance = 0.2 + (level * 0.03)
+            type1Chance = 1 - type2Chance
+            enemyChooser = random.choices([True, False], weights=[type2Chance, type1Chance], k=1)[0]
             if not enemyChooser:
                 self._enemies.add(
                     EnemyType1(
