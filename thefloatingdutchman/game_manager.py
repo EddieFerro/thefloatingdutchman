@@ -39,8 +39,8 @@ class GameManager(Manager):
 
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
-                    self._done = ui.screen_options(ui.draw_pause_screen(
-                        self._screen, self._pause_screen), "RESUME")  # pause
+                    self._done = ui.pause_screen_options(ui.draw_screens(
+                        self._screen, self._pause_screen, 0), self._pause_screen)  # pause
                 elif e.type == KEYDOWN and e.key == K_m:
                     self._done = self._map.render(
                         self._screen,
@@ -54,15 +54,15 @@ class GameManager(Manager):
             self.draw()
 
             if self._player_manager.player.dead:  # enemies gone
-                self._done = ui.screen_options(ui.draw_game_over_screen(
-                    self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
+                self._done = ui.game_over_screen_options(ui.draw_screens(
+                    self._screen, self._game_over_screen, 0), self._game_over_screen)  # game over
                 if self._done is False:
                     self.spawn()
             if self._room_manager._rooms[self._room_manager._current_room_id].cleared():
                 self.update()
                 if self._player_manager.player.dead:  # enemies gone
-                    self._done = ui.screen_options(ui.draw_game_over_screen(
-                        self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
+                    self._done = ui.game_over_screen_options(ui.draw_screens(
+                        self._screen, self._game_over_screen, 0), self._game_over_screen)  # game over
                     if self._done is False:
                         self.spawn()
                 else:
