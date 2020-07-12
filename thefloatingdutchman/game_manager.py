@@ -1,5 +1,5 @@
 import os
-from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
+from pygame import display, event, time, QUIT, KEYDOWN, K_TAB
 
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
@@ -28,7 +28,7 @@ class GameManager(Manager):
     def run(self):
         self.spawn()
         # comment out this line to remove the tutorial
-        #ui.tutorial(self._screen)
+        ui.tutorial(self._screen)
 
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
@@ -39,16 +39,18 @@ class GameManager(Manager):
 
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
-                    self._done = ui.pause_screen_options(ui.draw_screens(
+                    self._done, restart_game, view_map = ui.pause_screen_options(ui.draw_screens(
                         self._screen, self._pause_screen, 0), self._pause_screen)  # pause
-                elif e.type == KEYDOWN and e.key == K_m:
-                    self._done = self._map.render(
-                        self._screen,
-                        self._room_manager.rooms,
-                        self._room_manager.get_available_rooms(),
-                        self._room_manager.current_room_id,
-                        self._room_manager.set_current_room
-                    )
+                    if restart_game:
+                        self.spawn()
+                    elif view_map:
+                        self._done = self._map.render(
+                            self._screen,
+                            self._room_manager.rooms,
+                            self._room_manager.get_available_rooms(),
+                            self._room_manager.current_room_id,
+                            self._room_manager.set_current_room
+                        )
 
             self.update()
             self.draw()
