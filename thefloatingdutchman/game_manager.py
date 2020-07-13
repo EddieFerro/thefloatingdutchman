@@ -13,13 +13,14 @@ class GameManager(Manager):
     def __init__(self):
         super().__init__()
         self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        self._game_over_screen = ui.initialize_game_over_screen()  # game over screen
-        self._pause_screen = ui.initialize_pause_screen()
+        self._game_over_screen = ui.GameOverScreen()  # game over screen
+        self._pause_screen = ui.PauseScreen()
         self._map = MapUI()
         self._done = False
         self._level = 0
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"space_images/space4.jpg")
         self._background = ui.image_fill_background(path)
+        self._tutorial = ui.TutorialElements()
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
@@ -28,7 +29,7 @@ class GameManager(Manager):
     def run(self):
         self.spawn()
         # comment out this line to remove the tutorial
-        ui.tutorial(self._screen)
+        self._tutorial.spawn_tutorial(self._screen)
 
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
@@ -39,8 +40,7 @@ class GameManager(Manager):
 
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
-                    self._done, restart_game, view_map = ui.pause_screen_options(ui.draw_screens(
-                        self._screen, self._pause_screen, 0), self._pause_screen)  # pause
+                    self._done, restart_game, view_map, view_game_controls = self._pause_screen.pause_screen_options(self._pause_screen.draw_screens(self._screen,0))
                     if restart_game:
                         self.spawn()
                     elif view_map:
@@ -51,20 +51,20 @@ class GameManager(Manager):
                             self._room_manager.current_room_id,
                             self._room_manager.set_current_room
                         )
+                    elif view_game_controls:
+                        self._tutorial.spawn_game_controls(self._screen)
 
             self.update()
             self.draw()
 
             if self._player_manager.player.dead:  # enemies gone
-                self._done = ui.game_over_screen_options(ui.draw_screens(
-                    self._screen, self._game_over_screen, 0), self._game_over_screen)  # game over
+                self._done = self._game_over_screen.game_over_screen_options(self._game_over_screen.draw_screens(self._screen,0))
                 if self._done is False:
                     self.spawn()
             if self._room_manager._rooms[self._room_manager._current_room_id].cleared():
                 self.update()
                 if self._player_manager.player.dead:  # enemies gone
-                    self._done = ui.game_over_screen_options(ui.draw_screens(
-                        self._screen, self._game_over_screen, 0), self._game_over_screen)  # game over
+                    self._done = self._game_over_screen.game_over_screen_options(self._game_over_screen.draw_screens(self._screen,0))
                     if self._done is False:
                         self.spawn()
                 else:
@@ -82,6 +82,7 @@ class GameManager(Manager):
 
     def spawn(self):
         self._level = 0
+        self._level_surface = ui.LevelSurface()
         self._player_manager.spawn()
         self._room_manager.spawn(self._level)
         self._map.spawn(self._room_manager)
@@ -94,6 +95,7 @@ class GameManager(Manager):
 
         if self._room_manager.is_level_cleared():
             self._level += 1
+            self._level_surface.draw_new_level(self._level)
             self._room_manager.spawn(self._level)
             self._map.spawn(self._room_manager)
 
@@ -103,6 +105,6 @@ class GameManager(Manager):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         ui.health_bar(self._screen, self._player_manager)
-        ui.level(self._screen, self._level)
+        self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()
