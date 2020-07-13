@@ -1,5 +1,5 @@
 import os
-from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
+from pygame import display, event, time, QUIT, KEYDOWN, K_TAB
 
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
@@ -18,7 +18,7 @@ class GameManager(Manager):
         self._map = MapUI()
         self._done = False
         self._level = 0
-        path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"space_images/space11.jpg")
+        path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"space_images/space4.jpg")
         self._background = ui.image_fill_background(path)
         # can go ahead and construct managers
         # since their spawn function controls their state
@@ -39,30 +39,32 @@ class GameManager(Manager):
 
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
-                    self._done = ui.screen_options(ui.draw_pause_screen(
-                        self._screen, self._pause_screen), "RESUME")  # pause
-                elif e.type == KEYDOWN and e.key == K_m:
-                    self._done = self._map.render(
-                        self._screen,
-                        self._room_manager.rooms,
-                        self._room_manager.get_available_rooms(),
-                        self._room_manager.current_room_id,
-                        self._room_manager.set_current_room
-                    )
+                    self._done, restart_game, view_map = ui.pause_screen_options(ui.draw_screens(
+                        self._screen, self._pause_screen, 0), self._pause_screen)  # pause
+                    if restart_game:
+                        self.spawn()
+                    elif view_map:
+                        self._done = self._map.render(
+                            self._screen,
+                            self._room_manager.rooms,
+                            self._room_manager.get_available_rooms(),
+                            self._room_manager.current_room_id,
+                            self._room_manager.set_current_room
+                        )
 
             self.update()
             self.draw()
 
             if self._player_manager.player.dead:  # enemies gone
-                self._done = ui.screen_options(ui.draw_game_over_screen(
-                    self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
+                self._done = ui.game_over_screen_options(ui.draw_screens(
+                    self._screen, self._game_over_screen, 0), self._game_over_screen)  # game over
                 if self._done is False:
                     self.spawn()
             if self._room_manager._rooms[self._room_manager._current_room_id].cleared():
                 self.update()
                 if self._player_manager.player.dead:  # enemies gone
-                    self._done = ui.screen_options(ui.draw_game_over_screen(
-                        self._screen, self._game_over_screen), "PLAY AGAIN")  # game over
+                    self._done = ui.game_over_screen_options(ui.draw_screens(
+                        self._screen, self._game_over_screen, 0), self._game_over_screen)  # game over
                     if self._done is False:
                         self.spawn()
                 else:
@@ -97,7 +99,6 @@ class GameManager(Manager):
 
 
     def draw(self):
-        # self._screen.fill(BLACK)
         self._screen.blit(self._background, self._background.get_rect())
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)

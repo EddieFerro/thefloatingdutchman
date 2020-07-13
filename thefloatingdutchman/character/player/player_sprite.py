@@ -27,7 +27,6 @@ class PlayerSprite(CharacterSprite):
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 549, 549))
-        #self._original_image = Surface(temp_rect.size).convert()
         self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
 
         # sets image to a portion of spritesheet (surface)
