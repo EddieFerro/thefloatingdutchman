@@ -46,7 +46,7 @@ class PlayerSprite(CharacterSprite):
         self._calc_movement(screen)
         self._bullets.update()
 
-    def _calc_movement(self, screen):
+    def _calc_movement(self, screen ):
         x = 0
         y = 0
         buttons = mouse.get_pressed()

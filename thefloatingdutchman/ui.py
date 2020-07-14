@@ -1,18 +1,24 @@
-
 import pygame
 import time
 import os
 from thefloatingdutchman.character.character_data import CharacterData
-from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, PLAY_AGAIN_HEIGHT_LOWER_BOUND, PLAY_AGAIN_HEIGHT_UPPER_BOUND,
-                           QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND, RESUME__HEIGHT_LOWER_BOUND, RESUME_HEIGHT_UPPER_BOUND, RESTART_HEIGHT_LOWER_BOUND, RESTART_HEIGHT_UPPER_BOUND,
-                           VIEW_MAP_HEIGHT_LOWER_BOUND, VIEW_MAP_HEIGHT_UPPER_BOUND, VIEW_CONTROLS_HEIGHT_LOWER_BOUND, VIEW_CONTROLS_HEIGHT_UPPER_BOUND, QUIT_PAUSE_HEIGHT_LOWER_BOUND,
-                           QUIT_PAUSE_HEIGHT_UPPER_BOUND, OPTIONS_HEIGHT_LOWER_BOUND, OPTIONS_HEIGHT_UPPER_BOUND)
+from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN,
+                                               WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, PLAY_AGAIN_HEIGHT_LOWER_BOUND,
+                                               PLAY_AGAIN_HEIGHT_UPPER_BOUND,
+                                               QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND,
+                                               RESUME__HEIGHT_LOWER_BOUND, RESUME_HEIGHT_UPPER_BOUND,
+                                               RESTART_HEIGHT_LOWER_BOUND, RESTART_HEIGHT_UPPER_BOUND,
+                                               VIEW_MAP_HEIGHT_LOWER_BOUND, VIEW_MAP_HEIGHT_UPPER_BOUND,
+                                               VIEW_CONTROLS_HEIGHT_LOWER_BOUND, VIEW_CONTROLS_HEIGHT_UPPER_BOUND,
+                                               QUIT_PAUSE_HEIGHT_LOWER_BOUND,
+                                               QUIT_PAUSE_HEIGHT_UPPER_BOUND, OPTIONS_HEIGHT_LOWER_BOUND,
+                                               OPTIONS_HEIGHT_UPPER_BOUND)
 
 
 class Screen:
     # create surface
     def _new_screen_helper(self, width, height, font_size, text,
-                        text_color, fill):
+                           text_color, fill):
 
         # inserts surface onto screen
         surface = pygame.Surface(
@@ -31,24 +37,31 @@ class Screen:
 
     # draw pre-defined surfaces onto screen
 
-    def draw_screens(self, screen, index): # screen, surfaces being attached to screen, y_value of surfaces being attached, index highlights surface to be highlighted
-        y_locations = None # surface height on screen
+    def draw_screens(self, screen,
+                     index):  # screen, surfaces being attached to screen, y_value of surfaces being attached, index highlights surface to be highlighted
+        y_locations = None  # surface height on screen
         if len(self._surfaces) == 5:
             screen.fill(BLACK)
-            y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.45, WINDOW_HEIGHT*.6]
+            y_locations = [WINDOW_HEIGHT * .2, WINDOW_HEIGHT * .45, WINDOW_HEIGHT * .6]
         else:
-            pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (10 / 7)),
-                        border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
-            y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.35, WINDOW_HEIGHT*.44, WINDOW_HEIGHT*.53, WINDOW_HEIGHT*.62, WINDOW_HEIGHT*.71, WINDOW_HEIGHT*.8]
-            
+            pygame.draw.rect(screen, WHITE,
+                             (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 2, WINDOW_HEIGHT / (10 / 7)),
+                             border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
+            y_locations = [WINDOW_HEIGHT * .2, WINDOW_HEIGHT * .35, WINDOW_HEIGHT * .44, WINDOW_HEIGHT * .53,
+                           WINDOW_HEIGHT * .62, WINDOW_HEIGHT * .71, WINDOW_HEIGHT * .8]
+
         # attach surfaces onto screen
         for surface, height in zip(self._surfaces, y_locations):
-            if surface == self._surfaces[index+1]: # swap surface with highlighted one
-                screen.blit(self._surfaces[1 + int(len(self._surfaces) / 2) + index], ((WINDOW_WIDTH - surface.get_width()) / 2,
-                                    height))
-            else: # draw non-selected surface
+            if surface == self._surfaces[index + 1]:  # swap surface with highlighted one
+                screen.blit(self._surfaces[1 + int(len(self._surfaces) / 2) + index],
+                            ((WINDOW_WIDTH - surface.get_width()) / 2,
+                             height))
+            else:  # draw non-selected surface
                 screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
-                                    height))
+                                      height))
+        actual_screen = pygame.display.set_mode((pygame.display.Info().current_w, pygame.display.Info().current_h))
+        temp_trans = pygame.transform.scale(screen, (pygame.display.Info().current_w, pygame.display.Info().current_h))
+        actual_screen.blit(temp_trans, temp_trans.get_rect())
         pygame.display.update()  # update screen
         return screen
 
@@ -63,19 +76,28 @@ class GameOverScreen(Screen):
         # game over text
         surfaces = []
         surfaces.append(self._new_screen_helper(WINDOW_WIDTH / 2,
-                                        WINDOW_HEIGHT / 5, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 10), "GAME OVER!", WHITE, None))
+                                                WINDOW_HEIGHT / 5, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10),
+                                                "GAME OVER!", WHITE, None))
 
         features = [["PLAY AGAIN", BLACK], ["QUIT", BLACK], ["PLAY AGAIN", GREEN], ["QUIT", RED]]
 
-        for feat in features: # alternate between play again and quit
+        for feat in features:  # alternate between play again and quit
             surfaces.append(self._new_screen_helper(WINDOW_WIDTH / 4,
-                                            WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 20), feat[0], WHITE, feat[1]))
+                                                    WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20),
+                                                    feat[0], WHITE, feat[1]))
 
         return surfaces
 
     def game_over_screen_options(self, screen):
         most_recent_is_continue = True
+        WIDTH_LEFT_BOUND = pygame.display.Info().current_w * (3 / 8)
+        WIDTH_RIGHT_BOUND = pygame.display.Info().current_w * (5 / 8)
 
+        # Game Over Menu
+        PLAY_AGAIN_HEIGHT_LOWER_BOUND = pygame.display.Info().current_h * (9 / 20)
+        PLAY_AGAIN_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * (11 / 20)
+        QUIT_HEIGHT_LOWER_BOUND = pygame.display.Info().current_h * (3 / 5)
+        QUIT_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * (7 / 10)
         while True:
             for event in pygame.event.get():
                 mouse = pygame.mouse.get_pos()  # mouse position
@@ -89,10 +111,12 @@ class GameOverScreen(Screen):
                             return True
 
                     # button may be highlighted/selected, user hovers over proper width
-                    if (event.type == pygame.KEYDOWN and (event.key == pygame.K_DOWN or event.key == pygame.K_UP)) or (WIDTH_RIGHT_BOUND >= mouse[0] >= WIDTH_LEFT_BOUND):
+                    if (event.type == pygame.KEYDOWN and (event.key == pygame.K_DOWN or event.key == pygame.K_UP)) or (
+                            WIDTH_RIGHT_BOUND >= mouse[0] >= WIDTH_LEFT_BOUND):
 
                         # user hovers over Play Again button
-                        if PLAY_AGAIN_HEIGHT_UPPER_BOUND >= mouse[1] >= PLAY_AGAIN_HEIGHT_LOWER_BOUND or (event.type == pygame.KEYDOWN and event.key == pygame.K_UP):
+                        if PLAY_AGAIN_HEIGHT_UPPER_BOUND >= mouse[1] >= PLAY_AGAIN_HEIGHT_LOWER_BOUND or (
+                                event.type == pygame.KEYDOWN and event.key == pygame.K_UP):
                             if not most_recent_is_continue:  # user selects Play Again/Resume after selecting Quit
                                 screen = self.draw_screens(screen, 0)
                             most_recent_is_continue = True
@@ -101,7 +125,8 @@ class GameOverScreen(Screen):
                                 return False
 
                         # user hovers over Quit Button
-                        elif QUIT_HEIGHT_UPPER_BOUND >= mouse[1] >= QUIT_HEIGHT_LOWER_BOUND or (event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN):
+                        elif QUIT_HEIGHT_UPPER_BOUND >= mouse[1] >= QUIT_HEIGHT_LOWER_BOUND or (
+                                event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN):
                             if most_recent_is_continue:  # user selects Quit after selecting Play Again/Resume
                                 screen = self.draw_screens(screen, 1)
                             most_recent_is_continue = False
@@ -119,20 +144,43 @@ class PauseScreen(Screen):
     def _initialize_pause_screen(self):
         surfaces = []
         surfaces.append(self._new_screen_helper(WINDOW_WIDTH / 2,
-                                        WINDOW_HEIGHT / 6, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 10), "PAUSED", BLACK, None))  # pause
+                                                WINDOW_HEIGHT / 6, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10),
+                                                "PAUSED", BLACK, None))  # pause
 
-        features = [["RESUME", BLACK], ["OPTIONS", BLACK], ["VIEW MAP", BLACK], ["VIEW GAME CONTROLS", BLACK], ["RESTART GAME", BLACK], ["QUIT", BLACK], 
-                    ["RESUME", GREEN], ["OPTIONS", GREEN], ["VIEW MAP", GREEN], ["VIEW GAME CONTROLS", GREEN], ["RESTART GAME", GREEN], ["QUIT", RED]]
+        features = [["RESUME", BLACK], ["OPTIONS", BLACK], ["VIEW MAP", BLACK], ["VIEW GAME CONTROLS", BLACK],
+                    ["RESTART GAME", BLACK], ["QUIT", BLACK],
+                    ["RESUME", GREEN], ["OPTIONS", GREEN], ["VIEW MAP", GREEN], ["VIEW GAME CONTROLS", GREEN],
+                    ["RESTART GAME", GREEN], ["QUIT", RED]]
 
-        for feat in features: 
-            surfaces.append(self._new_screen_helper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 14, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 25), feat[0], WHITE, feat[1]))
+        for feat in features:
+            surfaces.append(self._new_screen_helper(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 14,
+                                                    (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25), feat[0], WHITE,
+                                                    feat[1]))
 
         return surfaces
 
     def pause_screen_options(self, screen):
-        curr_index = 0 # indicates option currently chosen
+        curr_index = 0  # indicates option currently chosen
         prev_index = 0
 
+        WIDTH_LEFT_BOUND = pygame.display.Info().current_w * (3 / 8)
+        WIDTH_RIGHT_BOUND = pygame.display.Info().current_w * (5 / 8)
+
+
+
+        # Pause Menu
+        RESUME__HEIGHT_LOWER_BOUND = pygame.display.Info().current_h * (35 / 100)
+        RESUME_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * ((35 / 100) + (1 / 14))
+        OPTIONS_HEIGHT_LOWER_BOUND = pygame.display.Info().current_h * (44 / 100)
+        OPTIONS_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * ((44 / 100) + (1 / 14))
+        VIEW_MAP_HEIGHT_LOWER_BOUND = pygame.display.Info().current_h* (53 / 100)
+        VIEW_MAP_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * ((53 / 100) + (1 / 14))
+        VIEW_CONTROLS_HEIGHT_LOWER_BOUND = pygame.display.Info().current_h * (62 / 100)
+        VIEW_CONTROLS_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * ((62 / 100) + (1 / 14))
+        RESTART_HEIGHT_LOWER_BOUND = pygame.display.Info().current_h * (71 / 100)
+        RESTART_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * ((71 / 100) + (1 / 14))
+        QUIT_PAUSE_HEIGHT_LOWER_BOUND = pygame.display.Info().current_h * (80 / 100)
+        QUIT_PAUSE_HEIGHT_UPPER_BOUND = pygame.display.Info().current_h * ((80 / 100) + (1 / 14))
         while True:
             for event in pygame.event.get():
                 mouse = pygame.mouse.get_pos()  # mouse position
@@ -141,41 +189,42 @@ class PauseScreen(Screen):
                     # player has chosen an option
                     # (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                        if curr_index == 0: # RESUME
-                            return False,False,False,False
-                        elif curr_index == 1: # OPTIONS
-                            return False,False,False,False
-                        elif curr_index == 2: # VIEW MAP
-                            return False,False,True,False
-                        elif curr_index == 3: # VIEW GAME CONTROLS
-                            return False,False,False,True
-                        elif curr_index == 4: # RESTART GAME
-                            return False,True,False,False
-                        elif curr_index == 5: # QUIT
-                            return True,False,False,False
+                        if curr_index == 0:  # RESUME
+                            return False, False, False, False
+                        elif curr_index == 1:  # OPTIONS
+                            return False, False, False, False
+                        elif curr_index == 2:  # VIEW MAP
+                            return False, False, True, False
+                        elif curr_index == 3:  # VIEW GAME CONTROLS
+                            return False, False, False, True
+                        elif curr_index == 4:  # RESTART GAME
+                            return False, True, False, False
+                        elif curr_index == 5:  # QUIT
+                            return True, False, False, False
 
                     # user presses up or down on keypad
                     if (event.type == pygame.KEYDOWN and (event.key == pygame.K_DOWN or event.key == pygame.K_UP)):
                         if event.key == pygame.K_UP and curr_index > 0:
-                            curr_index-=1
+                            curr_index -= 1
                             self.draw_screens(screen, curr_index)
 
                         elif event.key == pygame.K_DOWN and curr_index < 5:
-                            curr_index+=1
+                            curr_index += 1
                             self.draw_screens(screen, curr_index)
 
                     # button may be highlighted/selected, user hovers over proper width
                     elif (WIDTH_RIGHT_BOUND >= mouse[0] >= WIDTH_LEFT_BOUND):
 
                         # user hovers over Resume button
-                        if RESUME_HEIGHT_UPPER_BOUND >= mouse[1] >= RESUME__HEIGHT_LOWER_BOUND or (event.type == pygame.KEYDOWN and event.key == pygame.K_UP):
+                        if RESUME_HEIGHT_UPPER_BOUND >= mouse[1] >= RESUME__HEIGHT_LOWER_BOUND or (
+                                event.type == pygame.KEYDOWN and event.key == pygame.K_UP):
                             if prev_index != curr_index:
                                 screen = self.draw_screens(screen, 0)
                             prev_index = curr_index
                             curr_index = 0
                             # player clicked on Resume button
                             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                                return False,False,False,False
+                                return False, False, False, False
 
                         # user hovers over Options Button
                         elif OPTIONS_HEIGHT_UPPER_BOUND >= mouse[1] >= OPTIONS_HEIGHT_LOWER_BOUND:
@@ -185,7 +234,7 @@ class PauseScreen(Screen):
                             curr_index = 1
                             # player clicked on View Map button
                             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                                return False,False,False,False
+                                return False, False, False, False
 
                         # user hovers over View Map Button
                         elif VIEW_MAP_HEIGHT_UPPER_BOUND >= mouse[1] >= VIEW_MAP_HEIGHT_LOWER_BOUND:
@@ -195,7 +244,7 @@ class PauseScreen(Screen):
                             curr_index = 2
                             # player clicked on View Map button
                             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                                return False,False,True,False
+                                return False, False, True, False
 
                         # user hovers over View Game Controls Button
                         elif VIEW_CONTROLS_HEIGHT_UPPER_BOUND >= mouse[1] >= VIEW_CONTROLS_HEIGHT_LOWER_BOUND:
@@ -205,7 +254,7 @@ class PauseScreen(Screen):
                             curr_index = 3
                             # player clicked on View Game Controls button
                             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                                return False,False,False,True
+                                return False, False, False, True
 
                         # user hovers over Restart Button
                         elif RESTART_HEIGHT_UPPER_BOUND >= mouse[1] >= RESTART_HEIGHT_LOWER_BOUND:
@@ -215,7 +264,7 @@ class PauseScreen(Screen):
                             curr_index = 4
                             # player clicked on Restart button
                             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                                return False,True,False,False
+                                return False, True, False, False
 
                         # user hovers over Quit Button
                         elif QUIT_PAUSE_HEIGHT_UPPER_BOUND >= mouse[1] >= QUIT_PAUSE_HEIGHT_LOWER_BOUND:
@@ -225,7 +274,7 @@ class PauseScreen(Screen):
                             curr_index = 5
                             # player clicked on Quit button
                             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                                return True,False,False,False
+                                return True, False, False, False
 
 
 class LevelSurface(Screen):
@@ -235,73 +284,93 @@ class LevelSurface(Screen):
 
     # draw new surface containing new level when level is incremented
     def draw_new_level(self, level):
-        surface = self._new_screen_helper(
-            WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 20), "LEVEL "+ str(level+1), WHITE, None)
-        return surface
+        self._level_surface = self._new_screen_helper(
+            pygame.display.Info().current_w, pygame.display.Info().current_h, (int)(min(pygame.display.Info().current_h, pygame.display.Info().current_w) / 20), "LEVEL " + str(level + 1), WHITE,
+            None)
+        return self._level_surface
 
     # drawing surface to screen
     def update_screen_level(self, screen):
         screen.blit(self._level_surface, ((WINDOW_WIDTH - self._level_surface.get_width()) / 2,
-                            -WINDOW_HEIGHT/3))
+                                          -WINDOW_HEIGHT / 3))
+
+
 
 class TutorialElements(Screen):
     # initialize surface elements and background image
     def __init__(self):
         self._story_elements = self._generate_story_elements()
         self._game_controls_elements = self._generate_game_controls_elements()
-        self._background = image_fill_background(os.path.join(os.path.dirname(os.path.realpath(__file__)),"space_images/space6.jpg"))
+        self._background = image_fill_background(
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "space_images/space6.jpg"))
 
     # initialize elements for story
     def _generate_story_elements(self):
-        story_text = [("THE FLOATING DUTCHMAN", -WINDOW_HEIGHT/3, 2.5, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 10)),
+        story_text = [
+            ("THE FLOATING DUTCHMAN", -WINDOW_HEIGHT / 3, 2.5, YELLOW, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10)),
             ("You Are the Captain of the Flying Dutchman", -
-            WINDOW_HEIGHT/5, 3, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15)),
+            WINDOW_HEIGHT / 5, 3, YELLOW, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15)),
             ("You have ended up in space and your crew", -
-            WINDOW_HEIGHT/(35/2), 0, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15)),
-            ("has been captured by the Ghost Bustas", 3, 3, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15)),
+            WINDOW_HEIGHT / (35 / 2), 0, YELLOW, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15)),
+            ("has been captured by the Ghost Bustas", 3, 3, YELLOW, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15)),
             ("It is up to you to rescue your crew",
-            WINDOW_HEIGHT/7, 0, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15)),
-            ("and defeat the Ghost Bustas", WINDOW_HEIGHT/5, 1.5, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15)),
-            ("Press the Spacebar to Continue", WINDOW_HEIGHT/3, 0, BLUE, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15))]
+             WINDOW_HEIGHT / 7, 0, YELLOW, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15)),
+            ("and defeat the Ghost Bustas", WINDOW_HEIGHT / 5, 1.5, YELLOW,
+             (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15)),
+            (
+            "Press the Spacebar to Continue", WINDOW_HEIGHT / 3, 0, BLUE, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))]
         return story_text
 
     # initialize elements for game controls
     def _generate_game_controls_elements(self):
-        game_controls_text = [("GAME CONTROLS", -WINDOW_HEIGHT/3, 0, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 14)),
-                    ("Press the Spacebar to Begin",
-                WINDOW_HEIGHT/3, 0, BLUE, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15))]
-        self.game_controls_image = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"game_controls.png"))
-        self.game_controls_image = pygame.transform.scale(self.game_controls_image, (int(WINDOW_WIDTH/2), int(WINDOW_HEIGHT/2)))
+        game_controls_text = [
+            ("GAME CONTROLS", -WINDOW_HEIGHT / 3, 0, YELLOW, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 14)),
+            ("Press the Spacebar to Begin",
+             WINDOW_HEIGHT / 3, 0, BLUE, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))]
+        self.game_controls_image = pygame.image.load(
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "game_controls.png"))
+        self.game_controls_image = pygame.transform.scale(self.game_controls_image,
+                                                          (int(WINDOW_WIDTH / 2), int(WINDOW_HEIGHT / 2)))
         return game_controls_text
-    
+
     # begin tutorial
-    def spawn_tutorial(self, screen):
-        self.spawn_story(screen)
-        self.spawn_game_controls(screen)
+    def spawn_tutorial(self, screen, actual_screen):
+        self.spawn_story(screen, actual_screen)
+        self.spawn_game_controls(screen, actual_screen)
 
     # print story onto screen
-    def spawn_story(self, screen):
+    def spawn_story(self, screen, actual_screen):
         screen.blit(self._background, self._background.get_rect())
-        self._spawn_onto_screen(screen, self._story_elements)
+        temp_trans = pygame.transform.scale(screen, (pygame.display.Info().current_w, pygame.display.Info().current_h))
+        actual_screen.blit(temp_trans, temp_trans.get_rect())
+        self._spawn_onto_screen(screen, self._story_elements, actual_screen)
 
     # print game controls onto screen
-    def spawn_game_controls(self, screen):
+    def spawn_game_controls(self, screen, actual_screen):
         screen.blit(self._background, self._background.get_rect())
-        screen.blit(self.game_controls_image, ((WINDOW_WIDTH-self.game_controls_image.get_width())/2, (WINDOW_HEIGHT-self.game_controls_image.get_height())/2))
-        self._spawn_onto_screen(screen, self._game_controls_elements)
+        screen.blit(self.game_controls_image, ((WINDOW_WIDTH - self.game_controls_image.get_width()) / 2,
+                                               (WINDOW_HEIGHT - self.game_controls_image.get_height()) / 2))
+        temp_trans = pygame.transform.scale(screen, (pygame.display.Info().current_w, pygame.display.Info().current_h))
+        actual_screen.blit(temp_trans, temp_trans.get_rect())
+        self._spawn_onto_screen(screen, self._game_controls_elements, actual_screen)
 
     # print either story or game controls onto screen
-    def _spawn_onto_screen(self, screen, text):
+    def _spawn_onto_screen(self, screen, text, actual_screen):
         for txt, height, sleep_time, color, text_size in text:
             surface = self._new_screen_helper(
                 WINDOW_WIDTH, WINDOW_HEIGHT, text_size, txt, color, None)
             screen.blit(surface, ((WINDOW_WIDTH - surface.get_width()) / 2,
-                                height))
+                                  height))
+            temp_trans = pygame.transform.scale(screen, (pygame.display.Info().current_w, pygame.display.Info().current_h))
+            actual_screen.blit(temp_trans, temp_trans.get_rect())
+
             if sleep_time > 0:
                 pygame.display.update()
                 wait_for_user(sleep_time)
+
         pygame.display.update()
         wait_for_user(float('inf'))
+
 
 # scales image to screen size
 def image_fill_background(image_name):
@@ -309,11 +378,13 @@ def image_fill_background(image_name):
     image = pygame.transform.scale(image, (WINDOW_WIDTH, WINDOW_HEIGHT))
     return image
 
+
 # health bar that shows player's health
 def health_bar(screen, playermanager):
     current_hp = playermanager.player._data.health
-    temp1 = pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH/2 - 150, 97.5, 300, 50))
-    temp2 = pygame.draw.rect(screen, GREEN, (WINDOW_WIDTH/2 - 140, 100, 280 * (current_hp/100), 45))
+    temp1 = pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 2 - 150, 97.5, 300, 50))
+    temp2 = pygame.draw.rect(screen, GREEN, (WINDOW_WIDTH / 2 - 140, 100, 280 * (current_hp / 100), 45))
+
 
 # pauses game until either spacebar is pressed or the time spent in function is greater than sleep_time
 def wait_for_user(sleep_time):
