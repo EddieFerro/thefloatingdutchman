@@ -5,10 +5,10 @@ from ordered_set import OrderedSet
 import networkx as nx
 from pygame import Surface
 
-from manager import Manager
-from level.room.room import Room
-from character.player.player_sprite import PlayerSprite
-from character.enemy.enemy_sprite import EnemySprite
+from thefloatingdutchman.manager import Manager
+from thefloatingdutchman.level.room.room import Room
+from thefloatingdutchman.character.player.player_sprite import PlayerSprite
+from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 
 
 class RoomManager(Manager):

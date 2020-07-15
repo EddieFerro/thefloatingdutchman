@@ -2,10 +2,9 @@ from abc import ABC, abstractmethod
 
 from pygame.sprite import Sprite
 from pygame import sprite, surfarray
-import numpy
 import time
 
-from character.character_data import CharacterData
+from thefloatingdutchman.character.character_data import CharacterData
 
 
 class CharacterSprite(Sprite, ABC):

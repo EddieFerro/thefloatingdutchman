@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from pygame.sprite import Sprite
-from objects.object_data import ObjectData
+
+from thefloatingdutchman.objects.object_data import ObjectData
+
 
 class ObjectSprite(Sprite, ABC):
 

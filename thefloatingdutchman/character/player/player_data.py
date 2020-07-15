@@ -1,4 +1,4 @@
-from character.character_data import CharacterData
+from thefloatingdutchman.character.character_data import CharacterData
 
 
 class PlayerData(CharacterData):
