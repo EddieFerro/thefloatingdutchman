@@ -1,4 +1,4 @@
-from thefloatingdutchman.character.character_data import CharacterData
+from character.character_data import CharacterData
 import random
 
 

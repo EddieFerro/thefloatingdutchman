@@ -1,12 +1,13 @@
 from typing import List
+from random import randint, sample
 
 import networkx as nx
 from pygame import Surface
 
-from thefloatingdutchman.manager import Manager
-from thefloatingdutchman.level.room.room import Room
-from thefloatingdutchman.character.player.player_sprite import PlayerSprite
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
+from manager import Manager
+from level.room.room import Room
+from character.player.player_sprite import PlayerSprite
+from character.enemy.enemy_sprite import EnemySprite
 
 
 class RoomManager(Manager):
@@ -14,7 +15,7 @@ class RoomManager(Manager):
         super().__init__()
         self._number_of_rooms = 0
         self._rooms = []
-        self._rooms_per_row = []
+        self._rooms_per_col = []
         self._room_graph = nx.DiGraph()
         self._current_room_id = 0
 
@@ -24,23 +25,69 @@ class RoomManager(Manager):
         for i in range(0, self._number_of_rooms):
             self._rooms.append(Room())
 
-        # room_rows = 5 == len(self.rooms_per_row)
-        # first and last row should always have 1
-        self.rooms_per_row.append(1)  # 0
-        self.rooms_per_row.append(2)  # 1, 2
-        self.rooms_per_row.append(4)  # 3, 4, 5, 6
-        self.rooms_per_row.append(3)  # 7, 8, 9
-        self.rooms_per_row.append(1)  # 10
+        # room_cols = 5 == len(self.rooms_per_col)
+        # first and last col should always have 1
+        # self.rooms_per_col.append(1)  # 0
+        # self.rooms_per_col.append(2)  # 1, 2
+        # self.rooms_per_col.append(4)  # 3, 4, 5, 6
+        # self.rooms_per_col.append(3)  # 7, 8, 9
+        # self.rooms_per_col.append(1)  # 10
 
-        self._room_graph.add_edges_from(
-            [(0, 1), (0, 2), (1, 3), (1, 4), (1, 5), (2, 5),
-             (2, 6), (3, 7), (4, 7), (5, 8), (6, 9),
-             (7, 10), (8, 10), (9, 10)
-             ])
+        self.rooms_per_col.append(1)  # 0
+
+        max_per_col = 4
+        rooms_left = self._number_of_rooms - 2
+        
+        while rooms_left > max_per_col+1:
+            temp = randint(2, max_per_col)
+            self._rooms_per_col.append(temp)
+            rooms_left -= temp
+
+        self._rooms_per_col.append(rooms_left)
+        self.rooms_per_col.append(1)  # 10
+
+        print("ROOMS PER COL: ", self._rooms_per_col)
+
+        first_in_col = 0
+        for i, room_count in enumerate(self.rooms_per_col):
+            if i == len(self.rooms_per_col) - 1:
+                break
+
+            next_room_count = self.rooms_per_col[i+1]
+            last_in_col = first_in_col+room_count-1
+
+            self._room_graph.add_edge(first_in_col, last_in_col+1)
+            if room_count > 1:
+                self._room_graph.add_edge(last_in_col, last_in_col+next_room_count)
+
+                
+                if room_count > 2 and room_count-2 <= next_room_count:
+                    print("ROOM COUNT: " + str(room_count))
+                    print("Next Room Count: " + str(next_room_count))
+                    print('last in column: ' + str(last_in_col))
+                    print("end of range: " + str(last_in_col+1+next_room_count))
+            
+                    paths = sample(range(last_in_col+1, last_in_col+1+next_room_count), room_count-2)
+                    paths.sort()
+                    print(paths)
+                    for index, _id in enumerate(paths):
+                        self._room_graph.add_edge(first_in_col+1+index, _id)
+            
+            
+            first_in_col += room_count
+
+        
+        print(self._room_graph)
+
+        # self._room_graph.add_edges_from(
+        #     [(0, 1), (0, 2), (1, 3), (1, 4), (1, 5), (2, 5),
+        #      (2, 6), (3, 7), (4, 7), (5, 8), (6, 9),
+        #      (7, 10), (8, 10), (9, 10)
+        #      ])
 
     def spawn(self, level: int):
         self._rooms = []
-        self._rooms_per_row = []
+        self._rooms_per_col = []
         self._current_room_id = 0
 
         self._room_graph.clear()
@@ -87,5 +134,5 @@ class RoomManager(Manager):
         return self._rooms
 
     @property
-    def rooms_per_row(self) -> List[int]:
-        return self._rooms_per_row
+    def rooms_per_col(self) -> List[int]:
+        return self._rooms_per_col

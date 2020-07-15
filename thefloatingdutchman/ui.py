@@ -2,8 +2,8 @@
 import pygame
 import time
 import os
-from thefloatingdutchman.character.character_data import CharacterData
-from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND,
+from character.character_data import CharacterData
+from game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, CONTINUE_HEIGHT_LOWER_BOUND, CONTINUE_HEIGHT_UPPER_BOUND,
                            QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND)
 
 
@@ -197,7 +197,7 @@ def tutorial(screen):
              ("and defeat the Ghost Bustas", WINDOW_HEIGHT/5, 1.5, YELLOW, 60),
              ("Press the Spacebar to Continue", WINDOW_HEIGHT/3, 0, BLUE, 60)]
     text2 = [("Read Carefully For the Sake of Your Crew", -WINDOW_HEIGHT/4, 2.5, YELLOW, 70),
-             ("Use the Arrow Pad or WASD Keys to Move",
+             ("Use the Arcol Pad or WASD Keys to Move",
               -WINDOW_HEIGHT/12, 0, YELLOW, 60),
              ("Use the Spacebar or the Left Mouse Button to Fire", 0, 0, YELLOW, 60),
              ("Use the Mouse to Aim at Your Target",

@@ -2,11 +2,11 @@ import random
 
 from pygame import Vector2, sprite, Surface
 
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
-from thefloatingdutchman.character.enemy.enemy_data import EnemyData
-from thefloatingdutchman.character.player.player_sprite import PlayerSprite
-from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
-from thefloatingdutchman.manager import Manager
+from character.enemy.enemy_sprite import EnemySprite
+from character.enemy.enemy_data import EnemyData
+from character.player.player_sprite import PlayerSprite
+from game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
+from manager import Manager
 
 
 class EnemyManager(Manager):

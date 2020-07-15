@@ -4,8 +4,8 @@ from math import sqrt, atan, degrees
 from pygame import sprite, Surface, mouse, K_m, event, display, transform, KEYDOWN, MOUSEBUTTONDOWN, QUIT
 from pygame.math import Vector2
 
-from thefloatingdutchman.level.room.room import Room
-from thefloatingdutchman.game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
+from level.room.room import Room
+from game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class RoomMarkerUI(sprite.Sprite):
@@ -62,13 +62,13 @@ class MapUI:
         self._dot_list = []
         self._paths.empty()
 
-        num_rows = len(room_manager.rooms_per_row)
+        num_cols = len(room_manager.rooms_per_col)
 
-        for i, room_per_row in enumerate(room_manager.rooms_per_row):
-            for j in range(room_per_row):
+        for i, room_per_col in enumerate(room_manager.rooms_per_col):
+            for j in range(room_per_col):
                 temp_dot = RoomMarkerUI(
-                    (WINDOW_WIDTH*(i+1))/(num_rows+1),
-                    WINDOW_HEIGHT*(j+1)/(room_per_row+1),
+                    (WINDOW_WIDTH*(i+1))/(num_cols+1),
+                    WINDOW_HEIGHT*(j+1)/(room_per_col+1),
                     25
                 )
                 # double memory overhead, big oof

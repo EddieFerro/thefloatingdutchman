@@ -3,11 +3,11 @@ import os
 from pygame import image, Rect, Surface, key, Vector2, mouse, transform, sprite
 import pygame
 
-from thefloatingdutchman.game_settings import BLACK
-from thefloatingdutchman.character.character_sprite import CharacterSprite
-from thefloatingdutchman.character.player.player_data import PlayerData
-from thefloatingdutchman.objects.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
+from game_settings import BLACK
+from character.character_sprite import CharacterSprite
+from character.player.player_data import PlayerData
+from objects.bullets.bullet_data import BulletData
+from objects.bullets.bullet_sprite import BulletSprite
 
 
 class PlayerSprite(CharacterSprite):

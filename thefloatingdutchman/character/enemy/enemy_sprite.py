@@ -5,13 +5,13 @@ from pygame.sprite import Group
 from pygame import Vector2, sprite, Surface, transform, Rect, image, mask
 
 import pygame
-from thefloatingdutchman.objects.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
+from objects.bullets.bullet_data import BulletData
+from objects.bullets.bullet_sprite import BulletSprite
 
-from thefloatingdutchman.character.character_sprite import CharacterSprite
-from thefloatingdutchman.character.player.player_sprite import PlayerSprite
-from thefloatingdutchman.character.enemy.enemy_data import EnemyData
-from thefloatingdutchman.game_settings import GREEN, RED
+from character.character_sprite import CharacterSprite
+from character.player.player_sprite import PlayerSprite
+from character.enemy.enemy_data import EnemyData
+from game_settings import GREEN, RED
 
 
 class EnemySprite(CharacterSprite):

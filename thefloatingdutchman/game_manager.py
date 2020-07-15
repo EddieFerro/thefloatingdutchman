@@ -1,12 +1,12 @@
 import os
 from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
 
-from thefloatingdutchman.character.player.player_manager import PlayerManager
-from thefloatingdutchman.manager import Manager
-from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
-from thefloatingdutchman.level.room.room_manager import RoomManager
-from thefloatingdutchman.user_interface.map_ui import MapUI
-import thefloatingdutchman.ui as ui
+from character.player.player_manager import PlayerManager
+from manager import Manager
+from game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS, BLACK
+from level.room.room_manager import RoomManager
+from user_interface.map_ui import MapUI
+import ui as ui
 
 
 class GameManager(Manager):
@@ -95,7 +95,7 @@ class GameManager(Manager):
             self._map.spawn(self._room_manager)
 
     def draw(self):
-        # self._screen.fill(BLACK)
+        self._screen.fill(BLACK)
         self._screen.blit(self._background, self._background.get_rect())
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)

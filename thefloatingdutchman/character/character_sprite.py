@@ -5,7 +5,7 @@ from pygame import sprite, surfarray
 import numpy
 import time
 
-from thefloatingdutchman.character.character_data import CharacterData
+from character.character_data import CharacterData
 
 
 class CharacterSprite(Sprite, ABC):
