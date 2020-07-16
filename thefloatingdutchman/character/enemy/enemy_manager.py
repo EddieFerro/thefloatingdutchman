@@ -1,12 +1,14 @@
 import random
 
 from pygame import Vector2, sprite, Surface
+
 from thefloatingdutchman.character.enemy.enemyType1 import EnemyType1
 from thefloatingdutchman.character.enemy.enemyType2 import EnemyType2
 from thefloatingdutchman.character.enemy.enemyType3 import EnemyType3
 from thefloatingdutchman.character.enemy.enemyType4 import EnemyType4
 
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
+
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
@@ -21,7 +23,6 @@ class EnemyManager(Manager):
     def spawn(self, level: int):
         self._enemies = sprite.Group()
         self._add_enemies(level)
-
 
     def _add_enemies(self, level: int):
 
@@ -44,11 +45,13 @@ class EnemyManager(Manager):
             enemyChooser = random.choices([1, 2, 3 ,4], weights=[type2Chance, type1Chance, type4Chance, type3Chance], k=1)[0]
 
             if enemyChooser ==2:
+
                 self._enemies.add(
                     EnemyType1(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            # random.randint(5, 15) + random.randint(0, level*2),
+                            1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5,
                             level
@@ -60,7 +63,8 @@ class EnemyManager(Manager):
                     EnemyType2(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            # random.randint(5, 15) + random.randint(0, level*2),
+                            1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5,
                             level
@@ -98,7 +102,8 @@ class EnemyManager(Manager):
     def update(self, player: PlayerSprite, screen: Surface):
         # enemies need reference to other enemies and the player
         self._enemies.update(player, self._enemies, screen)
-        hit = sprite.groupcollide(self._enemies, player.bullets, False, True, sprite.collide_mask)
+        hit = sprite.groupcollide(
+            self._enemies, player.bullets, False, True, sprite.collide_mask)
         for enemy in hit:
             enemy.take_damage(player._damage)
 

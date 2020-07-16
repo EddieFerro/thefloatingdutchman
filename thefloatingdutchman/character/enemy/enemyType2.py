@@ -4,16 +4,15 @@ from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 import math
 import os
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, Rect, image, mask
+from pygame import Vector2, sprite, Surface, transform, Rect, image
 
 import pygame
 from thefloatingdutchman.objects.bullets.bullet_data import BulletData
 from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
 
-from thefloatingdutchman.character.character_sprite import CharacterSprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
-from thefloatingdutchman.character.enemy.enemy_data import EnemyData
-from thefloatingdutchman.game_settings import GREEN, RED
+
+
 class EnemyType2(EnemySprite):
 
     def __init__(self,  enemy_data: EnemyData):
@@ -22,11 +21,13 @@ class EnemyType2(EnemySprite):
         self._prev_shot =0
 
     def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"Red Fighter.png")).convert_alpha()
-        temp_rect = Rect((0,0,32,32))
+        sprite_sheet = image.load(os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "Red Fighter.png")).convert_alpha()
+        temp_rect = Rect((0, 0, 32, 32))
         self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
-        self._original_image = transform.scale(self._original_image, (int(32*2.5), int(32*2.5)))
+        self._original_image = transform.scale(
+            self._original_image, (int(32*2.5), int(32*2.5)))
         self._original_image = transform.rotate(self._original_image, -90)
 
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
@@ -58,6 +59,7 @@ class EnemyType2(EnemySprite):
 
 
 
+
             # Update bullets
             self._bullets.update()
 
@@ -71,26 +73,29 @@ class EnemyType2(EnemySprite):
             t = pygame.time.get_ticks()
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
-                temp_angle = math.atan2(player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
+                temp_angle = math.atan2(
+                    player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
                 temp_angle = math.degrees(temp_angle)
                 temp_angle += random.uniform(-15, 15)
                 direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(self._bullets)
+                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(
+                    self._bullets)
 
             # Stop moving towards player at a certain distance
             if pygame.sprite.collide_circle(self, player):
                 self._data._stopMoving = True
-                distance = math.hypot((player.rect.x-self.rect.x),(player.rect.y - self.rect.y))
+                distance = math.hypot(
+                    (player.rect.x-self.rect.x), (player.rect.y - self.rect.y))
                 # Move back if in danger zone
                 if(distance < 300):
                     target_direction = Vector2(
-                        (self.rect.x - player.rect.x), (self.rect.y -player.rect.y))
+                        (self.rect.x - player.rect.x), (self.rect.y - player.rect.y))
                     target_direction.scale_to_length(self._data.vel * 1.01)
                     self.rect.x += target_direction.x
                     self.rect.y += target_direction.y
 
             # All other cases are given movement data here
-            if self._data._stopMoving == False:
+            if self._data._stopMoving is False:
                 self.rect.x += target_direction.x
                 self.rect.y += target_direction.y
 

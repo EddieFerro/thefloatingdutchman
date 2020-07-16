@@ -23,7 +23,8 @@ class PlayerManager(Manager):
     def update(self, screen, enemies: sprite.Group()):
         self._player.update(screen)
         for enemy in enemies:
-            hits = sprite.spritecollide(self._player, enemy.bullets, True, sprite.collide_mask)
+            hits = sprite.spritecollide(
+                self._player, enemy.bullets, True, sprite.collide_mask)
             for bullet in hits:
                 self._player.take_damage(enemy._damage)
 
