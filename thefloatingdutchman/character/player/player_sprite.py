@@ -58,7 +58,7 @@ class PlayerSprite(CharacterSprite):
             y = -self._data.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self._data.vel
-        if keys[pygame.K_SPACE] or buttons[0] is True:
+        if keys[pygame.K_SPACE] or buttons[0] == 1:
             t = pygame.time.get_ticks()
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
