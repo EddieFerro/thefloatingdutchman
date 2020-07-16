@@ -270,7 +270,7 @@ class TutorialElements(Screen):
         game_controls_text = [("GAME CONTROLS", -WINDOW_HEIGHT/3, 0, YELLOW, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 14)),
                     ("Press the Spacebar to Begin",
                 WINDOW_HEIGHT/3, 0, BLUE, (int)(min(WINDOW_HEIGHT,WINDOW_WIDTH) / 15))]
-        self.game_controls_image = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"game_controls.png"))
+        self.game_controls_image = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"game_controls.PNG"))
         self.game_controls_image = pygame.transform.scale(self.game_controls_image, (int(WINDOW_WIDTH/2), int(WINDOW_HEIGHT/2)))
         return game_controls_text
     
