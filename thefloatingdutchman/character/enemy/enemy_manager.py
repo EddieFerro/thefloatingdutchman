@@ -3,6 +3,8 @@ import random
 from pygame import Vector2, sprite, Surface
 from thefloatingdutchman.character.enemy.enemyType1 import EnemyType1
 from thefloatingdutchman.character.enemy.enemyType2 import EnemyType2
+from thefloatingdutchman.character.enemy.enemyType3 import EnemyType3
+from thefloatingdutchman.character.enemy.enemyType4 import EnemyType4
 
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
@@ -36,7 +38,7 @@ class EnemyManager(Manager):
             enemyChooser = random.choices([True, False], weights=[type2Chance, type1Chance], k=1)[0]
             if not enemyChooser:
                 self._enemies.add(
-                    EnemyType1(
+                    EnemyType4(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             1500, # random.randint(5, 15) + random.randint(0, level*2),
@@ -48,7 +50,7 @@ class EnemyManager(Manager):
                 )
             else:
                 self._enemies.add(
-                    EnemyType2(
+                    EnemyType3(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             1500, # random.randint(5, 15) + random.randint(0, level*2),
