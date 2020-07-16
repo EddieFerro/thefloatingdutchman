@@ -40,7 +40,16 @@ class EnemyType3(EnemySprite):
         try:
             # Update bullets
             self._bullets.update()
-
+            for enemy in enemies:
+                if pygame.sprite.collide_circle(self, enemy) and enemy != self:
+                    distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
+                    # print(distance)
+                    if (distance < 400):
+                        target_direction = Vector2(
+                            (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
+                        target_direction.scale_to_length(self._data.vel * 0.0001)
+                        self.rect.x += target_direction.x
+                        self.rect.y += target_direction.y
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None:
                 player.take_damage(30)

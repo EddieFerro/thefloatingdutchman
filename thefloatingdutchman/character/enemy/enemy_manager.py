@@ -33,12 +33,19 @@ class EnemyManager(Manager):
 
             rand_pos_y: int = random.randint(40, WINDOW_HEIGHT/2 - 100) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_HEIGHT/2 + 100, WINDOW_HEIGHT - 40)
-            type2Chance = 0.2 + (level * 0.03)
-            type1Chance = 1 - type2Chance
-            enemyChooser = random.choices([True, False], weights=[type2Chance, type1Chance], k=1)[0]
-            if not enemyChooser:
+            type2Chance = 0.1 + (level * 0.03)
+            type1Chance = 0.25
+            type3Chance =0
+            type4Chance =0
+            if(level+1) >= 2:
+                type3Chance = 0.1 + (level * 0.01)
+                type4Chance = 0.25
+
+            enemyChooser = random.choices([1, 2, 3 ,4], weights=[type2Chance, type1Chance, type4Chance, type3Chance], k=1)[0]
+
+            if enemyChooser ==2:
                 self._enemies.add(
-                    EnemyType4(
+                    EnemyType1(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             1500, # random.randint(5, 15) + random.randint(0, level*2),
@@ -48,9 +55,33 @@ class EnemyManager(Manager):
                         )
                     )
                 )
-            else:
+            elif enemyChooser == 1:
+                self._enemies.add(
+                    EnemyType2(
+                        EnemyData(
+                            random.randint(30, 50) + (level*5),
+                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            Vector2(rand_pos_x, rand_pos_y),
+                            5,
+                            level
+                        )
+                    )
+                )
+            elif enemyChooser == 4:
                 self._enemies.add(
                     EnemyType3(
+                        EnemyData(
+                            random.randint(30, 50) + (level*5),
+                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            Vector2(rand_pos_x, rand_pos_y),
+                            5,
+                            level
+                        )
+                    )
+                )
+            elif enemyChooser == 3:
+                self._enemies.add(
+                    EnemyType4(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             1500, # random.randint(5, 15) + random.randint(0, level*2),

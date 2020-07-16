@@ -35,61 +35,62 @@ class EnemyType4(EnemySprite):
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         if(self._data.health <= 0):
             self.kill()
-        for enemy in enemies:
-            if pygame.sprite.collide_circle(self, enemy) and enemy != self:
-                distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
-                # print(distance)
-                if (distance < 400):
+        try:
+
+            for enemy in enemies:
+                if pygame.sprite.collide_circle(self, enemy) and enemy != self:
+                    distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
+                    # print(distance)
+                    if (distance < 400):
+                        target_direction = Vector2(
+                            (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
+                        target_direction.scale_to_length(self._data.vel * 0.0001)
+                        self.rect.x += target_direction.x
+                        self.rect.y += target_direction.y
+                # Update bullets
+                self._bullets.update()
+
+                # Delete enemy when it comes into contact with player
+                if sprite.collide_mask(player, self) is not None:
+                    player.take_damage(30)
+                    enemies.remove(self)
+
+                # Type 2 enemy specification
+                    # Auto fire towards player at a given rate
+
+
+                n = pygame.time.get_ticks()
+
+                if (self._charging) < 500:
+                    self._charging = n - self._start
+                    self._pstart = pygame.time.get_ticks()
+                    print(self._charging)
                     target_direction = Vector2(
-                        (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
-                    target_direction.scale_to_length(self._data.vel * 0.0001)
+                        - self.rect.x + player.rect.x + random.randrange(0, 30),
+                        - self.rect.y + player.rect.y + random.randrange(0, 30))
+                    target_direction.scale_to_length(self._data.vel * 2)
                     self.rect.x += target_direction.x
                     self.rect.y += target_direction.y
-        try:
-            # Update bullets
-            self._bullets.update()
-
-            # Delete enemy when it comes into contact with player
-            if sprite.collide_mask(player, self) is not None:
-                player.take_damage(30)
-                enemies.remove(self)
-
-            # Type 2 enemy specification
-                # Auto fire towards player at a given rate
-
-
-            n = pygame.time.get_ticks()
-
-            if (self._charging) < 1000:
-                self._charging = n - self._start
-                self._pstart = pygame.time.get_ticks()
-                print(self._charging)
-                target_direction = Vector2(
-                    - self.rect.x + player.rect.x + random.randrange(0, 30),
-                    - self.rect.y + player.rect.y + random.randrange(0, 30))
-                target_direction.scale_to_length(self._data.vel * 2)
-                self.rect.x += target_direction.x
-                self.rect.y += target_direction.y
-            elif (self._charging > 1000):
-                self.rect.x += 0
-                self.rect.y += 0
-                self._pausing= pygame.time.get_ticks() - self._pstart
+                elif (self._charging > 500):
+                    self.rect.x += 0
+                    self.rect.y += 0
+                    self._pausing= pygame.time.get_ticks() - self._pstart
 
 
 
-            if(self._pausing) > 1000:
-                self._start = pygame.time.get_ticks()
-                self._charging =0
-                self._pausing=0
+                if(self._pausing) > 1000:
+                    self._start = pygame.time.get_ticks()
+                    self._charging =0
+                    self._pausing=0
 
 
-            screen_rect = screen.get_rect()
+                screen_rect = screen.get_rect()
 
-            self.rect.clamp_ip(screen_rect)
+                self.rect.clamp_ip(screen_rect)
 
-            self._data.pos = Vector2(self.rect.center)
+                self._data.pos = Vector2(self.rect.center)
 
-            self._calc_rotation(player)
+                self._calc_rotation(player)
 
 
 
