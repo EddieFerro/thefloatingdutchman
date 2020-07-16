@@ -4,16 +4,13 @@ from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 import math
 import os
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, Rect, image, mask
+from pygame import Vector2, sprite, Surface, transform, Rect, image
 
 import pygame
-from thefloatingdutchman.objects.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
 
-from thefloatingdutchman.character.character_sprite import CharacterSprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
-from thefloatingdutchman.character.enemy.enemy_data import EnemyData
-from thefloatingdutchman.game_settings import GREEN, RED
+
+
 class EnemyType1(EnemySprite):
 
     def __init__(self,  enemy_data: EnemyData):
@@ -21,11 +18,13 @@ class EnemyType1(EnemySprite):
         self._type2 = False
 
     def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"Green Fighter.png")).convert_alpha()
-        temp_rect = Rect((0,0,32,32))
+        sprite_sheet = image.load(os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "Green Fighter.png")).convert_alpha()
+        temp_rect = Rect((0, 0, 32, 32))
         self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
-        self._original_image = transform.scale(self._original_image, (int(32*2.5), int(32*2.5)))
+        self._original_image = transform.scale(
+            self._original_image, (int(32*2.5), int(32*2.5)))
         self._original_image = transform.rotate(self._original_image, -90)
 
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
@@ -34,7 +33,8 @@ class EnemyType1(EnemySprite):
         # Check for nearby enemies, only move in certain case
         for enemy in enemies:
             if pygame.sprite.collide_circle(self, enemy) and enemy != self:
-                distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
+                distance = math.hypot(
+                    (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
                 # print(distance)
                 if (distance < 400):
                     target_direction = Vector2(
@@ -43,10 +43,9 @@ class EnemyType1(EnemySprite):
                     self.rect.x += target_direction.x
                     self.rect.y += target_direction.y
 
-
         # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
         target_direction = Vector2(
-            - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y +random.randrange(0, 30))
+            - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y + random.randrange(0, 30))
         target_direction.scale_to_length(self._data.vel * 0.7)
 
         try:

@@ -1,10 +1,9 @@
 import random
 
 from pygame import Vector2, sprite, Surface
+
 from thefloatingdutchman.character.enemy.enemyType1 import EnemyType1
 from thefloatingdutchman.character.enemy.enemyType2 import EnemyType2
-
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
@@ -20,7 +19,6 @@ class EnemyManager(Manager):
         self._enemies = sprite.Group()
         self._add_enemies(level)
 
-
     def _add_enemies(self, level: int):
 
         for i in range(random.randint(2, 4) + level):
@@ -33,13 +31,15 @@ class EnemyManager(Manager):
                 random.randint(0, 1)) else random.randint(WINDOW_HEIGHT/2 + 100, WINDOW_HEIGHT - 40)
             type2Chance = 0.2 + (level * 0.03)
             type1Chance = 1 - type2Chance
-            enemyChooser = random.choices([True, False], weights=[type2Chance, type1Chance], k=1)[0]
+            enemyChooser = random.choices([True, False], weights=[
+                                          type2Chance, type1Chance], k=1)[0]
             if not enemyChooser:
                 self._enemies.add(
                     EnemyType1(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            # random.randint(5, 15) + random.randint(0, level*2),
+                            1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5,
                             level
@@ -51,7 +51,8 @@ class EnemyManager(Manager):
                     EnemyType2(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            # random.randint(5, 15) + random.randint(0, level*2),
+                            1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5,
                             level
@@ -65,7 +66,8 @@ class EnemyManager(Manager):
     def update(self, player: PlayerSprite, screen: Surface):
         # enemies need reference to other enemies and the player
         self._enemies.update(player, self._enemies, screen)
-        hit = sprite.groupcollide(self._enemies, player.bullets, False, True, sprite.collide_mask)
+        hit = sprite.groupcollide(
+            self._enemies, player.bullets, False, True, sprite.collide_mask)
         for enemy in hit:
             enemy.take_damage(player._damage)
 
