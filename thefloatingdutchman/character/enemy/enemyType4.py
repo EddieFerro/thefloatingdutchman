@@ -52,7 +52,7 @@ class EnemyType4(EnemySprite):
 
                 # Delete enemy when it comes into contact with player
                 if sprite.collide_mask(player, self) is not None:
-                    player.take_damage(30)
+                    player.take_damage(5)
                     enemies.remove(self)
 
                 # Type 2 enemy specification
