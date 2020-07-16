@@ -34,7 +34,7 @@ class EnemyManager(Manager):
 
             rand_pos_y: int = random.randint(40, WINDOW_HEIGHT/2 - 100) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_HEIGHT/2 + 100, WINDOW_HEIGHT - 40)
-            type2Chance = 0.1 + (level * 0.03)
+            type2Chance = 0.1 + (level * 0.01)
             type1Chance = 0.25
             type3Chance =0
             type4Chance =0
