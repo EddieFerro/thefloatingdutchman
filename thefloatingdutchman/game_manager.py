@@ -92,7 +92,6 @@ class GameManager(Manager):
 
     def draw(self):
         self._screen.blit(self._background, self._background.get_rect())
-        self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         ui.health_bar(self._screen, self._player_manager)
         self._level_surface.update_screen_level(self._screen)
