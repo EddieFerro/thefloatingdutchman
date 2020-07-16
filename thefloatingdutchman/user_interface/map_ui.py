@@ -3,6 +3,7 @@ from math import sqrt, atan, degrees
 
 from pygame import sprite, Surface, mouse, K_m, event, display, transform, KEYDOWN, MOUSEBUTTONDOWN, QUIT
 from pygame.math import Vector2
+from networkx.classes.reportviews import OutEdgeView
 
 from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
@@ -57,14 +58,14 @@ class MapUI:
         else:
             sprite.image.fill(GREEN)
 
-    def spawn(self, room_manager):
+    def spawn(self, rooms_per_col: List[int], edges: OutEdgeView):
         self._dots.empty()
         self._dot_list = []
         self._paths.empty()
 
-        num_cols = len(room_manager.rooms_per_col)
+        num_cols = len(rooms_per_col)
 
-        for i, room_per_col in enumerate(room_manager.rooms_per_col):
+        for i, room_per_col in enumerate(rooms_per_col):
             for j in range(room_per_col):
                 temp_dot = RoomMarkerUI(
                     (WINDOW_WIDTH*(i+1))/(num_cols+1),
@@ -75,7 +76,7 @@ class MapUI:
                 self._dots.add(temp_dot)
                 self._dot_list.append(temp_dot)
 
-        for v1, v2 in room_manager._room_graph.edges:
+        for v1, v2 in edges:
             x1, y1 = self._dot_list[v1].pos
             x2, y2 = self._dot_list[v2].pos
 
