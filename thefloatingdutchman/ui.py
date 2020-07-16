@@ -237,16 +237,15 @@ class PauseScreen(Screen):
 class LevelSurface(Screen):
     # initialize surface with level being equal to 0
     def __init__(self):
-        self._level_surface = self.draw_new_level(0)
+        self.draw_new_level(0)
 
     # draw new surface containing new level when level is incremented
     def draw_new_level(self, level):
-        surface = self._new_screen_helper(
+        self._level_surface = self._new_screen_helper(
             WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "LEVEL " + str(level), WHITE, None)
-        return surface
 
     # drawing surface to screen
-    def update_screen_level(self, screen):
+    def update_screen(self, screen):
         screen.blit(self._level_surface, ((WINDOW_WIDTH - self._level_surface.get_width()) / 2,
                                           -WINDOW_HEIGHT/3))
 

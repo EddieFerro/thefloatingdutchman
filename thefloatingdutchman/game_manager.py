@@ -28,7 +28,7 @@ class GameManager(Manager):
     def run(self):
         self.spawn()
         # comment out this line to remove the tutorial
-        self._tutorial.spawn_tutorial(self._screen)
+        #self._tutorial.spawn_tutorial(self._screen)
 
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
@@ -94,6 +94,6 @@ class GameManager(Manager):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         ui.health_bar(self._screen, self._player_manager)
-        self._level_surface.update_screen_level(self._screen)
+        self._level_surface.update_screen(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()
