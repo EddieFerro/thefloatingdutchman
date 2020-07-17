@@ -1,4 +1,5 @@
 import os
+import sys
 from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
 
 from thefloatingdutchman.character.player.player_manager import PlayerManager
@@ -6,6 +7,7 @@ from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
 from thefloatingdutchman.level.room.room_manager import RoomManager
 from thefloatingdutchman.user_interface.map_ui import MapUI
+from .objects.hearts.heart_manager import HeartManager
 import thefloatingdutchman.ui as ui
 
 
@@ -24,6 +26,7 @@ class GameManager(Manager):
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
         self._room_manager = RoomManager()
+        self._heart_manager = HeartManager()
 
     def run(self):
         self.spawn()
@@ -101,6 +104,7 @@ class GameManager(Manager):
         self._screen.blit(self._background, self._background.get_rect())
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
+        self._heart_manager.draw(self._screen)
         ui.health_bar(self._screen, self._player_manager)
         ui.level(self._screen, self._level)
         self._room_manager.draw(self._screen)
