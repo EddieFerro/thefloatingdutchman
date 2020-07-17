@@ -1,6 +1,6 @@
 import math
 import os
-from pygame import image, Rect, Surface, key, Vector2, mouse, transform, sprite
+from pygame import image, Rect, Surface, key, Vector2, mouse, transform
 import pygame
 
 from thefloatingdutchman.game_settings import BLACK
@@ -18,17 +18,15 @@ class PlayerSprite(CharacterSprite):
         self._dead = False
         self.mask = pygame.mask.from_surface(self.image)
 
-
-
     def _set_original_image(self):
-        #sprite_sheet = image.load("pirate_ship_00000.png").convert()
-        path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"pirate_ship_00000.png")
+        # sprite_sheet = image.load("pirate_ship_00000.png").convert()
+        path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "pirate_ship_00000.png")
         sprite_sheet = image.load(path).convert_alpha()
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 549, 549))
-        #self._original_image = Surface(temp_rect.size).convert()
-        self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
+        self._original_image = Surface(temp_rect.size, pygame.SRCALPHA)
 
         # sets image to a portion of spritesheet (surface)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
@@ -60,13 +58,13 @@ class PlayerSprite(CharacterSprite):
             y = -self._data.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self._data.vel
-        if keys[pygame.K_SPACE] or buttons[0] == True:
+        if keys[pygame.K_SPACE] or buttons[0] == 1:
             t = pygame.time.get_ticks()
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
-                direction = Vector2(1,0).rotate(-self._angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(self._bullets)
-
+                direction = Vector2(1, 0).rotate(-self._angle)
+                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(
+                    self._bullets)
 
         if x != 0 and y != 0:
             x *= 0.7071
@@ -96,5 +94,5 @@ class PlayerSprite(CharacterSprite):
         self.rect.center = self._data.pos
 
     @property
-    def dead(self) ->bool:
+    def dead(self) -> bool:
         return self._dead
