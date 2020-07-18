@@ -6,7 +6,6 @@ from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
 from thefloatingdutchman.level.room.room_manager import RoomManager
-from .objects.hearts.heart_manager import HeartManager
 import thefloatingdutchman.ui as ui
 
 
@@ -26,7 +25,6 @@ class GameManager(Manager):
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
         self._room_manager = RoomManager()
-        self._heart_manager = HeartManager()
 
     def run(self):
         self.spawn()
@@ -60,10 +58,9 @@ class GameManager(Manager):
         self._level_surface = ui.LevelSurface()
         self._player_manager.spawn()
         self._room_manager.spawn(self._level)
-        self._heart_manager.spawn(self._level)
+
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
-        self._heart_manager.update(self._player_manager.player, self._screen, self._player_manager.player)
 
         self._player_manager.update(
             self._screen, self._room_manager.get_current_enemies())
@@ -99,7 +96,6 @@ class GameManager(Manager):
         self._screen.blit(self._background, self._background.get_rect())
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
-        self._heart_manager.draw(self._screen)
         ui.health_bar(self._screen, self._player_manager)
         self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)

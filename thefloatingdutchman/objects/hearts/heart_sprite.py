@@ -18,18 +18,17 @@ class HeartSprite(ObjectSprite):
         self.mask = mask.from_surface(self.image)
 
     def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "Heart.jpg")).convert_alpha()
-
-        temp_rect = Rect((0, 0, 9, 9))
+        sprite_sheet = image.load(os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "Heart.png")).convert_alpha()
+        temp_rect = Rect((0, 0, 254, 254))
         self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
+        self._original_image = transform.scale(
+            self._original_image, (int(70), int(70)))
 
     def update(self, hearts: Group, player: PlayerSprite, screen: Surface, character: CharacterSprite):
         self.rect.center = self._data.pos
         if (
                 self.rect.right > WINDOW_WIDTH or self.rect.bottom > WINDOW_HEIGHT or self.rect.left < 0 or self.rect.top < 0):
             self.kill()
-        if sprite.collide_mask(player, self) is not None:
-            character.gain_health(20)
-            hearts.remove(self)
 
