@@ -241,9 +241,9 @@ class LevelSurface(Screen):
 
     # draw new surface containing new level when level is incremented
     def draw_new_level(self, level):
-        surface = self._new_screen_helper(
+        self._level_surface = self._new_screen_helper(
             WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "LEVEL " + str(level+1), WHITE, None)
-        return surface
+        return self._level_surface
 
     # drawing surface to screen
     def update_screen_level(self, screen):
