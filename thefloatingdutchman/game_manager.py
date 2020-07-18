@@ -1,5 +1,6 @@
 import os
-from pygame import display, event, time, QUIT, KEYDOWN, K_TAB
+import sys
+from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
 
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
@@ -60,6 +61,7 @@ class GameManager(Manager):
 
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
+
         self._player_manager.update(
             self._screen, self._room_manager.get_current_enemies())
         ui.health_bar(self._screen, self._player_manager)
