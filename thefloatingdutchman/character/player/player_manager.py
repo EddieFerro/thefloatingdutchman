@@ -1,4 +1,4 @@
-from pygame import Vector2, sprite, display
+from pygame import Vector2, sprite, display, time
 
 from thefloatingdutchman.character.player.player_data import PlayerData
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
@@ -17,14 +17,13 @@ class PlayerManager(Manager):
         self._player = PlayerSprite(player_data)
 
     def draw(self, screen):
-        screen.blit(self._player.image, self._player.rect)
+        self._player.draw(screen)
         self._player.bullets.draw(screen)
 
     def update(self, screen, enemies: sprite.Group()):
         self._player.update(screen)
         for enemy in enemies:
-            hits = sprite.spritecollide(
-                self._player, enemy.bullets, True, sprite.collide_mask)
+            hits = sprite.spritecollide(self._player, enemy.bullets, True, sprite.collide_mask)
             for bullet in hits:
                 self._player.take_damage(enemy._damage)
 
