@@ -20,7 +20,6 @@ class Room(Manager):
         self._enemy_manager.spawn(level)
         self._heart_manager.spawn(level)
 
-
     def update(self, player: PlayerSprite, screen: Surface):
         self._heart_manager.update(player, screen)
         if self._enemy_manager.get_enemy_count():
@@ -35,9 +34,6 @@ class Room(Manager):
     def draw(self, screen: Surface):
         self._enemy_manager.draw(screen)
         self._heart_manager.draw(screen)
-
-
-
 
     @property
     def id(self):

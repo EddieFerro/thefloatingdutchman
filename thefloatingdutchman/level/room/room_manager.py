@@ -4,7 +4,6 @@ from pygame import Surface
 
 
 from thefloatingdutchman.manager import Manager
-from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.level.map.map_generator import MapGenerator
