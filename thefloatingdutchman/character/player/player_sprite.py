@@ -17,6 +17,9 @@ class PlayerSprite(CharacterSprite):
         self._damage = 34
         self._dead = False
         self.mask = pygame.mask.from_surface(self.image)
+        self.invulnerable = False
+        self.invulnerable_start = 0
+        self.flash = True
 
     def _set_original_image(self):
         # sprite_sheet = image.load("pirate_ship_00000.png").convert()
@@ -41,7 +44,7 @@ class PlayerSprite(CharacterSprite):
     def update(self, screen):
         if(self._data.health <= 0):
             self._dead = True
-            self.kill
+            self.kill()
         self._calc_movement(screen)
         self._bullets.update()
 
@@ -96,3 +99,24 @@ class PlayerSprite(CharacterSprite):
     @property
     def dead(self) -> bool:
         return self._dead
+
+    def take_damage(self, damage):
+        if not self.invulnerable:
+            super().take_damage(damage)
+            self.invulnerable = True
+            self.invulnerable_start = pygame.time.get_ticks()
+
+    def draw(self, screen):
+        if not self.invulnerable:
+            screen.blit(self.image, self.rect)
+        else:
+            if self.flash:
+                screen.blit(self.image, self.rect)
+            now = pygame.time.get_ticks()
+            dt = now - self.invulnerable_start
+            if dt % 500:
+                self.flash = not self.flash
+            if dt > 1501:
+                self.invulnerable = False
+            
+

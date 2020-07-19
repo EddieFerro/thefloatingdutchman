@@ -61,9 +61,7 @@ class GameManager(Manager):
 
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
-
-        self._player_manager.update(
-            self._screen, self._room_manager.get_current_enemies())
+        self._player_manager.update(self._screen, self._room_manager.get_current_enemies())
         ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
