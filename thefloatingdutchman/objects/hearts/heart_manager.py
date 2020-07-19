@@ -45,12 +45,12 @@ class HeartManager(Manager):
     def get_heart_count(self) -> int:
         return len(self._hearts.sprites())
 
-    def update(self, player: PlayerSprite, screen: Surface, character: CharacterSprite):
-        self._hearts.update(player, self._hearts, screen, character)
-        hits = sprite.spritecollide(
-            player, self._hearts, True, sprite.collide_mask)
-        for pickups in hits:
-            character.gain_health(20)
+    def update(self, player: PlayerSprite, screen: Surface):
+        self._hearts.update(player, self._hearts, screen)
+        if player._data.health < player._data._max_health:
+            hits = sprite.spritecollide(player, self._hearts, True, sprite.collide_mask)
+            for pickups in hits:
+                player._data.gain_health(1)
 
     def draw(self, screen: Surface):
         self._hearts.draw(screen)

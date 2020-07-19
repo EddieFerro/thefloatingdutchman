@@ -12,7 +12,7 @@ class EnemySprite(CharacterSprite, ABC):
     def __init__(self, enemy_data: EnemyData):
         super().__init__(enemy_data)
         self.radius = 80
-        self._damage = 10
+        self._damage = 0.5
         self.mask = mask.from_surface(self.image)
 
     @abstractmethod
