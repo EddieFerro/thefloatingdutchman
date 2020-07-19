@@ -15,7 +15,6 @@ class EnemyType1(EnemySprite):
 
     def __init__(self,  enemy_data: EnemyData):
         super().__init__(enemy_data)
-        self._type2 = False
 
     def _set_original_image(self):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
@@ -31,24 +30,28 @@ class EnemyType1(EnemySprite):
         if(self._data.health <= 0):
             self.kill()
         # Check for nearby enemies, only move in certain case
-        for enemy in enemies:
-            if pygame.sprite.collide_circle(self, enemy) and enemy != self:
-                distance = math.hypot(
-                    (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
-                # print(distance)
-                if (distance < 400):
-                    target_direction = Vector2(
-                        (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
-                    target_direction.scale_to_length(self._data.vel * 0.0001)
-                    self.rect.x += target_direction.x
-                    self.rect.y += target_direction.y
+
 
         # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
-        target_direction = Vector2(
-            - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y + random.randrange(0, 30))
-        target_direction.scale_to_length(self._data.vel * 0.7)
+
+
 
         try:
+            for enemy in enemies:
+                if pygame.sprite.collide_circle(self, enemy) and enemy != self:
+                    distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
+                    # print(distance)
+                    if (distance < 400):
+                        target_direction = Vector2(
+                            (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
+                        target_direction.scale_to_length(self._data.vel * 0.0001)
+                        self.rect.x += target_direction.x
+                        self.rect.y += target_direction.y
+            target_direction = Vector2(
+                - self.rect.x + player.rect.x + random.randrange(0, 30),
+                - self.rect.y + player.rect.y + random.randrange(0, 30))
+            target_direction.scale_to_length(self._data.vel * 0.7)
+
             # Update bullets
             self._bullets.update()
 

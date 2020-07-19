@@ -36,3 +36,9 @@ class CharacterSprite(Sprite, ABC):
         arr[:,:,1] = 0
         arr[:,:,2] = 0
         time.sleep(.020)
+
+    def gain_health(self, healing: int):
+        if self._data.health <= 80:
+            self._data.health += healing
+        else:
+            self._data.health = 100

@@ -10,7 +10,7 @@ os.environ['SDL_AUDIODRIVER'] = 'dsp'  # this removes audio error warnings
 
 def main():
     pygame.init()
-
+    
     game_manager = GameManager()
     game_manager.run()
 
