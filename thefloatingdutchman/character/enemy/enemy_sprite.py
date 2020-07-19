@@ -12,7 +12,12 @@ class EnemySprite(CharacterSprite, ABC):
     def __init__(self, enemy_data: EnemyData):
         super().__init__(enemy_data)
         self.radius = 80
+<<<<<<< HEAD
         self._damage = 0.5
+=======
+        self._damage = 10
+        self._prev_shot = 0
+>>>>>>> ee0aa99... boss spawns in first room with minions
         self.mask = mask.from_surface(self.image)
 
     @abstractmethod

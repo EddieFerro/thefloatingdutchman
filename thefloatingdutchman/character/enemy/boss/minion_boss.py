@@ -13,17 +13,20 @@ from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 
 
 class MinionBoss(EnemySprite):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, enemy_data: EnemyData):
+        super().__init__(enemy_data)
+        self.radius = 600
 
     def _set_original_image(self):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
             os.path.realpath(__file__)), "minion_boss.png")).convert_alpha()
-        temp_rect = Rect((0, 0, 32, 32))
+        temp_rect = Rect((0, 0, 512, 512))
+
+        scale = 0.9
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
-            self._original_image, (int(32*2.5), int(32*2.5)))
+            self._original_image, (int(512*scale), int(512*scale)))
         self._original_image = transform.rotate(self._original_image, -90)
 
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface) -> None:
@@ -37,7 +40,7 @@ class MinionBoss(EnemySprite):
         dist_from_player = math.hypot(
             (player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
 
-        if (dist_from_player > 300):
+        if (dist_from_player > 400):
             self._data._stopMoving = False
 
         # Move towards player when far enough away
@@ -101,7 +104,7 @@ class MinionBoss(EnemySprite):
             distance = math.hypot(
                 (player.rect.x-self.rect.x), (player.rect.y - self.rect.y))
             # Move back if in danger zone
-            if(distance < 300):
+            if(distance < 800):
                 target_direction = Vector2(
                     (self.rect.x - player.rect.x), (self.rect.y - player.rect.y))
                 target_direction.scale_to_length(self._data.vel * 1.01)

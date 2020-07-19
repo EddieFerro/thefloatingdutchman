@@ -5,6 +5,9 @@ from ordered_set import OrderedSet
 from networkx import DiGraph
 
 from thefloatingdutchman.level.room.room import Room
+from thefloatingdutchman.level.room.enemy_room import EnemyRoom
+from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
+from thefloatingdutchman.character.enemy.boss.boss_manager import BossManager
 
 
 class MapGenerator:
@@ -37,8 +40,9 @@ class MapGenerator:
     def generate_rooms(self, num_rooms: int) -> List[Room]:
 
         rooms = []
-        for i in range(0, num_rooms):
-            rooms.append(Room())
+        rooms.append(EnemyRoom(BossManager()))
+        for i in range(1, num_rooms):
+            rooms.append(EnemyRoom(EnemyManager()))
         return rooms
 
     def generate_room_graph(self, rooms_per_col: List[int]) -> DiGraph:

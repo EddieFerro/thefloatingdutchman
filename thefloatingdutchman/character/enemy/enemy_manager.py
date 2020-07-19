@@ -51,8 +51,7 @@ class EnemyManager(Manager):
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
                         )
                     )
                 )
@@ -64,8 +63,7 @@ class EnemyManager(Manager):
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
                         )
                     )
                 )
@@ -77,8 +75,7 @@ class EnemyManager(Manager):
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
                         )
                     )
                 )
@@ -90,8 +87,7 @@ class EnemyManager(Manager):
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
                         )
                     )
                 )
