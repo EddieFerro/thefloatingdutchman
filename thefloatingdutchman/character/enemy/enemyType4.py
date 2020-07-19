@@ -51,8 +51,8 @@ class EnemyType4(EnemySprite):
                 self._bullets.update()
 
                 # Delete enemy when it comes into contact with player
-                if sprite.collide_mask(player, self) is not None:
-                    player.take_damage(5)
+                if sprite.collide_mask(player, self) is not None and not player.invulnerable:
+                    player.take_damage(1)
                     enemies.remove(self)
 
                 # Type 2 enemy specification
@@ -64,7 +64,7 @@ class EnemyType4(EnemySprite):
                 if (self._charging) < 500:
                     self._charging = n - self._start
                     self._pstart = pygame.time.get_ticks()
-                    print(self._charging)
+                    # print(self._charging)
                     target_direction = Vector2(
                         - self.rect.x + player.rect.x + random.randrange(0, 30),
                         - self.rect.y + player.rect.y + random.randrange(0, 30))

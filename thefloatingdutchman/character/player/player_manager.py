@@ -12,7 +12,7 @@ class PlayerManager(Manager):
         self._player = None
 
     def spawn(self):
-        player_data = PlayerData(100, 750, Vector2(
+        player_data = PlayerData(4, 750, Vector2(
             display.Info().current_w/2, display.Info().current_h/2), 10)
         self._player = PlayerSprite(player_data)
 

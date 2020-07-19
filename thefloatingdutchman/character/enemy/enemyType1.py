@@ -56,8 +56,8 @@ class EnemyType1(EnemySprite):
             self._bullets.update()
 
             # Delete enemy when it comes into contact with player
-            if sprite.collide_mask(player, self) is not None:
-                player.take_damage(30)
+            if sprite.collide_mask(player, self) is not None and not player.invulnerable:
+                player.take_damage(1)
                 enemies.remove(self)
 
             self.rect.x += target_direction.x
