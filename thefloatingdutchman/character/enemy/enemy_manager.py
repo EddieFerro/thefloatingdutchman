@@ -104,6 +104,6 @@ class EnemyManager(Manager):
             enemy.take_damage(player._damage)
 
     def draw(self, screen: Surface):
-        self._enemies.draw(screen)
         for enemy in self._enemies:
+            enemy.draw(screen)
             enemy.bullets.draw(screen)

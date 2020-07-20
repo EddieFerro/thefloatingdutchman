@@ -94,7 +94,7 @@ class PlayerSprite(CharacterSprite):
         self._angle = (180 / math.pi) * -math.atan2(rel_y, rel_x) + 5
         self.image = transform.rotate(self._original_image, int(self._angle))
         self.rect = self.image.get_rect(center=self._data.pos)
-        self.rect.center = self._data.pos
+        # self.rect.center = self._data.pos
 
     @property
     def dead(self) -> bool:
@@ -118,5 +118,3 @@ class PlayerSprite(CharacterSprite):
                 self.flash = not self.flash
             if dt > 1501:
                 self.invulnerable = False
-            
-
