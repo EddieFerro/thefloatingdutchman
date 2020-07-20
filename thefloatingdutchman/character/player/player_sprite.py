@@ -20,6 +20,7 @@ class PlayerSprite(CharacterSprite):
         self.invulnerable = False
         self.invulnerable_start = 0
         self.flash = True
+        self.bullet_sprite = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../objects/bullets/Cannonball.png")).convert_alpha()
 
     def _set_original_image(self):
         # sprite_sheet = image.load("pirate_ship_00000.png").convert()
@@ -66,7 +67,7 @@ class PlayerSprite(CharacterSprite):
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
                 direction = Vector2(1, 0).rotate(-self._angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(
+                BulletSprite(BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
                     self._bullets)
 
         if x != 0 and y != 0:
