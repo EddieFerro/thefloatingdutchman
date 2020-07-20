@@ -347,9 +347,8 @@ class LevelSurface(Screen):
             WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "LEVEL " + str(level), WHITE, None)
 
     # drawing surface to screen
-    def update_screen(self, screen):
-        screen.blit(self._level_surface, ((WINDOW_WIDTH - self._level_surface.get_width()) / 2,
-                                          -WINDOW_HEIGHT/3))
+    def update_screen_level(self, screen):
+        screen.blit(self._level_surface, ((WINDOW_WIDTH - self._level_surface.get_width()) / 2, -WINDOW_HEIGHT/3))
 
 
 class Tutorial(Screen):
@@ -411,18 +410,25 @@ def image_fill_background(image_name):
     return image
 
 # health bar that shows player's health
+class HealthUI():
+    def __init__(self):
+        self.full_heart = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "full_heart.png")).convert_alpha()
+        self.heart_outline = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "heart_outline.png")).convert_alpha()
+        self.half_heart = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "half_heart.png")).convert_alpha()
 
-
-def health_bar(screen, playermanager):
-    current_hp = playermanager.player._data.health
-    temp1 = pygame.draw.rect(
-        screen, WHITE, (WINDOW_WIDTH/2 - 150, 97.5, 300, 50))
-    temp2 = pygame.draw.rect(
-        screen, GREEN, (WINDOW_WIDTH/2 - 140, 100, 280 * (current_hp/100), 45))
+    def health_bar(self, screen, playermanager):
+        current_hp = playermanager.player._data.health
+        max_hp = playermanager.player._data._max_health
+        whole = int(current_hp / 1)
+        # image = pygame.transform.scale(image, (1.5, 1.5))
+        for x in range(max_hp):
+            screen.blit(self.heart_outline, (29 + 75 * x, 29))
+        for i in range(whole):
+            screen.blit(self.full_heart, (30 + 75 * i, 30))
+        if (current_hp - whole) > 0:
+            screen.blit(self.half_heart, (30 + 75 * whole, 30))
 
 # pauses game until either spacebar is pressed or the time spent in function is greater than sleep_time
-
-
 def wait_for_user(sleep_time):
     t0 = time.time()
     while True:

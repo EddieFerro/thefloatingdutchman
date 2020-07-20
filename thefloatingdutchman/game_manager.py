@@ -1,6 +1,6 @@
 import os
 import sys
-from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB
+from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB, image, transform
 
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
@@ -49,13 +49,14 @@ class GameManager(Manager):
     def spawn(self):
         self._level = 1
         self._level_surface = ui.LevelSurface()
+        self._health_ui = ui.HealthUI()
         self._player_manager.spawn()
         self._room_manager.spawn(self._level)
 
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
         self._player_manager.update(self._screen, self._room_manager.get_current_enemies())
-        ui.health_bar(self._screen, self._player_manager)
+        self._health_ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
             self._level += 1
@@ -86,7 +87,7 @@ class GameManager(Manager):
     def draw(self):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
-        ui.health_bar(self._screen, self._player_manager)
+        self._health_ui.health_bar(self._screen, self._player_manager)
         self._level_surface.update_screen(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()

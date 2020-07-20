@@ -22,7 +22,7 @@ class Room(Manager):
 
 
     def update(self, player: PlayerSprite, screen: Surface):
-        self._heart_manager.update(player, screen, player)
+        self._heart_manager.update(player, screen)
         if self._enemy_manager.get_enemy_count():
             self._enemy_manager.update(player, screen)
 

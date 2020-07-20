@@ -15,23 +15,26 @@ from thefloatingdutchman.character.character_sprite import CharacterSprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.game_settings import GREEN, RED
+
+
 class EnemyType3(EnemySprite):
 
-    def __init__(self,  enemy_data: EnemyData):
+    def __init__(self, enemy_data: EnemyData):
         super().__init__(enemy_data)
-        self._stand_still = True
-        self._prev_shot =0
+        self._moved = True
+        self._prev_shot = 0
 
     def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)),"Red Fighter.png")).convert_alpha()
-        temp_rect = Rect((0,0,32,32))
+        sprite_sheet = image.load(
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "Red Fighter.png")).convert_alpha()
+        temp_rect = Rect((0, 0, 32, 32))
         self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
-        self._original_image = transform.scale(self._original_image, (int(32*2.5), int(32*2.5)))
+        self._original_image = transform.scale(self._original_image, (int(32 * 2.5), int(32 * 2.5)))
         self._original_image = transform.rotate(self._original_image, -90)
 
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
-        if(self._data.health <= 0):
+        if (self._data.health <= 0):
             self.kill()
         rand_pos_x = random.randint(40, WINDOW_WIDTH / 2)
 
@@ -51,28 +54,36 @@ class EnemyType3(EnemySprite):
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
             # Delete enemy when it comes into contact with player
-            if sprite.collide_mask(player, self) is not None:
-                player.take_damage(30)
+            if sprite.collide_mask(player, self) is not None and not player.invulnerable:
+                player.take_damage(1)
                 enemies.remove(self)
 
-            # Type 2 enemy specification
-                # Auto fire towards player at a given rate
-            t = pygame.time.get_ticks()
-            if (t - self._prev_shot) > self._data.attack_speed:
-                self._prev_shot = t
-                temp_angle = math.atan2(player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-                temp_angle = math.degrees(temp_angle)
-                temp_angle += random.uniform(-15, 15)
-
-                direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(self._bullets)
             n = pygame.time.get_ticks()
+            if (n - self._prev_shot) > 2000 and self._moved == False:
+                self.rect.x = rand_pos_x
+                self.rect.y = rand_pos_y
+                t = pygame.time.get_ticks()
+                self._moved = True
+
+            elif (n - self._prev_shot) > 3000 and self._moved == True:
+                t = pygame.time.get_ticks()
+                if (t - self._prev_shot) > (self._data.attack_speed-1):
+                    self._prev_shot = t
+                    temp_angle = math.atan2(player.rect.centery - self.rect.centery,
+                                            player.rect.centerx - self.rect.centerx)
+                    temp_angle = math.degrees(temp_angle)
+                    temp_angle += random.uniform(-15, 15)
+
+                    direction = Vector2(1, 0).rotate(temp_angle)
+                    BulletSprite(BulletData(direction, 0, ((self.rect.centerx, self.rect.centery)), 25)).add(self._bullets)
+                    self._moved = False
+
+            else:
+                self.rect.x = self.rect.x
+                self.rect.y = self.rect.y
 
 
-            if (n - self._prev_shot) > 1000:
-                self.rect.x = (rand_pos_x)
-                self.rect.y = (rand_pos_y)
-                self._prev_shot=0
+
 
             screen_rect = screen.get_rect()
 
