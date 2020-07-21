@@ -99,3 +99,4 @@ class GameManager(Manager):
         self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()
+        display.update()
