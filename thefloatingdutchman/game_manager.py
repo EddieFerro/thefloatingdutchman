@@ -18,6 +18,7 @@ class GameManager(Manager):
         self._pause_screen = ui.PauseScreen()
         self._done = False
         self._level = 0
+        self._tutorial_run = False
         path = os.path.join(os.path.dirname(
             os.path.realpath(__file__)), "space_images/space4.jpg")
         self._background = ui.image_fill_background(path)
@@ -28,10 +29,11 @@ class GameManager(Manager):
         self._room_manager = RoomManager()
 
     def run(self):
-        self._access_main_menu()
         self.spawn()
         # comment out this line to remove the tutorial
-        #self._tutorial.begin_tutorial(self._screen)
+        if not self._tutorial_run:
+            self._tutorial.begin_tutorial(self._screen)
+            self._tutorial_run = True
 
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
@@ -47,7 +49,8 @@ class GameManager(Manager):
 
     # resets game
     def spawn(self):
-        self._level = 1
+        self._level = 0
+        self._done = False
         self._level_surface = ui.LevelSurface()
         self._health_ui = ui.HealthUI()
         self._player_manager.spawn()
@@ -88,16 +91,9 @@ class GameManager(Manager):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         self._health_ui.health_bar(self._screen, self._player_manager)
-        self._level_surface.update_screen(self._screen)
+        self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()
-
-    def _access_main_menu(self):
-        result = self._main_menu.open(self._main_menu.draw(self._screen, 0))
-        if result == 2: #show game controls
-            self._tutorial.show_game_controls(self._screen)
-        if result == 3: #quit
-            self._done = True
 
     def _access_pause_screen(self):
         result = self._pause_screen.open(self._pause_screen.draw(self._screen, 0))

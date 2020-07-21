@@ -116,4 +116,5 @@ class MapUI:
                             set_current_room(_id)
                             return False
                 elif e.type == QUIT:
-                    return True
+                    exit()
+                    #return True

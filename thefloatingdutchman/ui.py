@@ -1,9 +1,9 @@
-
 import pygame
+from pygame import QUIT
 import time
 import os
 from thefloatingdutchman.character.character_data import CharacterData
-from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, GREEN, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, PLAY_AGAIN_HEIGHT_LOWER_BOUND, PLAY_AGAIN_HEIGHT_UPPER_BOUND,
+from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, RUFOUS, MANTIS, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, PLAY_AGAIN_HEIGHT_LOWER_BOUND, PLAY_AGAIN_HEIGHT_UPPER_BOUND,
                                                QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND, RESUME__HEIGHT_LOWER_BOUND, RESUME_HEIGHT_UPPER_BOUND, RESTART_HEIGHT_LOWER_BOUND, RESTART_HEIGHT_UPPER_BOUND,
                                                VIEW_MAP_HEIGHT_LOWER_BOUND, VIEW_MAP_HEIGHT_UPPER_BOUND, VIEW_CONTROLS_HEIGHT_LOWER_BOUND, VIEW_CONTROLS_HEIGHT_UPPER_BOUND, QUIT_PAUSE_HEIGHT_LOWER_BOUND,
                                                QUIT_PAUSE_HEIGHT_UPPER_BOUND, OPTIONS_HEIGHT_LOWER_BOUND, OPTIONS_HEIGHT_UPPER_BOUND, BEGIN__HEIGHT_LOWER_BOUND, BEGIN_HEIGHT_UPPER_BOUND,
@@ -12,6 +12,13 @@ from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLAC
 
 
 class Screen:
+    #create surfaces from features
+    def _gather_surfaces(self, surfaces, features, width, height, font_size):
+        for txt, color, fill in features:
+            surfaces.append(self._draw_surface(width,
+                                                    height, font_size, txt, color, fill))
+        return surfaces
+
     # create surface
     def _draw_surface(self, width, height, font_size, text,
                            text_color, fill):
@@ -52,12 +59,11 @@ class Screen:
             sleep_times = [0] * 2
             tutorial = True
         elif len(self._surfaces) == 9:
-            screen.fill(BLACK)
-            screen.blit(self._banner, (0,0))
-            pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 2,
-                                             WINDOW_HEIGHT / (10 / 7)), border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
-            y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.35,
-                           WINDOW_HEIGHT*.53, WINDOW_HEIGHT*.62, WINDOW_HEIGHT*.8]
+            screen.fill((8,0,26))
+            screen.blit(self._background, (0,0))
+            screen.blit(self._logo, ((WINDOW_WIDTH - self._logo.get_width()) / 2, WINDOW_HEIGHT*.25))
+            y_locations = [WINDOW_HEIGHT*.9, WINDOW_HEIGHT*.4,
+                           WINDOW_HEIGHT*.5, WINDOW_HEIGHT*.6, WINDOW_HEIGHT*.7]
             sleep_times = [0] * 9
         else: #pause screen
             pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 2,
@@ -97,12 +103,10 @@ class GameOverScreen(Screen):
         self._surfaces.append(self._draw_surface(WINDOW_WIDTH / 2,
                                                 WINDOW_HEIGHT / 5, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "GAME OVER!", WHITE, None))
 
-        features = [["PLAY AGAIN", BLACK], ["MAIN MENU", BLACK],
-                    ["PLAY AGAIN", GREEN], ["MAIN MENU", RED]]
+        features = [["PLAY AGAIN", WHITE, BLACK], ["MAIN MENU", WHITE, BLACK],
+                    ["PLAY AGAIN", WHITE, MANTIS], ["MAIN MENU", WHITE, RUFOUS]]
 
-        for txt, color in features:  # alternate between play again and quit
-            self._surfaces.append(self._draw_surface(WINDOW_WIDTH / 4,
-                                                    WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), txt, WHITE, color))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20))
 
     def open(self, screen):
         most_recent_is_continue = True
@@ -110,6 +114,8 @@ class GameOverScreen(Screen):
         while True:
             for event in pygame.event.get():
                 mouse = pygame.mouse.get_pos()  # mouse position
+                if event.type == QUIT:  # user closes application
+                    exit()
                 if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION:  # event has occurred
 
                     # player has chosen an option
@@ -152,12 +158,10 @@ class PauseScreen(Screen):
         self._surfaces.append(self._draw_surface(WINDOW_WIDTH / 2,
                                                 WINDOW_HEIGHT / 6, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "PAUSED", BLACK, None))  # pause
 
-        features = [["RESUME", BLACK], ["OPTIONS", BLACK], ["VIEW MAP", BLACK], ["VIEW GAME CONTROLS", BLACK], ["RESTART GAME", BLACK], ["RETURN TO MAIN MENU", BLACK],
-                    ["RESUME", GREEN], ["OPTIONS", GREEN], ["VIEW MAP", GREEN], ["VIEW GAME CONTROLS", GREEN], ["RESTART GAME", GREEN], ["RETURN TO MAIN MENU", RED]]
+        features = [["RESUME", WHITE, BLACK], ["OPTIONS", WHITE, BLACK], ["VIEW MAP", WHITE, BLACK], ["VIEW GAME CONTROLS", WHITE, BLACK], ["RESTART GAME", WHITE, BLACK], ["RETURN TO MAIN MENU", WHITE, BLACK],
+                    ["RESUME", WHITE, MANTIS], ["OPTIONS", WHITE, MANTIS], ["VIEW MAP", WHITE, MANTIS], ["VIEW GAME CONTROLS", WHITE, MANTIS], ["RESTART GAME", WHITE, MANTIS], ["RETURN TO MAIN MENU", WHITE, RUFOUS]]
 
-        for txt, color in features:
-            self._surfaces.append(self._draw_surface(WINDOW_WIDTH / 4, WINDOW_HEIGHT /
-                                                    14, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25), txt, WHITE, color))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 14, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
 
     def open(self, screen):
         curr_index = 0  # indicates option currently chosen
@@ -166,8 +170,9 @@ class PauseScreen(Screen):
         while True:
             for event in pygame.event.get():
                 mouse = pygame.mouse.get_pos()  # mouse position
+                if event.type == QUIT:  # user closes application
+                        exit()
                 if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION:  # event has occurred
-
                     # player has chosen an option
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                         if curr_index >= 0 and curr_index <= 5:  # return chosen option
@@ -252,29 +257,31 @@ class MainMenu(Screen):
         self._initialize()
 
     def _initialize(self):
-        self._banner = pygame.image.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "space_images/menu_banner.png"))
-        self._banner = pygame.transform.scale(
-            self._banner, (WINDOW_WIDTH, int(WINDOW_HEIGHT/5)))
+        self._background = image_fill_background(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "space_images/space10.jpg"))
+        self._logo = pygame.image.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "logo.png"))
+        self._logo = pygame.transform.scale(
+            self._logo, (int(WINDOW_WIDTH / 2), int(WINDOW_HEIGHT / 10)))
 
         self._surfaces = []
-        self._surfaces.append(self._draw_surface(WINDOW_WIDTH / 2,
+        self._surfaces.append(self._draw_surface(WINDOW_WIDTH / (3 / 2),
                                                 WINDOW_HEIGHT / 6, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "THE FLOATING DUTCHMAN", BLACK, None))  # title
         
-        features = [["BEGIN GAME", BLACK], ["OPTIONS", BLACK], ["VIEW GAME CONTROLS", BLACK], ["EXIT GAME", BLACK],
-                    ["BEGIN GAME", GREEN], ["OPTIONS", GREEN], ["VIEW GAME CONTROLS", GREEN], ["EXIT GAME", RED]]
+        features = [["BEGIN GAME", WHITE, None], ["OPTIONS", WHITE, None], ["VIEW GAME CONTROLS", WHITE, None], ["EXIT GAME", WHITE, None],
+                    ["BEGIN GAME", WHITE, MANTIS], ["OPTIONS", WHITE, MANTIS], ["VIEW GAME CONTROLS", WHITE, MANTIS], ["EXIT GAME", WHITE, RUFOUS]]
 
-        for txt, color in features:
-            self._surfaces.append(self._draw_surface(WINDOW_WIDTH / 4, WINDOW_HEIGHT /
-                                                    14, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25), txt, WHITE, color))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 12, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
 
-    def open(self, screen):
-        curr_index = 0  # indicates option currently chosen
-        prev_index = 0
+    def open(self, screen, result):
+        curr_index = result  # indicates option currently chosen
+        prev_index = result
 
         while True:
             for event in pygame.event.get():
                 mouse = pygame.mouse.get_pos()  # mouse position
+                if event.type == QUIT:  # user closes application
+                    return 3
                 if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEMOTION:  # event has occurred
 
                     # player has chosen an option
@@ -339,12 +346,12 @@ class MainMenu(Screen):
 class LevelSurface(Screen):
     # initialize surface with level being equal to 1
     def __init__(self):
-        self.draw_new_level(1)
+        self.draw_new_level(0)
 
     # draw new surface containing new level when level is incremented
     def draw_new_level(self, level):
         self._level_surface = self._draw_surface(
-            WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "LEVEL " + str(level), WHITE, None)
+            WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "LEVEL " + str(level+1), WHITE, None)
 
     # drawing surface to screen
     def update_screen_level(self, screen):
@@ -362,15 +369,12 @@ class Tutorial(Screen):
     # initialize elements for story
     def _generate_story_elements(self):
         self._story_surfaces = []
-        features = [[(int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "THE FLOATING DUTCHMAN", YELLOW],
-        [(int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "You Are the Captain of the Flying Dutchman", YELLOW],
-        [(int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "You have ended up in space and your crew", YELLOW],
-        [(int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "has been captured by the Ghost Bustas", YELLOW],
-        [(int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "It is up to you to rescue your crew", YELLOW],
-        [(int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "and defeat the Ghost Bustas", YELLOW],
-        [(int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "Press the Spacebar to Continue", BLUE]]
-        for size, txt, color in features:
-            self._story_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, size, txt, color, None))
+        self._story_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "THE FLOATING DUTCHMAN", YELLOW, None))
+        features = [["You Are the Captain of the Flying Dutchman", YELLOW, None], ["You have ended up in space and your crew", YELLOW, None],
+        ["has been captured by the Ghost Bustas", YELLOW, None], ["It is up to you to rescue your crew", YELLOW, None],
+        ["and defeat the Ghost Bustas", YELLOW, None], ["Press the Spacebar to Continue", BLUE, None]]
+        
+        self._story_surfaces = self._gather_surfaces(self._story_surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
 
     # initialize elements for game controls
     def _generate_game_controls_elements(self):
@@ -401,13 +405,6 @@ class Tutorial(Screen):
         self._surfaces = self._game_controls_surfaces
         self.draw(screen, 0)
 
-# scales image to screen size
-
-
-def image_fill_background(image_name):
-    image = pygame.image.load(image_name)
-    image = pygame.transform.scale(image, (WINDOW_WIDTH, WINDOW_HEIGHT))
-    return image
 
 # health bar that shows player's health
 class HealthUI():
@@ -428,7 +425,18 @@ class HealthUI():
         if (current_hp - whole) > 0:
             screen.blit(self.half_heart, (30 + 75 * whole, 30))
 
+# scales image to screen size
+
+
+def image_fill_background(image_name):
+    image = pygame.image.load(image_name)
+    image = pygame.transform.scale(image, (WINDOW_WIDTH, WINDOW_HEIGHT))
+    return image
+
+
 # pauses game until either spacebar is pressed or the time spent in function is greater than sleep_time
+
+
 def wait_for_user(sleep_time):
     t0 = time.time()
     while True:
