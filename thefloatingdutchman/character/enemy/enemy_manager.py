@@ -61,7 +61,7 @@ class EnemyManager(Manager):
                 )
             elif enemyChooser == 1:
                 self._enemies.add(
-                    EnemyType5(
+                    EnemyType2(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             # random.randint(5, 15) + random.randint(0, level*2),

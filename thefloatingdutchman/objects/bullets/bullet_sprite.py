@@ -37,7 +37,7 @@ class BulletSprite(ObjectSprite):
             if (player):
                 distance = math.hypot(
                     (player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
-                if distance < 100:
+                if distance < 150:
                     player.take_damage(1)
                 draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
                 display.update()
