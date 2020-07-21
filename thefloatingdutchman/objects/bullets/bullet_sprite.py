@@ -13,11 +13,10 @@ class BulletSprite(ObjectSprite):
         self.mask = mask.from_surface(self.image)
 
     def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "Cannonball.png")).convert_alpha()
+        sprite_sheet = self._data.sprite
 
         # exact dimension of player sprite
-        temp_rect = Rect((0, 0, 18, 18))
+        temp_rect = Rect((0, 0, 20, 20))
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         # sets image to a portion of spritesheet (surface)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)

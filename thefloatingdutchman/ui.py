@@ -419,7 +419,7 @@ class HealthUI():
         whole = int(current_hp / 1)
         # image = pygame.transform.scale(image, (1.5, 1.5))
         for x in range(max_hp):
-            screen.blit(self.heart_outline, (29 + 75 * x, 29))
+            screen.blit(self.heart_outline, (30 + 75 * x, 30))
         for i in range(whole):
             screen.blit(self.full_heart, (30 + 75 * i, 30))
         if (current_hp - whole) > 0:

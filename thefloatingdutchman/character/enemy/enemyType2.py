@@ -78,7 +78,7 @@ class EnemyType2(EnemySprite):
                 temp_angle = math.degrees(temp_angle)
                 temp_angle += random.uniform(-15, 15)
                 direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(
+                BulletSprite(BulletData(direction, 0, self._data.pos, 25,self.bullet_sprite)).add(
                     self._bullets)
 
             # Stop moving towards player at a certain distance
