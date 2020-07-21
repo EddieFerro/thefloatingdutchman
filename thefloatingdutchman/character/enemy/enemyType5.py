@@ -61,7 +61,7 @@ class EnemyType5(EnemySprite):
 
 
             # Update bullets
-            self._bullets.update(player)
+            self._bullets.update(player, screen)
 
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None and not player.invulnerable:
@@ -78,7 +78,7 @@ class EnemyType5(EnemySprite):
                 temp_angle = math.degrees(temp_angle)
                 temp_angle += random.uniform(-15, 15)
                 direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 500, self._data.pos, 25, True)).add(
+                BulletSprite(BulletData(direction, 500, self._data.pos, 20, True)).add(
                     self._bullets)
 
             # Stop moving towards player at a certain distance

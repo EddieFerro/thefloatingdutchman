@@ -6,7 +6,7 @@ class BulletData(ObjectData):
     def __init__(self, direction: vec, life_time, spawn, vel, type5=False):
         super().__init__(life_time, spawn, vel)
         self._direction = direction
-        self._type5 = type5
+        self.type5 = type5
 
     @property
     def direction(self) -> vec:
