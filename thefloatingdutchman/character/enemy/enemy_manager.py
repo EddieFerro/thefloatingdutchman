@@ -6,6 +6,7 @@ from thefloatingdutchman.character.enemy.enemyType1 import EnemyType1
 from thefloatingdutchman.character.enemy.enemyType2 import EnemyType2
 from thefloatingdutchman.character.enemy.enemyType3 import EnemyType3
 from thefloatingdutchman.character.enemy.enemyType4 import EnemyType4
+from thefloatingdutchman.character.enemy.enemyType5 import EnemyType5
 
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 

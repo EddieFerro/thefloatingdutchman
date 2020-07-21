@@ -1,6 +1,6 @@
 import os
-
-from pygame import image, Rect, mask, Surface, SRCALPHA
+import math
+from pygame import image, Rect, mask, Surface, SRCALPHA, time
 
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
 from thefloatingdutchman.objects.object_sprite import ObjectSprite
@@ -11,6 +11,7 @@ class BulletSprite(ObjectSprite):
     def __init__(self, bullet_data: BulletData):
         super().__init__(bullet_data)
         self.mask = mask.from_surface(self.image)
+        self._ticks = time.get_ticks()
 
     def _set_original_image(self):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
@@ -25,9 +26,21 @@ class BulletSprite(ObjectSprite):
         # makes player appropriate size
         # self._original_image = transform.scale(self._original_image, (int(313/4), int(207/4)))
 
-    def update(self):
+    def update(self, player=None):
         self._data.pos += (self._data.direction * self._data.vel)
         self.rect.center = self._data.pos
+        t= time.get_ticks()
+        if (t - self._ticks) > self._data.life_time and  (self._data._type5):
+            self._ticks = t
+            if(player):
+                distance = math.hypot(
+                    (player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
+                if distance < 500:
+                    player.take_damage(1)
+
+                    self.kill()
+            self.kill()
+
 
         if(self.rect.right > WINDOW_WIDTH or self.rect.bottom > WINDOW_HEIGHT or self.rect.left < 0 or self.rect.top < 0):
             self.kill()

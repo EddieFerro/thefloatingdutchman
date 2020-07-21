@@ -66,7 +66,7 @@ class PlayerSprite(CharacterSprite):
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
                 direction = Vector2(1, 0).rotate(-self._angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(
+                BulletSprite(BulletData(direction,0, self._data.pos, 25)).add(
                     self._bullets)
 
         if x != 0 and y != 0:
