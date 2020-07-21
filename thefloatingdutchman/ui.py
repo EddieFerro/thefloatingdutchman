@@ -3,7 +3,7 @@ from pygame import QUIT
 import time
 import os
 from thefloatingdutchman.character.character_data import CharacterData
-from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RED, RUFOUS, MANTIS, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, PLAY_AGAIN_HEIGHT_LOWER_BOUND, PLAY_AGAIN_HEIGHT_UPPER_BOUND,
+from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RUFOUS, MANTIS, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, PLAY_AGAIN_HEIGHT_LOWER_BOUND, PLAY_AGAIN_HEIGHT_UPPER_BOUND,
                                                QUIT_HEIGHT_LOWER_BOUND, QUIT_HEIGHT_UPPER_BOUND, RESUME__HEIGHT_LOWER_BOUND, RESUME_HEIGHT_UPPER_BOUND, RESTART_HEIGHT_LOWER_BOUND, RESTART_HEIGHT_UPPER_BOUND,
                                                VIEW_MAP_HEIGHT_LOWER_BOUND, VIEW_MAP_HEIGHT_UPPER_BOUND, VIEW_CONTROLS_HEIGHT_LOWER_BOUND, VIEW_CONTROLS_HEIGHT_UPPER_BOUND, QUIT_PAUSE_HEIGHT_LOWER_BOUND,
                                                QUIT_PAUSE_HEIGHT_UPPER_BOUND, OPTIONS_HEIGHT_LOWER_BOUND, OPTIONS_HEIGHT_UPPER_BOUND, BEGIN__HEIGHT_LOWER_BOUND, BEGIN_HEIGHT_UPPER_BOUND,
@@ -372,7 +372,7 @@ class Tutorial(Screen):
         self._story_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "THE FLOATING DUTCHMAN", YELLOW, None))
         features = [["You Are the Captain of the Flying Dutchman", YELLOW, None], ["You have ended up in space and your crew", YELLOW, None],
         ["has been captured by the Ghost Bustas", YELLOW, None], ["It is up to you to rescue your crew", YELLOW, None],
-        ["and defeat the Ghost Bustas", YELLOW, None], ["Press the Spacebar to Continue", BLUE, None]]
+        ["and defeat the Ghost Bustas", YELLOW, None], ["Press Key to Continue", BLUE, None]]
         
         self._story_surfaces = self._gather_surfaces(self._story_surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
 
@@ -380,7 +380,7 @@ class Tutorial(Screen):
     def _generate_game_controls_elements(self):
         self._game_controls_surfaces = []
         self._game_controls_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 14), "GAME CONTROLS", YELLOW, None))
-        self._game_controls_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "Press the Spacebar to Begin", BLUE, None))
+        self._game_controls_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "Press Key to Continue", BLUE, None))
         self.game_controls_image = pygame.image.load(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), "game_controls.png"))
         self.game_controls_image = pygame.transform.scale(
@@ -434,7 +434,7 @@ def image_fill_background(image_name):
     return image
 
 
-# pauses game until either spacebar is pressed or the time spent in function is greater than sleep_time
+# pauses game until either key is pressed or the time spent in function is greater than sleep_time
 
 
 def wait_for_user(sleep_time):
@@ -443,5 +443,5 @@ def wait_for_user(sleep_time):
         if (time.time() - t0 > sleep_time):
             return
         for event in pygame.event.get():
-            if (event.type == pygame.KEYDOWN and (event.key == pygame.K_SPACE)):
+            if (event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN):
                 return
