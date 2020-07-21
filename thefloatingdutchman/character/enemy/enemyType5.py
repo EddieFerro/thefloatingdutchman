@@ -48,7 +48,7 @@ class EnemyType5(EnemySprite):
 
             # Type 2 enemy backs away from player
             distance = math.hypot((player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
-            if (distance > 300):
+            if (distance > 700):
                 self._data._stopMoving = False
 
             # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
@@ -87,7 +87,7 @@ class EnemyType5(EnemySprite):
                 distance = math.hypot(
                     (player.rect.x-self.rect.x), (player.rect.y - self.rect.y))
                 # Move back if in danger zone
-                if(distance < 300):
+                if(distance < 700):
                     target_direction = Vector2(
                         (self.rect.x - player.rect.x), (self.rect.y - player.rect.y))
                     target_direction.scale_to_length(self._data.vel * 1.01)

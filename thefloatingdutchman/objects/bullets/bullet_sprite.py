@@ -40,15 +40,18 @@ class BulletSprite(ObjectSprite):
                 if distance < 150:
                     player.take_damage(1)
                 draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+                display.flip()
                 display.update()
                 self.kill()
 
             draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+            display.flip()
             display.update()
             self.kill()
 
         if (self.rect.right > WINDOW_WIDTH or self.rect.bottom > WINDOW_HEIGHT or self.rect.left < 0 or self.rect.top < 0):
             if(self._data.type5):
                 draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+                display.flip()
                 display.update()
             self.kill()
