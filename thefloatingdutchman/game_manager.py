@@ -1,3 +1,4 @@
+
 import os
 import sys
 from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB, image, transform
@@ -94,6 +95,7 @@ class GameManager(Manager):
         self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()
+        display.update()
 
     def _access_pause_screen(self):
         result = self._pause_screen.open(self._pause_screen.draw(self._screen, 0))

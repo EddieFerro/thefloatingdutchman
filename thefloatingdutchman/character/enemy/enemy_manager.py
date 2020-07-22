@@ -6,6 +6,7 @@ from thefloatingdutchman.character.enemy.enemyType1 import EnemyType1
 from thefloatingdutchman.character.enemy.enemyType2 import EnemyType2
 from thefloatingdutchman.character.enemy.enemyType3 import EnemyType3
 from thefloatingdutchman.character.enemy.enemyType4 import EnemyType4
+from thefloatingdutchman.character.enemy.enemyType5 import EnemyType5
 
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 
@@ -38,11 +39,16 @@ class EnemyManager(Manager):
             type1Chance = 0.25
             type3Chance =0
             type4Chance =0
-            if(level+1) >= 2:
-                type3Chance = 0.1 + (level * 0.01)
-                type4Chance = 0.25
+            type5Chance =0
 
-            enemyChooser = random.choices([1, 2, 3 ,4], weights=[type2Chance, type1Chance, type4Chance, type3Chance], k=1)[0]
+            if(level+1) >= 2:
+                type3Chance = 0.1 + (level * 0.03)
+                type4Chance = 0.25
+            if(level+1) >= 3:
+                type5Chance = type2Chance
+                type2Chance= type2Chance -0.01
+
+            enemyChooser = random.choices([1, 2, 3 ,4, 5], weights=[type2Chance, type1Chance, type4Chance, type3Chance, type5Chance], k=1)[0]
 
             if enemyChooser ==2:
 
@@ -89,6 +95,18 @@ class EnemyManager(Manager):
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            Vector2(rand_pos_x, rand_pos_y),
+                            5,
+                            level
+                        )
+                    )
+                )
+            elif enemyChooser == 5:
+                self._enemies.add(
+                    EnemyType5(
+                        EnemyData(
+                            random.randint(30, 50) + (level * 5),
+                            1500,  # random.randint(5, 15) + random.randint(0, level*2),
                             Vector2(rand_pos_x, rand_pos_y),
                             5,
                             level
