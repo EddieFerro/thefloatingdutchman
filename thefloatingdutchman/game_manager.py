@@ -20,7 +20,7 @@ class GameManager(Manager):
         self._level = 0
         self._tutorial_run = False
         path = os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "space_images/space4.jpg")
+            os.path.realpath(__file__)), "space_images/level_1_background.jpg")
         self._background = ui.image_fill_background(path)
         self._tutorial = ui.Tutorial()
         # can go ahead and construct managers
@@ -39,8 +39,8 @@ class GameManager(Manager):
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
             for e in event.get():
                 if e.type == QUIT:  # user closes application
-                    self._done = True  # game over
-
+                    #self._done = True  # game over
+                    exit()
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
                     self._access_pause_screen()
@@ -96,13 +96,19 @@ class GameManager(Manager):
         display.flip()
 
     def _access_pause_screen(self):
-        result = self._pause_screen.open(self._pause_screen.draw(self._screen, 0))
-        #outputs of 0 and 1 indicate to resume the game for now, resulting in no action
-        if result == 2: #show map
-            self._done = self._room_manager.render_map(self._screen)
-        elif result == 3: #show game controls
-            self._tutorial.show_game_controls(self._screen)
-        elif result == 4: #restart game
-            self.spawn()
-        elif result == 5: #quit
-            self._done = True
+        result = 0
+        while True:
+            result = self._pause_screen.open(self._pause_screen.draw(self._screen, result), result)
+            if result == 0 or result == 1: #resume game
+                break
+            elif result == 2: #show map
+                self._done = self._room_manager.render_map(self._screen)
+            elif result == 3: #show game controls
+                self._tutorial.show_game_controls(self._screen)
+            elif result == 4: #restart game
+                self.spawn()
+                break
+            elif result == 5: #quit
+                self._done = True
+                break
+            self.draw()

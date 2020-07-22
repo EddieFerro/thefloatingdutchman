@@ -163,9 +163,9 @@ class PauseScreen(Screen):
 
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 14, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
 
-    def open(self, screen):
-        curr_index = 0  # indicates option currently chosen
-        prev_index = 0
+    def open(self, screen, result):
+        curr_index = result  # indicates option currently chosen
+        prev_index = result
 
         while True:
             for event in pygame.event.get():
@@ -258,15 +258,15 @@ class MainMenu(Screen):
 
     def _initialize(self):
         self._background = image_fill_background(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "space_images/space10.jpg"))
+            os.path.dirname(os.path.realpath(__file__)), "space_images/main_menu_background.jpg"))
         self._logo = pygame.image.load(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), "logo.png"))
         self._logo = pygame.transform.scale(
             self._logo, (int(WINDOW_WIDTH / 2), int(WINDOW_HEIGHT / 10)))
 
         self._surfaces = []
-        self._surfaces.append(self._draw_surface(WINDOW_WIDTH / (3 / 2),
-                                                WINDOW_HEIGHT / 6, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "THE FLOATING DUTCHMAN", BLACK, None))  # title
+        self._surfaces.append(pygame.Surface(
+            (0, 0), pygame.SRCALPHA))
         
         features = [["BEGIN GAME", WHITE, None], ["OPTIONS", WHITE, None], ["VIEW GAME CONTROLS", WHITE, None], ["EXIT GAME", WHITE, None],
                     ["BEGIN GAME", WHITE, MANTIS], ["OPTIONS", WHITE, MANTIS], ["VIEW GAME CONTROLS", WHITE, MANTIS], ["EXIT GAME", WHITE, RUFOUS]]
@@ -364,7 +364,7 @@ class Tutorial(Screen):
         self._generate_story_elements()
         self._generate_game_controls_elements()
         self._background = image_fill_background(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "space_images/space6.jpg"))
+            os.path.dirname(os.path.realpath(__file__)), "space_images/tutorial_background.jpg"))
 
     # initialize elements for story
     def _generate_story_elements(self):
@@ -372,7 +372,7 @@ class Tutorial(Screen):
         self._story_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "THE FLOATING DUTCHMAN", YELLOW, None))
         features = [["You Are the Captain of the Flying Dutchman", YELLOW, None], ["You have ended up in space and your crew", YELLOW, None],
         ["has been captured by the Ghost Bustas", YELLOW, None], ["It is up to you to rescue your crew", YELLOW, None],
-        ["and defeat the Ghost Bustas", YELLOW, None], ["Press Key to Continue", BLUE, None]]
+        ["and defeat the Ghost Bustas", YELLOW, None], ["Press any Key to Continue", BLUE, None]]
         
         self._story_surfaces = self._gather_surfaces(self._story_surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
 
@@ -380,7 +380,7 @@ class Tutorial(Screen):
     def _generate_game_controls_elements(self):
         self._game_controls_surfaces = []
         self._game_controls_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 14), "GAME CONTROLS", YELLOW, None))
-        self._game_controls_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "Press Key to Continue", BLUE, None))
+        self._game_controls_surfaces.append(self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "Press any Key to Continue", BLUE, None))
         self.game_controls_image = pygame.image.load(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), "game_controls.png"))
         self.game_controls_image = pygame.transform.scale(
