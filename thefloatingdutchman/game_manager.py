@@ -1,3 +1,4 @@
+
 import os
 from pygame import display, event, time, QUIT, KEYDOWN, K_TAB
 
@@ -12,14 +13,16 @@ class GameManager(Manager):
     def __init__(self):
         super().__init__()
         self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self._main_menu = ui.MainMenu()
         self._game_over_screen = ui.GameOverScreen()  # game over screen
         self._pause_screen = ui.PauseScreen()
         self._done = False
         self._level = 0
+        self._tutorial_run = False
         path = os.path.join(os.path.dirname(
             os.path.realpath(__file__)), "space_images/space4.jpg")
         self._background = ui.image_fill_background(path)
-        self._tutorial = ui.TutorialElements()
+        self._tutorial = ui.Tutorial()
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
@@ -28,7 +31,9 @@ class GameManager(Manager):
     def run(self):
         self.spawn()
         # comment out this line to remove the tutorial
-        self._tutorial.spawn_tutorial(self._screen)
+        if not self._tutorial_run:
+            self._tutorial.begin_tutorial(self._screen)
+            self._tutorial_run = True
 
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
@@ -38,22 +43,14 @@ class GameManager(Manager):
 
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
-                    self._done, restart_game, view_map, view_game_controls = self._pause_screen.pause_screen_options(
-                        self._pause_screen.draw_screens(self._screen, 0))
-                    if restart_game:
-                        self.spawn()
-                    elif view_map:
-                        self._done = self._room_manager.render_map(
-                            self._screen)
-                    elif view_game_controls:
-                        self._tutorial.spawn_game_controls(self._screen)
-
+                    self._access_pause_screen()
             self.update()
             self.draw()
 
     # resets game
     def spawn(self):
         self._level = 0
+        self._done = False
         self._level_surface = ui.LevelSurface()
         self._health_ui = ui.HealthUI()
         self._player_manager.spawn()
@@ -71,8 +68,8 @@ class GameManager(Manager):
             self._room_manager.spawn(self._level)
 
         if self._player_manager.player.dead:
-            self._done = self._game_over_screen.game_over_screen_options(
-                self._game_over_screen.draw_screens(self._screen, 0))
+            self._done = self._game_over_screen.open(
+                self._game_over_screen.draw(self._screen, 0))
             if not self._done:
                 self.spawn()
 
@@ -80,8 +77,8 @@ class GameManager(Manager):
 
             # must check if player died to last enemy exploding
             if self._player_manager.player.dead:
-                self._done = self._game_over_screen.game_over_screen_options(
-                    self._game_over_screen.draw_screens(self._screen, 0))
+                self._done = self._game_over_screen.open(
+                    self._game_over_screen.draw(self._screen, 0))
                 if not self._done:
                     self.spawn()
             else:
@@ -93,9 +90,22 @@ class GameManager(Manager):
 
     def draw(self):
         self._screen.blit(self._background, self._background.get_rect())
-        self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         self._health_ui.health_bar(self._screen, self._player_manager)
         self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)
         display.flip()
+        display.update()
+
+    def _access_pause_screen(self):
+        result = self._pause_screen.open(
+            self._pause_screen.draw(self._screen, 0))
+        # outputs of 0 and 1 indicate to resume the game for now, resulting in no action
+        if result == 2:  # show map
+            self._done = self._room_manager.render_map(self._screen)
+        elif result == 3:  # show game controls
+            self._tutorial.show_game_controls(self._screen)
+        elif result == 4:  # restart game
+            self.spawn()
+        elif result == 5:  # quit
+            self._done = True

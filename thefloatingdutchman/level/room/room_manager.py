@@ -2,7 +2,6 @@ from typing import List
 
 from pygame import Surface
 
-
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite

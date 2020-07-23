@@ -1,8 +1,9 @@
-from pygame import Vector2, sprite, display
+from pygame import Vector2, sprite, display, draw
 
 from thefloatingdutchman.character.player.player_data import PlayerData
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.manager import Manager
+from thefloatingdutchman.game_settings import RED
 
 
 class PlayerManager(Manager):
@@ -25,7 +26,13 @@ class PlayerManager(Manager):
             hits = sprite.spritecollide(
                 self._player, enemy.bullets, True, sprite.collide_mask)
             for bullet in hits:
+                if bullet._data.type5:
+                    draw.circle(screen, RED, (bullet.rect.x,
+                                              bullet.rect.y), 100, 100)
+                    display.flip()
+                    display.update()
                 self._player.take_damage(enemy._damage)
+                bullet.kill()
 
     @property
     def player(self):

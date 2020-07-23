@@ -16,12 +16,12 @@ class HeartSprite(ObjectSprite):
 
     def _set_original_image(self):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "heart_w_outline.png")).convert_alpha()
-        temp_rect = Rect((0, 0, 100, 100))
+            os.path.realpath(__file__)), "Heart.png")).convert_alpha()
+        temp_rect = Rect((0, 0, 254, 254))
         self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
-            self._original_image, (int(115), int(115)))
+            self._original_image, (int(70), int(70)))
 
     def update(self, hearts: Group, player: PlayerSprite, screen: Surface):
         self.rect.center = self._data.pos
