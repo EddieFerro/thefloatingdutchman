@@ -115,7 +115,6 @@ class GameManager(Manager):
                 self._tutorial.show_game_controls(self._screen)
             elif result == 3: #restart game
                 self.spawn()
-                self._load_pre_level_screen()
                 break
             elif result == 4: #end game
                 self._done = True
