@@ -31,17 +31,28 @@ class BulletSprite(ObjectSprite):
             self._ticks = t
             distance = math.hypot((abs(self.rect.centerx) - abs(player.rect.centerx)), (abs(self.rect.centery) - abs(player.rect.centery)))
             if distance < 150:
-                player.take_damage(3)
-            print('success')
+                draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+                self.kill()
 
-            draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
-            display.flip()
-            display.update()
-            display.flip()
-            display.update()
-            display.flip()
-            display.update()
-            self.kill()
+                player.take_damage(3)
+
+            else:
+                draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+
+                self.kill()
+
         else:
             self._data.pos += (self._data.direction * self._data.vel)
             self.rect.center = self._data.pos

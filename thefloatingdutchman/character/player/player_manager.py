@@ -31,8 +31,6 @@ class PlayerManager(Manager):
                     display.update()
                     display.flip()
                     display.update()
-                    display.flip()
-                    display.update()
                 self._player.take_damage(enemy._damage)
                 bullet.kill()
 
