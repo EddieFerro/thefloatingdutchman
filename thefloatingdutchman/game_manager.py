@@ -97,7 +97,7 @@ class GameManager(Manager):
         display.update()
 
     def _access_game_over_screen(self):
-        result = self._game_over_screen.open(self._game_over_screen.draw(self._screen, 0, self._game_over_screen._y_locations, False, None, False))
+        result = self._game_over_screen.open(self._game_over_screen.draw(self._screen, 0, self._game_over_screen._y_locations, False, None))
         if result == 0: #play again
             self.spawn()
         if result == 1: #return to main menu
@@ -106,7 +106,7 @@ class GameManager(Manager):
     def _access_pause_screen(self):
         result = 0
         while True:
-            result = self._pause_screen.open(self._pause_screen.draw(self._screen, result, self._pause_screen._y_locations, False, None, False), result)
+            result = self._pause_screen.open(self._pause_screen.draw(self._screen, result, self._pause_screen._y_locations, False, None), result)
             if result == 0: #resume game
                 break
             elif result == 1: #show map

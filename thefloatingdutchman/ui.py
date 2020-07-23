@@ -36,7 +36,7 @@ class Screen:
     # draw pre-defined surfaces onto screen
 
     # screen, surfaces being attached to screen, y_value of surfaces being attached, index highlights surface to be highlighted
-    def draw(self, screen, index, y_locations, tutorial, sleep_times, wait_at_end):
+    def draw(self, screen, index, y_locations, tutorial, sleep_times):
         if len(self._surfaces) == 5: # game over screen
             screen.fill(BLACK)
         elif len(self._surfaces) == 9: #main menu screen
@@ -62,14 +62,12 @@ class Screen:
             i+=1
 
         pygame.display.update()  # update screen
-        if wait_at_end:
-            wait_for_user(float('inf'), False)
         return screen
 
 
-    def _access_menu(self, screen, result, num_options, bounds):
-        curr_index = result  # indicates option currently chosen
-        prev_index = result
+    def _access_menu(self, screen, result, num_options, bounds): # allows player to toggle between options in given menu 
+        curr_index = result # indicates option currently chosen
+        prev_index = result # previous option chosen
 
         while True:
             for event in pygame.event.get():
@@ -86,11 +84,11 @@ class Screen:
                     if (event.type == pygame.KEYDOWN and (event.key == pygame.K_DOWN or event.key == pygame.K_UP)):
                         if event.key == pygame.K_UP and curr_index > 0:
                             curr_index -= 1
-                            self.draw(screen, curr_index, self._y_locations, False, None, False)
+                            self.draw(screen, curr_index, self._y_locations, False, None)
 
                         elif event.key == pygame.K_DOWN and curr_index < num_options - 1:
                             curr_index += 1
-                            self.draw(screen, curr_index, self._y_locations, False, None, False)
+                            self.draw(screen, curr_index, self._y_locations, False, None)
 
                     # button may be highlighted/selected, user hovers over proper width
                     elif (WIDTH_RIGHT_BOUND >= mouse[0] >= WIDTH_LEFT_BOUND):
@@ -98,7 +96,7 @@ class Screen:
                         for lower_bound, upper_bound in bounds:
                             if upper_bound >= mouse[1] >= lower_bound:
                                 if prev_index != curr_index:
-                                    screen = self.draw(screen, i, self._y_locations, False, None, False)
+                                    screen = self.draw(screen, i, self._y_locations, False, None)
                                 prev_index = curr_index
                                 curr_index = i
                                 # player clicked on Resume button
@@ -230,7 +228,8 @@ class Tutorial(Screen):
         sleep_times = [2.5,3,0,3,0,1.5,0]
         screen.blit(self._background, self._background.get_rect())
         self._surfaces = self._story_surfaces
-        self.draw(screen, 0, y_locations, True, sleep_times, True)
+        self.draw(screen, 0, y_locations, True, sleep_times)
+        wait_for_user(float('inf'), False)
 
     # print game controls onto screen
     def show_game_controls(self, screen):
@@ -239,7 +238,8 @@ class Tutorial(Screen):
         screen.blit(self.game_controls_image, ((WINDOW_WIDTH-self.game_controls_image.get_width()
                                                 )/2, (WINDOW_HEIGHT-self.game_controls_image.get_height())/2))
         self._surfaces = self._game_controls_surfaces
-        self.draw(screen, 0, y_locations, True, None, True)
+        self.draw(screen, 0, y_locations, True, None)
+        wait_for_user(float('inf'), False)
 
 
 class PostLevelScreen(Screen):
@@ -254,7 +254,8 @@ class PostLevelScreen(Screen):
     def appear(self, screen):
         y_locations = [-WINDOW_HEIGHT/5, -WINDOW_HEIGHT/9, WINDOW_HEIGHT/3]
         sleep_times = [0,3,0]
-        self.draw(screen, 0, y_locations, True, sleep_times, True)
+        self.draw(screen, 0, y_locations, True, sleep_times)
+        wait_for_user(float('inf'), False)
 
 
 class PreLevelScreen(Screen):
@@ -267,7 +268,7 @@ class PreLevelScreen(Screen):
     def appear(self, screen, index):
         self._surfaces = [self._all_surfaces[0], self._all_surfaces[index]]
         y_locations = [-WINDOW_HEIGHT/5, -WINDOW_HEIGHT/9]
-        self.draw(screen, 0, y_locations, True, None, False)
+        self.draw(screen, 0, y_locations, True, None)
         wait_for_user(1, True)
 
 
