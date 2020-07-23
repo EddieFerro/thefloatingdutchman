@@ -35,6 +35,7 @@ class EnemyType4(EnemySprite):
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         if(self._data.health <= 0):
             self.kill()
+            enemies.remove(self)
         try:
 
             for enemy in enemies:
@@ -51,6 +52,7 @@ class EnemyType4(EnemySprite):
                 # Delete enemy when it comes into contact with player
                 if sprite.collide_mask(player, self) is not None and not player.invulnerable:
                     player.take_damage(1)
+                    self.kill()
                     enemies.remove(self)
 
                 # Type 2 enemy specification
