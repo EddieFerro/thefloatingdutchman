@@ -31,6 +31,7 @@ class EnemyType5(EnemySprite):
         self._original_image = transform.rotate(self._original_image, -90)
 
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
+
         if(self._data.health <= 0):
             self.kill()
         try:
@@ -56,12 +57,6 @@ class EnemyType5(EnemySprite):
                 target_direction = Vector2(
                     - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y +random.randrange(0, 30))
                 target_direction.scale_to_length(self._data.vel * 0.9)
-
-
-
-
-            # Update bullets
-            self._bullets.update(player, screen)
 
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None and not player.invulnerable:
@@ -98,6 +93,7 @@ class EnemyType5(EnemySprite):
             if self._data._stopMoving is False:
                 self.rect.x += target_direction.x
                 self.rect.y += target_direction.y
+            self._bullets.update(player, screen)
 
             screen_rect = screen.get_rect()
 
