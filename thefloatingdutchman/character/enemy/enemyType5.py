@@ -75,6 +75,7 @@ class EnemyType5(EnemySprite):
                 direction = Vector2(1, 0).rotate(temp_angle)
                 BulletSprite(BulletData(direction, 500, self._data.pos, 20, self.bullet_sprite, True)).add(
                     self._bullets)
+            self._bullets.update(player, screen)
 
             # Stop moving towards player at a certain distance
             if pygame.sprite.collide_circle(self, player):
@@ -93,7 +94,6 @@ class EnemyType5(EnemySprite):
             if self._data._stopMoving is False:
                 self.rect.x += target_direction.x
                 self.rect.y += target_direction.y
-            self._bullets.update(player, screen)
 
             screen_rect = screen.get_rect()
 
