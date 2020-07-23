@@ -33,6 +33,7 @@ class EnemyType5(EnemySprite):
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         if(self._data.health <= 0):
             self.kill()
+            enemies.remove(self)
         try:
         # Check for nearby enemies, only move in certain case
             for enemy in enemies:
@@ -66,6 +67,7 @@ class EnemyType5(EnemySprite):
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None and not player.invulnerable:
                 player.take_damage(1)
+                self.kill()
                 enemies.remove(self)
 
             # Type 2 enemy specification

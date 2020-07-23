@@ -16,9 +16,10 @@ def main():
     game_manager = GameManager()
 
     while True:
-        if not menu_manager.run():
+        result = menu_manager.run() 
+        if result > 1:
             break
-        game_manager.run()
+        game_manager.run(result)
 
     pygame.quit()
 

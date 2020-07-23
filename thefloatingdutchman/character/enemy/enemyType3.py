@@ -36,6 +36,7 @@ class EnemyType3(EnemySprite):
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         if (self._data.health <= 0):
             self.kill()
+            enemies.remove(self)
         rand_pos_x = random.randint(40, WINDOW_WIDTH / 2)
 
         rand_pos_y = random.randint(40, WINDOW_HEIGHT / 2)
@@ -56,6 +57,7 @@ class EnemyType3(EnemySprite):
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None and not player.invulnerable:
                 player.take_damage(1)
+                self.kill()
                 enemies.remove(self)
 
             n = pygame.time.get_ticks()
