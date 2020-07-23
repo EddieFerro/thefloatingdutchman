@@ -22,7 +22,7 @@ class BossManager(EnemyManager):
         self.last_spawn_time = 0
 
         self._boss = MinionBoss(
-            BossData(800, 1500, Vector2(300, WINDOW_HEIGHT/2), 5))
+            BossData(1000, 1500, Vector2(300, WINDOW_HEIGHT/2), 5))
         self._enemies.add(self._boss)
 
     def update(self, player: PlayerSprite, screen: Surface):
@@ -30,7 +30,7 @@ class BossManager(EnemyManager):
 
         current_time = time.get_ticks()
 
-        if not self.last_spawn_time or current_time - self.last_spawn_time >= 20000:
+        if not self.last_spawn_time or current_time - self.last_spawn_time >= 15000:
             curr_dist = self._boss._data.pos.distance_to(
                 self._boss._data.initial_spawn)
 

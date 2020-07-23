@@ -31,6 +31,7 @@ class RangedEnemy(EnemySprite):
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         if(self._data.health <= 0):
             self.kill()
+            enemies.remove(self)
         try:
             # Check for nearby enemies, only move in certain case
             for enemy in enemies:
@@ -64,6 +65,7 @@ class RangedEnemy(EnemySprite):
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None and not player.invulnerable:
                 player.take_damage(1)
+                self.kill()
                 enemies.remove(self)
 
             # Type 2 enemy specification
@@ -76,7 +78,7 @@ class RangedEnemy(EnemySprite):
                 temp_angle = math.degrees(temp_angle)
                 temp_angle += random.uniform(-15, 15)
                 direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25,self.bullet_sprite)).add(
+                BulletSprite(BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
                     self._bullets)
 
             # Stop moving towards player at a certain distance

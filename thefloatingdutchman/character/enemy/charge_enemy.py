@@ -1,4 +1,3 @@
-import random
 import math
 import os
 
@@ -17,7 +16,7 @@ class ChargeEnemy(EnemySprite):
         self._pausing = 0
         self._charging = 0
         self._start = time.get_ticks()
-        self._pstart = 0
+        self._pstart = time.get_ticks()
 
     def _set_original_image(self):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
@@ -32,13 +31,14 @@ class ChargeEnemy(EnemySprite):
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         if(self._data.health <= 0):
             self.kill()
+            enemies.remove(self)
         try:
 
             for enemy in enemies:
                 if sprite.collide_circle(self, enemy) and enemy != self:
                     distance = math.hypot(
                         (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
-                 
+
                     if (distance < 400):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
@@ -48,40 +48,40 @@ class ChargeEnemy(EnemySprite):
                         self.rect.y += target_direction.y
 
                 # Delete enemy when it comes into contact with player
-                if sprite.collide_mask(player, self) is not None and not player.invulnerable:
-                    player.take_damage(1)
-                    enemies.remove(self)
+            if sprite.collide_mask(player, self) is not None and not player.invulnerable:
+                player.take_damage(1)
+                self.kill()
+                enemies.remove(self)
 
-                n = time.get_ticks()
+                # Type 2 enemy specification
+                # Auto fire towards player at a given rate
 
-                if (self._charging) <= 500:
-                    self._charging = n - self._start
+            n = time.get_ticks()
 
-                    self._pstart = time.get_ticks()
-                    target_direction = Vector2(
-                        - self.rect.x + player.rect.x +
-                        random.randrange(0, 30),
-                        - self.rect.y + player.rect.y + random.randrange(0, 30))
-                    target_direction.scale_to_length(self._data.vel*1.4)
-                    self.rect.x += target_direction.x
-                    self.rect.y += target_direction.y
-                elif (self._charging > 500):
-                    self.rect.x += 0
-                    self.rect.y += 0
-                    self._pausing = time.get_ticks() - self._pstart
+            if (self._charging) <= 1000:
+                self._charging = n - self._start
+                self._pstart = time.get_ticks()
+                target_direction = Vector2(
+                    - self.rect.x + player.rect.x,
+                    - self.rect.y + player.rect.y)
+                target_direction.scale_to_length(self._data.vel*2)
+                self.rect.x += target_direction.x
+                self.rect.y += target_direction.y
+            elif (self._charging > 1000):
+                self._pausing = time.get_ticks() - self._pstart
 
-                if(self._pausing) > 1800:
-                    self._start = time.get_ticks()
-                    self._charging = 0
-                    self._pausing = 0
+            if(self._pausing) > 1800:
+                self._charging = 0
+                self._pausing = 0
+                self._start = time.get_ticks()
 
-                screen_rect = screen.get_rect()
+            screen_rect = screen.get_rect()
 
-                self.rect.clamp_ip(screen_rect)
+            self.rect.clamp_ip(screen_rect)
 
-                self._data.pos = Vector2(self.rect.center)
+            self._data.pos = Vector2(self.rect.center)
 
-                self._calc_rotation(player)
+            self._calc_rotation(player)
 
         except ValueError:
             return

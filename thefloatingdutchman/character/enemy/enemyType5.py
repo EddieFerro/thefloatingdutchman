@@ -31,8 +31,10 @@ class EnemyType5(EnemySprite):
         self._original_image = transform.rotate(self._original_image, -90)
 
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
+
         if(self._data.health <= 0):
             self.kill()
+            enemies.remove(self)
         try:
             # Check for nearby enemies, only move in certain case
             for enemy in enemies:
@@ -55,17 +57,15 @@ class EnemyType5(EnemySprite):
                 self._data._stopMoving = False
 
             # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
-            if self._data._stopMoving == False:
+            if not self._data._stopMoving:
                 target_direction = Vector2(
                     - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y + random.randrange(0, 30))
                 target_direction.scale_to_length(self._data.vel * 0.9)
 
-            # Update bullets
-            self._bullets.update(player, screen)
-
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None and not player.invulnerable:
                 player.take_damage(1)
+                self.kill()
                 enemies.remove(self)
 
             # Type 2 enemy specification
@@ -80,6 +80,7 @@ class EnemyType5(EnemySprite):
                 direction = Vector2(1, 0).rotate(temp_angle)
                 BulletSprite(BulletData(direction, 500, self._data.pos, 20, self.bullet_sprite, True)).add(
                     self._bullets)
+            self._bullets.update(player, screen)
 
             # Stop moving towards player at a certain distance
             if pygame.sprite.collide_circle(self, player):

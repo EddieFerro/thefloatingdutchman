@@ -37,7 +37,6 @@ class EnemyManager(Manager):
             type3Chance = 0
             type4Chance = 0
             type5Chance = 0
-
             if(level+1) >= 2:
                 type3Chance = 0.1 + (level * 0.03)
                 type4Chance = 0.25
@@ -57,7 +56,7 @@ class EnemyManager(Manager):
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5
+                            5 + (level * 3)
                         )
                     )
                 )
@@ -105,8 +104,7 @@ class EnemyManager(Manager):
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
                         )
                     )
                 )
