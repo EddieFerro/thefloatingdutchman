@@ -18,7 +18,7 @@ class EnemyType5(EnemySprite):
     def __init__(self,  enemy_data: EnemyData):
         super().__init__(enemy_data)
         self._type2 = True
-        self._prev_shot =0
+        self._prev_shot = 0
 
     def _set_original_image(self):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
@@ -36,15 +36,17 @@ class EnemyType5(EnemySprite):
             self.kill()
             enemies.remove(self)
         try:
-        # Check for nearby enemies, only move in certain case
+            # Check for nearby enemies, only move in certain case
             for enemy in enemies:
                 if pygame.sprite.collide_circle(self, enemy) and enemy != self:
-                    distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
+                    distance = math.hypot(
+                        (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
                     # print(distance)
                     if (distance < 400):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
-                        target_direction.scale_to_length(self._data.vel * 0.0001)
+                        target_direction.scale_to_length(
+                            self._data.vel * 0.0001)
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
 
@@ -54,9 +56,9 @@ class EnemyType5(EnemySprite):
                 self._data._stopMoving = False
 
             # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
-            if self._data._stopMoving == False:
+            if not self._data._stopMoving:
                 target_direction = Vector2(
-                    - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y +random.randrange(0, 30))
+                    - self.rect.x + player.rect.x + random.randrange(0, 30), - self.rect.y + player.rect.y + random.randrange(0, 30))
                 target_direction.scale_to_length(self._data.vel * 0.9)
 
             # Delete enemy when it comes into contact with player

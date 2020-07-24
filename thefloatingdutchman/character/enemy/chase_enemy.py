@@ -1,17 +1,16 @@
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 import random
-from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 import math
 import os
+
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, Rect, image
+from pygame import Vector2, sprite, Surface, transform, Rect, image, SRCALPHA
 
-import pygame
-
+from thefloatingdutchman.character.enemy.enemy_data import EnemyData
+from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 
 
-class EnemyType1(EnemySprite):
+class ChaseEnemy(EnemySprite):
 
     def __init__(self,  enemy_data: EnemyData):
         super().__init__(enemy_data)
@@ -20,7 +19,7 @@ class EnemyType1(EnemySprite):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
             os.path.realpath(__file__)), "Green Fighter.png")).convert_alpha()
         temp_rect = Rect((0, 0, 32, 32))
-        self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
+        self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
             self._original_image, (int(32*2.5), int(32*2.5)))
@@ -32,22 +31,22 @@ class EnemyType1(EnemySprite):
             enemies.remove(self)
         # Check for nearby enemies, only move in certain case
 
-
         # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
-
-
-
         try:
             for enemy in enemies:
-                if pygame.sprite.collide_circle(self, enemy) and enemy != self:
-                    distance = math.hypot((enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
-                    # print(distance)
+                # Check for nearby enemies to avoid collision
+                if sprite.collide_circle(self, enemy) and enemy != self:
+                    distance = math.hypot(
+                        (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
+
                     if (distance < 400):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
-                        target_direction.scale_to_length(self._data.vel * 0.0001)
+                        target_direction.scale_to_length(
+                            self._data.vel * 0.0001)
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
+
             target_direction = Vector2(
                 - self.rect.x + player.rect.x + random.randrange(0, 30),
                 - self.rect.y + player.rect.y + random.randrange(0, 30))

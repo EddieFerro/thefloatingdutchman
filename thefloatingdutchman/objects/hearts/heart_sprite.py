@@ -9,9 +9,6 @@ from thefloatingdutchman.character.character_sprite import CharacterSprite
 from pygame.sprite import Group
 
 
-
-
-
 class HeartSprite(ObjectSprite):
     def __init__(self, heart_data: HeartData):
         super().__init__(heart_data)
@@ -30,4 +27,3 @@ class HeartSprite(ObjectSprite):
         self.rect.center = self._data.pos
         if (self.rect.right > WINDOW_WIDTH or self.rect.bottom > WINDOW_HEIGHT or self.rect.left < 0 or self.rect.top < 0):
             self.kill()
-
