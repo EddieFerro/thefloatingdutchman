@@ -39,7 +39,7 @@ class GameManager(Manager):
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
             for e in event.get():
                 if e.type == QUIT:  # user closes application
-                    #self._done = True  # game over
+                    # self._done = True  # game over
                     exit()
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
@@ -60,7 +60,8 @@ class GameManager(Manager):
 
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
-        self._player_manager.update(self._screen, self._room_manager.get_current_enemies())
+        self._player_manager.update(
+            self._screen, self._room_manager.get_current_enemies())
         self._health_ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
@@ -100,7 +101,7 @@ class GameManager(Manager):
         result = self._game_over_screen.open(self._game_over_screen.draw(self._screen, 0, self._game_over_screen._y_locations, False, None))
         if result == 0: #play again
             self.spawn()
-        if result == 1: #return to main menu
+        if result == 1:  # return to main menu
             self._done = True
         if result == 2: #exit application
             exit()
@@ -111,21 +112,21 @@ class GameManager(Manager):
             result = self._pause_screen.open(self._pause_screen.draw(self._screen, result, self._pause_screen._y_locations, False, None), result)
             if result == 0: #resume game
                 break
-            elif result == 1: #show map
+            elif result == 1:  # show map
                 self._done = self._room_manager.render_map(self._screen)
-            elif result == 2: #show game controls
+            elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
-            elif result == 3: #restart game
+            elif result == 3:  # restart game
                 self.spawn()
                 break
-            elif result == 4: #end game
+            elif result == 4:  # end game
                 self._done = True
                 break
-            else: #exit application
+            else:  # exit application
                 exit()
             self.draw(True)
 
     def _load_pre_level_screen(self):
-        for i in range (1,4):
+        for i in range(1, 4):
             self.draw(False)
             self._pre_level_screen.appear(self._screen, i)
