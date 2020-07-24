@@ -51,9 +51,8 @@ class EnemyType5(EnemySprite):
                         self.rect.y += target_direction.y
 
             # Type 2 enemy backs away from player
-            distance = math.hypot(
-                (player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
-            if (distance > 700):
+            distance = math.hypot((player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
+            if (distance > 550):
                 self._data._stopMoving = False
 
             # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
@@ -78,7 +77,7 @@ class EnemyType5(EnemySprite):
                 temp_angle = math.degrees(temp_angle)
                 temp_angle += random.uniform(-15, 15)
                 direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 500, self._data.pos, 20, self.bullet_sprite, True)).add(
+                BulletSprite(BulletData(direction, 550, self._data.pos, 20, self.bullet_sprite, True)).add(
                     self._bullets)
             self._bullets.update(player, screen)
 
@@ -88,7 +87,7 @@ class EnemyType5(EnemySprite):
                 distance = math.hypot(
                     (player.rect.x-self.rect.x), (player.rect.y - self.rect.y))
                 # Move back if in danger zone
-                if(distance < 700):
+                if(distance < 550):
                     target_direction = Vector2(
                         (self.rect.x - player.rect.x), (self.rect.y - player.rect.y))
                     target_direction.scale_to_length(self._data.vel * 1.01)
