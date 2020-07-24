@@ -37,3 +37,7 @@ class CharacterData():
     @property
     def vel(self) -> int:
         return self._vel
+
+    @vel.setter
+    def vel(self, new_vel: int) -> None:
+        self._vel = new_vel

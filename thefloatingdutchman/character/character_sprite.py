@@ -25,11 +25,11 @@ class CharacterSprite(Sprite, ABC):
     @property
     def bullets(self):
         return self._bullets
-    
+
     @property
     def bullet_sprite(self):
         return self._bullet_sprite
-    
+
     @bullet_sprite.setter
     def bullet_sprite(self, bullet_sprite):
         self._bullet_sprite = bullet_sprite
@@ -41,7 +41,7 @@ class CharacterSprite(Sprite, ABC):
     def take_damage(self, damage: int):
         self._data.health = self._data.health - damage
         arr = surfarray.pixels3d(self.image)
-        arr[:,:,0] = 255
-        arr[:,:,1] = 0
-        arr[:,:,2] = 0
+        arr[:, :, 0] = 255
+        arr[:, :, 1] = 0
+        arr[:, :, 2] = 0
         time.sleep(.020)

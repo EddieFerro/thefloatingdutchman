@@ -27,15 +27,32 @@ class BulletSprite(ObjectSprite):
 
     def update(self, player=None, screen=None):
         t = time.get_ticks()
-        if (t - self._ticks) > self._data.life_time and (self._data.type5):
+        if (t - self._ticks) > self._data.life_time and self._data.type5:
             self._ticks = t
             distance = math.hypot((abs(self.rect.centerx) - abs(player.rect.centerx)), (abs(self.rect.centery) - abs(player.rect.centery)))
             if distance < 150:
+                draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+                self.kill()
+
                 player.take_damage(3)
-            draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
-            display.flip()
-            display.update()
-            self.kill()
+
+            else:
+                draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+                display.flip()
+                display.update()
+
+                self.kill()
+
         else:
             self._data.pos += (self._data.direction * self._data.vel)
             self.rect.center = self._data.pos
@@ -43,6 +60,8 @@ class BulletSprite(ObjectSprite):
         if (self.rect.right > WINDOW_WIDTH or self.rect.bottom > WINDOW_HEIGHT or self.rect.left < 0 or self.rect.top < 0):
             if(self._data.type5):
                 draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)
+                display.flip()
+                display.update()
                 display.flip()
                 display.update()
             self.kill()
