@@ -20,7 +20,8 @@ WIDTH_RIGHT_BOUND = WINDOW_WIDTH * (5 / 8)
 
 # Game Over 
 GAME_OVER_BOUNDS = [[WINDOW_HEIGHT * (9 / 20), WINDOW_HEIGHT * (11 / 20)], #Play Again
-                    [WINDOW_HEIGHT * (3 / 5), WINDOW_HEIGHT * (7 / 10)]] #Exit
+                    [WINDOW_HEIGHT * (3 / 5), WINDOW_HEIGHT * (7 / 10)], #Return to Main Menu
+                    [WINDOW_HEIGHT * (3 / 4), WINDOW_HEIGHT * (17 / 20)]] #Quit Game
 
 #Pause Menu
 PAUSE_BOUNDS = [[WINDOW_HEIGHT * (35 / 100), WINDOW_HEIGHT * ((35 / 100) + (1 / 14))], #Resume

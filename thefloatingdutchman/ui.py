@@ -37,14 +37,15 @@ class Screen:
 
     # screen, surfaces being attached to screen, y_value of surfaces being attached, index highlights surface to be highlighted
     def draw(self, screen, index, y_locations, tutorial, sleep_times):
-        if len(self._surfaces) == 5: # game over screen
-            screen.fill(BLACK)
-        elif len(self._surfaces) == 9: #main menu screen
-            screen.blit(self._background, (0,0))
-            screen.blit(self._logo, ((WINDOW_WIDTH - self._logo.get_width()) / 2, WINDOW_HEIGHT*.25))
-        elif len(self._surfaces) == 13: # pause screen
-            pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 2,
-                                             WINDOW_HEIGHT / (10 / 7)), border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
+        if not tutorial:
+            if len(self._surfaces) == 7: # game over screen
+                screen.fill(BLACK)
+            elif len(self._surfaces) == 9: # main menu screen
+                screen.blit(self._background, (0,0))
+                screen.blit(self._logo, ((WINDOW_WIDTH - self._logo.get_width()) / 2, WINDOW_HEIGHT*.25))
+            elif len(self._surfaces) == 13: # pause screen
+                pygame.draw.rect(screen, WHITE, (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 2,
+                                                WINDOW_HEIGHT / (10 / 7)), border_radius=int(min(WINDOW_WIDTH / 2, WINDOW_HEIGHT / (3 / 2)) / 4))
 
         i=0
         # attach surfaces onto screen
@@ -117,11 +118,11 @@ class GameOverScreen(Screen):
         self._surfaces.append(self._draw_surface(WINDOW_WIDTH / 2,
                                                 WINDOW_HEIGHT / 5, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "GAME OVER!", WHITE, None))
 
-        features = [["PLAY AGAIN", WHITE, BLACK], ["MAIN MENU", WHITE, BLACK],
-                    ["PLAY AGAIN", WHITE, MANTIS], ["MAIN MENU", WHITE, RUFOUS]]
+        features = [["PLAY AGAIN", WHITE, BLACK], ["RETURN TO MAIN MENU", WHITE, BLACK], ["EXIT GAME", WHITE, BLACK],
+                    ["PLAY AGAIN", WHITE, MANTIS], ["RETURN TO MAIN MENU", WHITE, RUFOUS], ["EXIT GAME", WHITE, RUFOUS]]
 
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20))
-        self._y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.45, WINDOW_HEIGHT*.6]
+        self._y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.45, WINDOW_HEIGHT*.6, WINDOW_HEIGHT*.75]
 
     def open(self, screen):
         return self._access_menu(screen, 0, len(GAME_OVER_BOUNDS), GAME_OVER_BOUNDS)

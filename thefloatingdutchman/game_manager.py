@@ -102,6 +102,8 @@ class GameManager(Manager):
             self.spawn()
         if result == 1: #return to main menu
             self._done = True
+        if result == 2: #exit application
+            exit()
 
     def _access_pause_screen(self):
         result = 0
