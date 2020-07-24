@@ -29,6 +29,8 @@ class PlayerManager(Manager):
                     draw.circle(screen, RED, (bullet.rect.x, bullet.rect.y), 100, 100)
                     display.flip()
                     display.update()
+                    display.flip()
+                    display.update()
                 self._player.take_damage(enemy._damage)
                 bullet.kill()
 
