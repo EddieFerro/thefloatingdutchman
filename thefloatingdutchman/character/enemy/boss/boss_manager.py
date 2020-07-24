@@ -30,7 +30,7 @@ class BossManager(EnemyManager):
 
         current_time = time.get_ticks()
 
-        if not self.last_spawn_time or current_time - self.last_spawn_time >= 15000:
+        if not self.last_spawn_time or current_time - self.last_spawn_time >= 16500:
             curr_dist = self._boss._data.pos.distance_to(
                 self._boss._data.initial_spawn)
 
@@ -41,7 +41,6 @@ class BossManager(EnemyManager):
                 self.last_spawn_time = current_time
                 self._boss._data.state = BossState.STATIONARY
             else:
-                self._boss.invulnerable_start = current_time
                 self._boss._data.state = BossState.RETURN
         elif len(self._enemies) == 1 and self._boss._data.health > 0:
             self._boss._data.state = BossState.ROAM
@@ -50,13 +49,13 @@ class BossManager(EnemyManager):
 
         return [
             ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
-                600, WINDOW_HEIGHT/2), randint(10, 13))),
+                600, WINDOW_HEIGHT/2), randint(10, 12))),
             ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
-                540, WINDOW_HEIGHT/2 + 100), randint(10, 13))),
+                540, WINDOW_HEIGHT/2 + 100), randint(10, 12))),
             ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
-                540, WINDOW_HEIGHT/2 - 100), randint(10, 13))),
+                540, WINDOW_HEIGHT/2 - 100), randint(10, 12))),
             ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
-                500, WINDOW_HEIGHT/2 + 200), randint(10, 13))),
+                500, WINDOW_HEIGHT/2 + 200), randint(10, 12))),
             ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
-                500, WINDOW_HEIGHT/2 - 200), randint(10, 13))),
+                500, WINDOW_HEIGHT/2 - 200), randint(10, 12))),
         ]

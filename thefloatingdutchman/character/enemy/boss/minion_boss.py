@@ -48,19 +48,23 @@ class MinionBoss(EnemySprite):
         if state is BossState.RETURN:
             target_direction = self._data._initial_spawn - self._data.pos
             self._data.attack_speed = 10000
-
             self._spin()
+            self.image.set_alpha(100)
 
         elif state is BossState.STATIONARY:
             target_direction = Vector2(0, 0)
             self._data.attack_speed = 1500
             self._calc_rotation(player)
+            self.image.set_alpha(100)
+            self._data.vel = 5
 
         elif state is BossState.ROAM:
             target_direction = player._data.pos - self._data.pos
             target_direction = self._avoid_player(player, target_direction)
             self._data.attack_speed = 200
             self._calc_rotation(player)
+            self.image.set_alpha(255)
+            self._data.vel = 5
 
         screen_rect = screen.get_rect()
 
@@ -84,7 +88,8 @@ class MinionBoss(EnemySprite):
                 self._bullets)
 
     def _spin(self):
-        self._angle += 10
+        self._data.vel = 12
+        self._angle += 15
         self._angle = self._angle % 360
         self.image = transform.rotate(self._original_image, self._angle)
         self.rect = self.image.get_rect(center=self._data.pos)
@@ -108,10 +113,10 @@ class MinionBoss(EnemySprite):
 
     def draw(self, screen):
         self.health_bar.draw(screen, self._data.pos, self._data.health)
-        if self._data.state is BossState.ROAM:
-            screen.blit(self.image, self.rect)
-        else:
-            if self.flash:
-                screen.blit(self.image, self.rect)
+        # if self._data.state is BossState.ROAM or self._data.state is BossState.STATIONARY:
+        screen.blit(self.image, self.rect)
+        # elif self._data.state is BossState.RETURN:
+        #     if self.flash:
+        #         screen.blit(self.image, self.rect)
 
-            self.flash = not self.flash
+        #     self.flash = not self.flash
