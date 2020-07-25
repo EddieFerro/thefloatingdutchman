@@ -13,28 +13,33 @@ from .hearts.heart_sprite import HeartSprite
 class DropManager(Manager):
     def __init__(self):
         super().__init__()
-        self._hearts = None
-
+        self._hearts = sprite.Group()
     # Initialize all new drop sprite groups
     def spawn(self, level: int):
         self._hearts = sprite.Group()
 
     #Call all update functions for dropped item (collision detection, etc)
-    def update(self, player: PlayerSprite, screen: Surface, character: CharacterSprite):
-        self._heart_update(player, screen, character)
+    def update(self, player: PlayerSprite, screen: Surface):
+        self._heart_update(player, screen)
 
     # Add drop functions for new items to the drop method
     def drop_items(self, level: int):
         self._drop_hearts(level)
 
+    #Add drop groups to be counted in total drop count
+    def dropped_count(self):
+        return len(self._hearts.sprites())
+
     # ***** HEARTS *****
     def _drop_hearts(self, level: int):
         self._hearts = sprite.Group()
-        x = range(2)
-        for i in x:
+        drop1Chance = 5
+        drop2Chance = 1 + (level * 0.1)
+        dropChooser = random.choices([1, 2], weights=[
+            drop1Chance, drop2Chance], k=1)[0]
+        if dropChooser == 1:
             rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 40)
-
             rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 40)
             self._hearts.add(
@@ -46,13 +51,29 @@ class DropManager(Manager):
                     )
                 )
             )
+        elif dropChooser == 2:
+            for i in range(2):
+                rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(
+                    random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 40)
+                rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(
+                    random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 40)
+                self._hearts.add(
+                    HeartSprite(
+                        HeartData(
+                            1500,
+                            Vector2(rand_pos_x, rand_pos_y),
+                            0,
+                        )
+                    )
+                )
 
-    def _heart_update(self, player: PlayerSprite, screen: Surface, character: CharacterSprite):
-        self._hearts.update(player, self._hearts, screen, character)
-        hits = sprite.spritecollide(
-            player, self._hearts, True, sprite.collide_mask)
-        for pickups in hits:
-            character.gain_health(20)
+
+    def _heart_update(self, player: PlayerSprite, screen: Surface):
+        self._hearts.update()
+        if player._data.health < player._data._max_health:
+            hits = sprite.spritecollide(player, self._hearts, True, sprite.collide_mask)
+            for pickups in hits:
+                player._data.gain_health(1)
 
     def _get_heart_count(self) -> int:
         return len(self._hearts.sprites())

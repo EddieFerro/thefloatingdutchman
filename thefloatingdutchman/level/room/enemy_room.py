@@ -13,6 +13,7 @@ class EnemyRoom(Room):
     def spawn(self, level: int, _id: int):
         super().spawn(level, _id)
         self._cleared = False
+        self._dropped = False
         self._enemy_manager.spawn(level)
 
     def update(self, player: PlayerSprite, screen: Surface):
