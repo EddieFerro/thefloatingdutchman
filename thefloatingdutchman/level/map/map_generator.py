@@ -46,7 +46,7 @@ class MapGenerator:
         rooms = []
 
         for i in range(0, num_rooms-1):
-            rooms.append(EnemyRoom(EnemyManager()))
+            rooms.append(EnemyRoom(BossManager()))
 
         rooms.append(EnemyRoom(BossManager()))
         return rooms

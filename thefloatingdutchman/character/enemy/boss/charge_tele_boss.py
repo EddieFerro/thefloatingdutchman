@@ -28,14 +28,14 @@ class ChargeTeleBoss(EnemySprite):
 
     def _set_original_image(self):
         sprite_sheet = image.load(os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "minion_boss.png")).convert_alpha()
-        temp_rect = Rect((0, 0, 512, 512))
+            os.path.realpath(__file__)), "aliensprite.png")).convert_alpha()
+        temp_rect = Rect((0, 0, 172, 302))
 
         scale = 0.9
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
-            self._original_image, (int(512*scale), int(512*scale)))
+            self._original_image, (int(172*scale), int(302*scale)))
         self._original_image = transform.rotate(self._original_image, -90)
 
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface) -> None:
@@ -101,6 +101,16 @@ class ChargeTeleBoss(EnemySprite):
             direction = Vector2(1, 0).rotate(temp_angle)
             BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
                 self._bullets)
+            if(BossState.TELEPORT):
+                temp_angle = orig_temp_angle + random.uniform(-15, 15)
+                direction = Vector2(1, 0).rotate(temp_angle)
+                BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
+                    self._bullets)
+                temp_angle = orig_temp_angle + random.uniform(-15, 15)
+                direction = Vector2(1, 0).rotate(temp_angle)
+                BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
+                    self._bullets)
+
 
 
 
