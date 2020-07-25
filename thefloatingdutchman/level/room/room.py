@@ -3,13 +3,13 @@ from pygame import Surface
 from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.manager import Manager
-from ...objects.hearts.heart_manager import HeartManager
+from ...objects.drop_manager import DropManager
 
 
 class Room(Manager):
     def __init__(self):
         self._enemy_manager = EnemyManager()
-        self._heart_manager = HeartManager()
+        self._drop_manager = DropManager()
         self._level = 0
         self._id = 0
 
@@ -18,11 +18,11 @@ class Room(Manager):
         self._id = _id
         self._cleared = False
         self._enemy_manager.spawn(level)
-        self._heart_manager.spawn(level)
+        self._drop_manager.spawn(level)
 
 
     def update(self, player: PlayerSprite, screen: Surface):
-        self._heart_manager.update(player, screen, player)
+        self._drop_manager.update(player, screen, player)
         if self._enemy_manager.get_enemy_count():
             self._enemy_manager.update(player, screen)
 
@@ -34,7 +34,6 @@ class Room(Manager):
 
     def draw(self, screen: Surface):
         self._enemy_manager.draw(screen)
-        self._heart_manager.draw(screen)
 
 
 
