@@ -17,6 +17,7 @@ class DropManager(Manager):
     # Initialize all new drop sprite groups
     def spawn(self, level: int):
         self._hearts = sprite.Group()
+        self._need_health = False
 
     #Call all update functions for dropped item (collision detection, etc)
     def update(self, player: PlayerSprite, screen: Surface):
@@ -24,7 +25,8 @@ class DropManager(Manager):
 
     # Add drop functions for new items to the drop method
     def drop_items(self, level: int):
-        self._drop_hearts(level)
+        if self._need_health:
+            self._drop_hearts(level)
 
     #Add drop groups to be counted in total drop count
     def dropped_count(self):
@@ -71,9 +73,12 @@ class DropManager(Manager):
     def _heart_update(self, player: PlayerSprite, screen: Surface):
         self._hearts.update()
         if player._data.health < player._data._max_health:
+            self._need_health = True
             hits = sprite.spritecollide(player, self._hearts, True, sprite.collide_mask)
             for pickups in hits:
                 player._data.gain_health(1)
+        else:
+            self._need_health = False
 
     def _get_heart_count(self) -> int:
         return len(self._hearts.sprites())
