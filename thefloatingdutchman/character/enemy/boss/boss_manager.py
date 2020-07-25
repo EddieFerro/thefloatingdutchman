@@ -24,11 +24,11 @@ class BossManager(EnemyManager):
         self.last_spawn_time = 0
         if (level+1) == 3:
             self._boss = MinionBoss(
-                BossData(1000, 1500, Vector2(300, WINDOW_HEIGHT/2), 5))
+                BossData(1000, 1500, Vector2(300, WINDOW_HEIGHT/2), 5, BossState.RETURN, False, False, True))
             self._enemies.add(self._boss)
-        else:
+        elif (level+1) == 2:
             self._boss = ChargeTeleBoss(
-                BossData(700, 1500, Vector2(300, WINDOW_HEIGHT/2), 5, BossState.CHARGE, False))
+                BossData(700, 1500, Vector2(300, WINDOW_HEIGHT/2), 5, BossState.CHARGE, False, True, False))
             self._enemies.add(self._boss)
 
     def update(self, player: PlayerSprite, screen: Surface):
@@ -50,7 +50,7 @@ class BossManager(EnemyManager):
                     self._boss._data.state = BossState.RETURN
             elif len(self._enemies) == 1 and self._boss._data.health > 0:
                 self._boss._data.state = BossState.ROAM
-        else:
+        elif self._boss._data._type2:
 
             n = time.get_ticks()
 

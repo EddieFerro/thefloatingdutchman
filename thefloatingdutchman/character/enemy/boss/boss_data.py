@@ -16,11 +16,14 @@ class BossState(Enum):
 class BossData(EnemyData):
     """Enemy class for base enemy can be later subclassed to create specific types of enemies """
 
-    def __init__(self, health: int, attack_speed: int, spawn: Vector2, vel, state=BossState.RETURN, type3 = True):
+    def __init__(self, health: int, attack_speed: int, spawn: Vector2, vel, state, type1, type2, type3):
         super().__init__(health, attack_speed, spawn, vel)
         self._initial_spawn = Vector2(spawn)
         self._state = state
         self._type3 = type3
+        self._type2 = type2
+        self._type1 = type1
+
 
     @property
     def initial_spawn(self) -> Vector2:
