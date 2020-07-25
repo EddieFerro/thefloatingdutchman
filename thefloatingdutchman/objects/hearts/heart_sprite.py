@@ -1,3 +1,4 @@
+
 import pygame
 import os
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
@@ -23,7 +24,7 @@ class HeartSprite(ObjectSprite):
         self._original_image = transform.scale(
             self._original_image, (int(70), int(70)))
 
-    def update(self, hearts: Group, player: PlayerSprite, screen: Surface):
+    def update(self):
         self.rect.center = self._data.pos
         if (self.rect.right > WINDOW_WIDTH or self.rect.bottom > WINDOW_HEIGHT or self.rect.left < 0 or self.rect.top < 0):
             self.kill()
