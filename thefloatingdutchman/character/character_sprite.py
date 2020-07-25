@@ -13,6 +13,7 @@ class CharacterSprite(Sprite, ABC):
         Sprite.__init__(self)
         self._data = character_data
         self._original_image = None
+        self.bullet_sprite = None
         self._angle = 0
         self._prev_shot = 0
         self._bullets = sprite.Group()
@@ -25,6 +26,14 @@ class CharacterSprite(Sprite, ABC):
     def bullets(self):
         return self._bullets
 
+    @property
+    def bullet_sprite(self):
+        return self._bullet_sprite
+
+    @bullet_sprite.setter
+    def bullet_sprite(self, bullet_sprite):
+        self._bullet_sprite = bullet_sprite
+
     @abstractmethod
     def _set_original_image(self):
         pass
@@ -32,13 +41,7 @@ class CharacterSprite(Sprite, ABC):
     def take_damage(self, damage: int):
         self._data.health = self._data.health - damage
         arr = surfarray.pixels3d(self.image)
-        arr[:,:,0] = 255
-        arr[:,:,1] = 0
-        arr[:,:,2] = 0
+        arr[:, :, 0] = 255
+        arr[:, :, 1] = 0
+        arr[:, :, 2] = 0
         time.sleep(.020)
-
-    def gain_health(self, healing: int):
-        if self._data.health <= 80:
-            self._data.health += healing
-        else:
-            self._data.health = 100

@@ -1,21 +1,27 @@
 from pygame import Surface
 
-from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
-from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.manager import Manager
+<<<<<<< HEAD
 from ...objects.drop_manager import DropManager
+=======
+>>>>>>> origin/master
 
 
 class Room(Manager):
     def __init__(self):
+<<<<<<< HEAD
         self._enemy_manager = EnemyManager()
         self._drop_manager = DropManager()
+=======
+        super().__init__()
+>>>>>>> origin/master
         self._level = 0
         self._id = 0
 
     def spawn(self, level: int, _id: int):
         self._level = level
         self._id = _id
+<<<<<<< HEAD
         self._cleared = False
         self._enemy_manager.spawn(level)
         self._drop_manager.spawn(level)
@@ -37,6 +43,14 @@ class Room(Manager):
 
 
 
+=======
+
+    def update(self):
+        pass
+
+    def draw(self, screen: Surface):
+        pass
+>>>>>>> origin/master
 
     @property
     def id(self):

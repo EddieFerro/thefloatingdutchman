@@ -2,13 +2,11 @@ import random
 
 from pygame import Vector2, sprite, Surface
 
-from thefloatingdutchman.character.enemy.enemyType1 import EnemyType1
-from thefloatingdutchman.character.enemy.enemyType2 import EnemyType2
-from thefloatingdutchman.character.enemy.enemyType3 import EnemyType3
-from thefloatingdutchman.character.enemy.enemyType4 import EnemyType4
-
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
-
+from thefloatingdutchman.character.enemy.chase_enemy import ChaseEnemy
+from thefloatingdutchman.character.enemy.ranged_enemy import RangedEnemy
+from thefloatingdutchman.character.enemy.ranged_teleport_enemy import RangedTeleportEnemy
+from thefloatingdutchman.character.enemy.charge_enemy import ChargeEnemy
+from thefloatingdutchman.character.enemy.enemyType5 import EnemyType5
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
@@ -28,7 +26,7 @@ class EnemyManager(Manager):
 
         for i in range(random.randint(2, 4) + level):
 
-            # picking position a fair distance away from player
+            # picking position a fair distance away from center of screen (player spawn)
             rand_pos_x: int = random.randint(40, WINDOW_WIDTH/2 - 200) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_WIDTH/2 + 200, WINDOW_WIDTH - 40)
 
@@ -36,62 +34,77 @@ class EnemyManager(Manager):
                 random.randint(0, 1)) else random.randint(WINDOW_HEIGHT/2 + 100, WINDOW_HEIGHT - 40)
             type2Chance = 0.1 + (level * 0.01)
             type1Chance = 0.25
-            type3Chance =0
-            type4Chance =0
+            type3Chance = 0
+            type4Chance = 0
+            type5Chance = 0
             if(level+1) >= 2:
-                type3Chance = 0.1 + (level * 0.01)
+                type3Chance = 0.1 + (level * 0.03)
                 type4Chance = 0.25
+            if(level+1) >= 3:
+                type5Chance = type2Chance
+                type2Chance = type2Chance - 0.01
 
-            enemyChooser = random.choices([1, 2, 3 ,4], weights=[type2Chance, type1Chance, type4Chance, type3Chance], k=1)[0]
+            enemyChooser = random.choices([1, 2, 3, 4, 5], weights=[
+                                          type2Chance, type1Chance, type4Chance, type3Chance, type5Chance], k=1)[0]
 
-            if enemyChooser ==2:
+            if enemyChooser == 2:
 
                 self._enemies.add(
-                    EnemyType1(
+                    ChaseEnemy(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5 + (level * 3)
                         )
                     )
                 )
             elif enemyChooser == 1:
                 self._enemies.add(
-                    EnemyType2(
+                    RangedEnemy(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
                             # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
                         )
                     )
                 )
             elif enemyChooser == 4:
                 self._enemies.add(
-                    EnemyType3(
+                    RangedTeleportEnemy(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            # random.randint(5, 15) + random.randint(0, level*2),
+                            1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
                         )
                     )
                 )
             elif enemyChooser == 3:
                 self._enemies.add(
-                    EnemyType4(
+                    ChargeEnemy(
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            1500, # random.randint(5, 15) + random.randint(0, level*2),
+                            # random.randint(5, 15) + random.randint(0, level*2),
+                            1500,
                             Vector2(rand_pos_x, rand_pos_y),
-                            5,
-                            level
+                            5
+                        )
+                    )
+                )
+            elif enemyChooser == 5:
+                self._enemies.add(
+                    EnemyType5(
+                        EnemyData(
+                            random.randint(30, 50) + (level * 5),
+                            # random.randint(5, 15) + random.randint(0, level*2),
+                            1500,
+                            Vector2(rand_pos_x, rand_pos_y),
+                            5
                         )
                     )
                 )
@@ -108,6 +121,6 @@ class EnemyManager(Manager):
             enemy.take_damage(player._damage)
 
     def draw(self, screen: Surface):
-        self._enemies.draw(screen)
         for enemy in self._enemies:
+            enemy.draw(screen)
             enemy.bullets.draw(screen)

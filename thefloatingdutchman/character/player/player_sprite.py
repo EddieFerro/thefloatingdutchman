@@ -17,6 +17,10 @@ class PlayerSprite(CharacterSprite):
         self._damage = 34
         self._dead = False
         self.mask = pygame.mask.from_surface(self.image)
+        self.invulnerable = False
+        self.invulnerable_start = 0
+        self.flash = True
+        self.bullet_sprite = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../objects/bullets/Cannonball.png")).convert_alpha()
 
     def _set_original_image(self):
         # sprite_sheet = image.load("pirate_ship_00000.png").convert()
@@ -41,7 +45,7 @@ class PlayerSprite(CharacterSprite):
     def update(self, screen):
         if(self._data.health <= 0):
             self._dead = True
-            self.kill
+            self.kill()
         self._calc_movement(screen)
         self._bullets.update()
 
@@ -63,7 +67,8 @@ class PlayerSprite(CharacterSprite):
             if (t - self._prev_shot) > self._data.attack_speed:
                 self._prev_shot = t
                 direction = Vector2(1, 0).rotate(-self._angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25)).add(
+
+                BulletSprite(BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
                     self._bullets)
 
         if x != 0 and y != 0:
@@ -91,8 +96,27 @@ class PlayerSprite(CharacterSprite):
         self._angle = (180 / math.pi) * -math.atan2(rel_y, rel_x) + 5
         self.image = transform.rotate(self._original_image, int(self._angle))
         self.rect = self.image.get_rect(center=self._data.pos)
-        self.rect.center = self._data.pos
+        # self.rect.center = self._data.pos
 
     @property
     def dead(self) -> bool:
         return self._dead
+
+    def take_damage(self, damage):
+        if not self.invulnerable:
+            super().take_damage(damage)
+            self.invulnerable = True
+            self.invulnerable_start = pygame.time.get_ticks()
+
+    def draw(self, screen):
+        if not self.invulnerable:
+            screen.blit(self.image, self.rect)
+        else:
+            if self.flash:
+                screen.blit(self.image, self.rect)
+            now = pygame.time.get_ticks()
+            dt = now - self.invulnerable_start
+            if dt % 500:
+                self.flash = not self.flash
+            if dt > 1501:
+                self.invulnerable = False
