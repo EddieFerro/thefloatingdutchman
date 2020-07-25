@@ -24,6 +24,7 @@ class GameManager(Manager):
         self._tutorial = ui.Tutorial()
         self._post_level_screen = ui.PostLevelScreen()
         self._pre_level_screen = ui.PreLevelScreen()
+        self._game_completed_screen = ui.GameCompletedScreen()
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
@@ -77,7 +78,7 @@ class GameManager(Manager):
             self._access_game_over_screen()
 
         if self._room_manager.is_room_cleared():  # enemies gone
-
+            #self._game_completed_screen.activate(self._screen)
             # must check if player died to last enemy exploding
             if self._player_manager.player.dead:
                 self._access_game_over_screen()

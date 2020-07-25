@@ -3,7 +3,7 @@ from pygame import QUIT
 import time
 import os
 from thefloatingdutchman.character.character_data import CharacterData
-from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RUFOUS, MANTIS, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, GAME_OVER_BOUNDS, PAUSE_BOUNDS, MAIN_MENU_BOUNDS)
+from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLACK, BLUE, YELLOW, WHITE, RUFOUS, MANTIS, LIME, WIDTH_LEFT_BOUND, WIDTH_RIGHT_BOUND, GAME_OVER_BOUNDS, PAUSE_BOUNDS, MAIN_MENU_BOUNDS)
 
 
 class Screen:
@@ -271,6 +271,27 @@ class PreLevelScreen(Screen):
         y_locations = [-WINDOW_HEIGHT/5, -WINDOW_HEIGHT/9]
         self.draw(screen, 0, y_locations, True, None)
         wait_for_user(1, True)
+
+
+class GameCompletedScreen(Screen):
+    def __init__(self):
+        self._initialize()
+
+    def _initialize(self):
+        self._background = image_fill_background(os.path.join(os.path.dirname(os.path.realpath(__file__)), "space_images/main_menu_background.jpg"))
+        self._logo = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "logo.png"))
+        self._surfaces = []
+        features = [["CONGRATULATIONS!", LIME, None]]
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10))
+        features = [["You have rescued your crew", LIME, None], ["and defeated the Ghost Bustas", LIME, None], ["Press any Key to Continue", WHITE, None]]
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
+
+    def activate(self, screen):
+        y_locations = [-WINDOW_HEIGHT/5, -WINDOW_HEIGHT/12, 0, WINDOW_HEIGHT/3]
+        screen.blit(self._background, self._background.get_rect())
+        screen.blit(self._logo, ((WINDOW_WIDTH - self._logo.get_width()) / 2, WINDOW_HEIGHT*.1))
+        self.draw(screen, 0, y_locations, True, None)
+        wait_for_user(float('inf'), False)
 
 
 # health bar that shows player's health

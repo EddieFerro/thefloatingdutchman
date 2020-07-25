@@ -8,6 +8,7 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 MANTIS = (101, 168, 100)
 RUFOUS = (163, 32, 21)
+LIME = (164, 203, 57)
 
 # Game Settings
 WINDOW_WIDTH = 1920
