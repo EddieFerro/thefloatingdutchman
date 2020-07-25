@@ -4,6 +4,8 @@ from random import randint
 from pygame import Vector2, Surface, time
 
 from thefloatingdutchman.character.enemy.boss.minion_boss import MinionBoss
+from thefloatingdutchman.character.enemy.boss.charge_tele_boss import ChargeTeleBoss
+
 from thefloatingdutchman.character.enemy.chase_enemy import ChaseEnemy
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.character.enemy.boss.boss_data import BossData, BossState
@@ -20,30 +22,56 @@ class BossManager(EnemyManager):
 
     def _add_enemies(self, level: int):
         self.last_spawn_time = 0
-
-        self._boss = MinionBoss(
-            BossData(1000, 1500, Vector2(300, WINDOW_HEIGHT/2), 5))
-        self._enemies.add(self._boss)
+        if (level+1) == 3:
+            self._boss = MinionBoss(
+                BossData(1000, 1500, Vector2(300, WINDOW_HEIGHT/2), 5))
+            self._enemies.add(self._boss)
+        else:
+            self._boss = ChargeTeleBoss(
+                BossData(700, 1500, Vector2(300, WINDOW_HEIGHT/2), 5, BossState.CHARGE, False))
+            self._enemies.add(self._boss)
 
     def update(self, player: PlayerSprite, screen: Surface):
         super().update(player, screen)
+        if self._boss._data._type3:
+            current_time = time.get_ticks()
 
-        current_time = time.get_ticks()
+            if not self.last_spawn_time or current_time - self.last_spawn_time >= 16500:
+                curr_dist = self._boss._data.pos.distance_to(
+                    self._boss._data.initial_spawn)
 
-        if not self.last_spawn_time or current_time - self.last_spawn_time >= 16500:
-            curr_dist = self._boss._data.pos.distance_to(
-                self._boss._data.initial_spawn)
+                if curr_dist < 50:
+                    self._enemies.add(
+                        self._spawn_minions(player)
+                    )
+                    self.last_spawn_time = current_time
+                    self._boss._data.state = BossState.STATIONARY
+                else:
+                    self._boss._data.state = BossState.RETURN
+            elif len(self._enemies) == 1 and self._boss._data.health > 0:
+                self._boss._data.state = BossState.ROAM
+        else:
 
-            if curr_dist < 50:
-                self._enemies.add(
-                    self._spawn_minions(player)
-                )
-                self.last_spawn_time = current_time
+            n = time.get_ticks()
+
+            if self._boss.charging <= 1000:
+                self._boss.charging = n - self._boss.start
+                self._boss.pstart = time.get_ticks()
+                self._boss._data.state = BossState.CHARGE
+
+            elif self._boss.charging > 1000:
+                self._boss.pausing = time.get_ticks() - self._boss.pstart
                 self._boss._data.state = BossState.STATIONARY
-            else:
-                self._boss._data.state = BossState.RETURN
-        elif len(self._enemies) == 1 and self._boss._data.health > 0:
-            self._boss._data.state = BossState.ROAM
+
+            if self._boss.pausing > 2000 and self._boss.moved is False:
+                self._boss._data.state = BossState.TELEPORT
+                self._boss.moved = True
+
+            if(self._boss.pausing > 4000) and self._boss.moved is True:
+                self._boss.charging = 0
+                self._boss.pausing = 0
+                self._boss.start = time.get_ticks()
+                self._boss.moved = False
 
     def _spawn_minions(self, player: PlayerSprite) -> List[EnemySprite]:
 

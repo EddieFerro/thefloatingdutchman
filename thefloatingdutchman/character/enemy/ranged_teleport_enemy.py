@@ -75,8 +75,9 @@ class RangedTeleportEnemy(EnemySprite):
                     temp_angle += random.uniform(-15, 15)
 
                     direction = Vector2(1, 0).rotate(temp_angle)
-                    BulletSprite(BulletData(
-                        direction, 0, ((self.rect.centerx, self.rect.centery)), 25)).add(self._bullets)
+                    BulletSprite(
+                        BulletData(direction, 0, ((self.rect.centerx, self.rect.centery)), 25, self.bullet_sprite)).add(
+                        self._bullets)
                     self._moved = False
 
             else:
