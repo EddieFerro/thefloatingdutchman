@@ -1,12 +1,13 @@
 import os
 import sys
-from pygame import display, event, time, K_m, QUIT, KEYDOWN, K_TAB, image, transform
+from pygame import display, event, time, K_m, K_x, QUIT, KEYDOWN, K_TAB, image, transform
 
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
 from thefloatingdutchman.level.room.room_manager import RoomManager
 import thefloatingdutchman.ui as ui
+from .objects.drop_manager import DropManager
 
 
 class GameManager(Manager):
@@ -28,6 +29,7 @@ class GameManager(Manager):
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
         self._room_manager = RoomManager()
+        self._drop_manager = DropManager()
 
     def run(self, run_tutorial):
         # comment out this line to remove the tutorial
@@ -57,6 +59,8 @@ class GameManager(Manager):
         self._room_manager.spawn(self._level)
         self._post_level_screen.update_level(self._level)
         self._load_pre_level_screen()
+        self._drop_manager.spawn(self._level)
+        self._items_dropped = False
 
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
@@ -77,16 +81,22 @@ class GameManager(Manager):
             self._access_game_over_screen()
 
         if self._room_manager.is_room_cleared():  # enemies gone
+            self._drop_manager.update(self._player_manager.player, self._screen)
+            if not self._items_dropped:
+                self._drop_manager.drop_items(self._level)
+                self._items_dropped = True
 
             # must check if player died to last enemy exploding
             if self._player_manager.player.dead:
                 self._access_game_over_screen()
-            else:
+                time.wait(200)
+
+            elif self._drop_manager.dropped_count() == 0:
                 self._done = self._room_manager.render_map(self._screen)
                 self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
-            time.wait(200)
-
+                self._items_dropped = False
+                time.wait(200)
     def draw(self, show_level):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
@@ -94,6 +104,7 @@ class GameManager(Manager):
         if show_level:
             self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)
+        self._drop_manager.draw(self._screen)
         display.flip()
         display.update()
 
