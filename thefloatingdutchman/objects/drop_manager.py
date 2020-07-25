@@ -1,14 +1,13 @@
 import random
 
 from pygame import Vector2, sprite, Surface
-
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
-from .hearts.heart_data import HeartData
-from .hearts.heart_sprite import HeartSprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.character.character_sprite import CharacterSprite
+#Import all necessary sprite/data file for each new drop
+from .hearts.heart_data import HeartData
+from .hearts.heart_sprite import HeartSprite
 
 
 class DropManager(Manager):
@@ -16,23 +15,23 @@ class DropManager(Manager):
         super().__init__()
         self._hearts = None
 
-    # Initialize all new sprite groups and call
+    # Initialize all new drop sprite groups
     def spawn(self, level: int):
         self._hearts = sprite.Group()
 
+    #Call all update functions for dropped item (collision detection, etc)
     def update(self, player: PlayerSprite, screen: Surface, character: CharacterSprite):
         self._heart_update(player, screen, character)
 
     # Add drop functions for new items to the drop method
-
     def drop_items(self, level: int):
-        self._drop_hearts(self, level)
+        self._drop_hearts(level)
 
+    # ***** HEARTS *****
     def _drop_hearts(self, level: int):
         self._hearts = sprite.Group()
         x = range(2)
         for i in x:
-            # picking position a fair distance away from player
             rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(
                 random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 40)
 
@@ -47,7 +46,6 @@ class DropManager(Manager):
                     )
                 )
             )
-            self._draw_hearts()
 
     def _heart_update(self, player: PlayerSprite, screen: Surface, character: CharacterSprite):
         self._hearts.update(player, self._hearts, screen, character)
@@ -59,5 +57,6 @@ class DropManager(Manager):
     def _get_heart_count(self) -> int:
         return len(self._hearts.sprites())
 
-    def _draw_hearts(self, screen: Surface):
+    def draw(self, screen: Surface):
         self._hearts.draw(screen)
+    # ***** END HEARTS *****
