@@ -1,30 +1,33 @@
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 import random
-from thefloatingdutchman.character.enemy.enemy_data import EnemyData
+
 import math
-import os
+
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, Rect, image
+from pygame import Vector2, sprite, Surface, transform, Rect, SRCALPHA, time
 
-import pygame
-from thefloatingdutchman.objects.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
 
+from thefloatingdutchman.objects.weapons.bullets.bullet_data import BulletData
+from thefloatingdutchman.objects.weapons.bullets.bullet_sprite import BulletSprite
+from thefloatingdutchman.objects.weapons.bullets.explode_bullet import ExplodeBullet
+from thefloatingdutchman.objects.weapons.enemy_weapon import EnemyWeapon
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
+from thefloatingdutchman.character.enemy.enemy_data import EnemyData
+from thefloatingdutchman.character.enemy.weapon_enemy import WeaponEnemy
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
-class EnemyType5(EnemySprite):
+class EnemyType5(WeaponEnemy):
 
-    def __init__(self,  enemy_data: EnemyData):
-        super().__init__(enemy_data)
-        self._type2 = True
+    def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
+        super().__init__(res_container, enemy_data)
+        self._weapon = EnemyWeapon(res_container, ExplodeBullet)
+        self._weapon.spawn()
         self._prev_shot = 0
 
-    def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "Red Fighter.png")).convert_alpha()
+    def _set_original_image(self, res_container: ResourceContainer):
+        sprite_sheet = res_container.resources['red_fighter']
         temp_rect = Rect((0, 0, 32, 32))
-        self._original_image = pygame.Surface(temp_rect.size, pygame.SRCALPHA)
+        self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
             self._original_image, (int(32*2.5), int(32*2.5)))
@@ -38,7 +41,7 @@ class EnemyType5(EnemySprite):
         try:
             # Check for nearby enemies, only move in certain case
             for enemy in enemies:
-                if pygame.sprite.collide_circle(self, enemy) and enemy != self:
+                if sprite.collide_circle(self, enemy) and enemy != self:
                     distance = math.hypot(
                         (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
                     # print(distance)
@@ -51,7 +54,8 @@ class EnemyType5(EnemySprite):
                         self.rect.y += target_direction.y
 
             # Type 2 enemy backs away from player
-            distance = math.hypot((player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
+            distance = math.hypot(
+                (player.rect.x - self.rect.x), (player.rect.y - self.rect.y))
             if (distance > 550):
                 self._data._stopMoving = False
 
@@ -69,20 +73,22 @@ class EnemyType5(EnemySprite):
 
             # Type 2 enemy specification
                 # Auto fire towards player at a given rate
-            t = pygame.time.get_ticks()
-            if (t - self._prev_shot) > self._data.attack_speed:
-                self._prev_shot = t
-                temp_angle = math.atan2(
-                    player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-                temp_angle = math.degrees(temp_angle)
-                temp_angle += random.uniform(-15, 15)
-                direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 550, self._data.pos, 20, self.bullet_sprite, True)).add(
-                    self._bullets)
-            self._bullets.update(player, screen)
+            # t = time.get_ticks()
+            # if (t - self._prev_shot) > self._data.attack_speed:
+            #     self._prev_shot = t
+            #     temp_angle = math.atan2(
+            #         player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
+            #     temp_angle = math.degrees(temp_angle)
+            #     temp_angle += random.uniform(-15, 15)
+            #     direction = Vector2(1, 0).rotate(temp_angle)
+            #     BulletSprite(self.bullet_sprite, BulletData(direction, 550, self._data.pos, 20, self.bullet_sprite, True)).add(
+            #         self._bullets)
+            # self._bullets.update(player, screen)
+            self._weapon.fire(player, self._data.attack_speed,
+                              15, self.rect, 550)
 
             # Stop moving towards player at a certain distance
-            if pygame.sprite.collide_circle(self, player):
+            if sprite.collide_circle(self, player):
                 self._data._stopMoving = True
                 distance = math.hypot(
                     (player.rect.x-self.rect.x), (player.rect.y - self.rect.y))

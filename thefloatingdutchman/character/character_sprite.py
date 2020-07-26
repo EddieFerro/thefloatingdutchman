@@ -5,11 +5,12 @@ from pygame import sprite, surfarray
 import time
 
 from thefloatingdutchman.character.character_data import CharacterData
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class CharacterSprite(Sprite, ABC):
 
-    def __init__(self, character_data: CharacterData):
+    def __init__(self, res_container: ResourceContainer, character_data: CharacterData):
         Sprite.__init__(self)
         self._data = character_data
         self._original_image = None
@@ -17,7 +18,7 @@ class CharacterSprite(Sprite, ABC):
         self._angle = 0
         self._prev_shot = 0
         self._bullets = sprite.Group()
-        self._set_original_image()  # defined by subclass
+        self._set_original_image(res_container)  # defined by subclass
         self.image = self._original_image
         self.rect = self.image.get_rect()  # creates the rectangle
         self.rect.center = character_data.pos  # sets the spawn point
@@ -35,7 +36,7 @@ class CharacterSprite(Sprite, ABC):
         self._bullet_sprite = bullet_sprite
 
     @abstractmethod
-    def _set_original_image(self):
+    def _set_original_image(self, res_container: ResourceContainer):
         pass
 
     def take_damage(self, damage: int):

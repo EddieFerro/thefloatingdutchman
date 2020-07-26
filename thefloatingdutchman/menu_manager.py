@@ -1,12 +1,12 @@
-from pygame import display, time
+from pygame import time, Surface
 
-from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
+from thefloatingdutchman.game_settings import FPS
 import thefloatingdutchman.ui as ui
 
 
 class MenuManager:
-    def __init__(self):
-        self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    def __init__(self, screen: Surface):
+        self._screen = screen
         self._main_menu = ui.MainMenu()
         self._tutorial = ui.Tutorial()
 

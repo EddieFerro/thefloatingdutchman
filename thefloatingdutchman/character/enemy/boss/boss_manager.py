@@ -11,18 +11,20 @@ from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.game_settings import WINDOW_HEIGHT
+from thefloatingdutchman.utility.resource_container import ResourceContainer
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class BossManager(EnemyManager):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, res_container: ResourceContainer):
+        super().__init__(res_container)
         self._boss = None
 
     def _add_enemies(self, level: int):
         self.last_spawn_time = 0
 
-        self._boss = MinionBoss(
-            BossData(1000, 1500, Vector2(300, WINDOW_HEIGHT/2), 5))
+        self._boss = MinionBoss(self._res_container, BossData(
+            1000, 1500, Vector2(300, WINDOW_HEIGHT/2), 5))
         self._enemies.add(self._boss)
 
     def update(self, player: PlayerSprite, screen: Surface):
@@ -48,14 +50,14 @@ class BossManager(EnemyManager):
     def _spawn_minions(self, player: PlayerSprite) -> List[EnemySprite]:
 
         return [
-            ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
+            ChaseEnemy(self._res_container, EnemyData(randint(30, 50), 10, Vector2(
                 600, WINDOW_HEIGHT/2), randint(10, 12))),
-            ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
+            ChaseEnemy(self._res_container, EnemyData(randint(30, 50), 10, Vector2(
                 540, WINDOW_HEIGHT/2 + 100), randint(10, 12))),
-            ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
+            ChaseEnemy(self._res_container, EnemyData(randint(30, 50), 10, Vector2(
                 540, WINDOW_HEIGHT/2 - 100), randint(10, 12))),
-            ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
+            ChaseEnemy(self._res_container, EnemyData(randint(30, 50), 10, Vector2(
                 500, WINDOW_HEIGHT/2 + 200), randint(10, 12))),
-            ChaseEnemy(EnemyData(randint(30, 50), 10, Vector2(
+            ChaseEnemy(self._res_container, EnemyData(randint(30, 50), 10, Vector2(
                 500, WINDOW_HEIGHT/2 - 200), randint(10, 12))),
         ]

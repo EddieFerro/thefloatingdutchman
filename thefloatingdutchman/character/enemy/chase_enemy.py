@@ -1,23 +1,22 @@
 import random
 import math
-import os
 
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, Rect, image, SRCALPHA
+from pygame import Vector2, sprite, Surface, transform, Rect, SRCALPHA
 
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class ChaseEnemy(EnemySprite):
 
-    def __init__(self,  enemy_data: EnemyData):
-        super().__init__(enemy_data)
+    def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
+        super().__init__(res_container, enemy_data)
 
-    def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "Green Fighter.png")).convert_alpha()
+    def _set_original_image(self, res_container: ResourceContainer):
+        sprite_sheet = res_container.resources['green_fighter']
         temp_rect = Rect((0, 0, 32, 32))
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)

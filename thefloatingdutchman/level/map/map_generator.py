@@ -8,10 +8,11 @@ from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.level.room.enemy_room import EnemyRoom
 from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.enemy.boss.boss_manager import BossManager
+from thefloatingdutchman.utility.resource_container import ResourceContainer
+from thefloatingdutchman.objects.hearts.heart_manager import HeartManager
 
 
 class MapGenerator:
-
     def generate_rooms_per_col(self, num_rooms: int, max_per_col: int) -> List[int]:
         """Generate a list of ints that represent the number of rooms in each column"""
         rooms_per_col = []
@@ -40,16 +41,6 @@ class MapGenerator:
         rooms_per_col.append(1)  # num_rooms - 1
 
         return rooms_per_col
-
-    def generate_rooms(self, num_rooms: int) -> List[Room]:
-
-        rooms = []
-
-        for i in range(0, num_rooms-1):
-            rooms.append(EnemyRoom(EnemyManager()))
-
-        rooms.append(EnemyRoom(BossManager()))
-        return rooms
 
     def generate_room_graph(self, rooms_per_col: List[int]) -> DiGraph:
 

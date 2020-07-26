@@ -1,26 +1,26 @@
 import random
 import math
-import os
+
 
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, time, Rect, image, SRCALPHA
+from pygame import Vector2, sprite, Surface, transform, time, Rect, SRCALPHA
 
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
+from thefloatingdutchman.character.enemy.weapon_enemy import WeaponEnemy
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
-from thefloatingdutchman.objects.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
+from thefloatingdutchman.objects.weapons.bullets.bullet_data import BulletData
+from thefloatingdutchman.objects.weapons.bullets.bullet_sprite import BulletSprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
-class RangedEnemy(EnemySprite):
+class RangedEnemy(WeaponEnemy):
 
-    def __init__(self,  enemy_data: EnemyData):
-        super().__init__(enemy_data)
+    def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
+        super().__init__(res_container, enemy_data)
         self._prev_shot = 0
 
-    def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "Red Fighter.png")).convert_alpha()
+    def _set_original_image(self, res_container: ResourceContainer):
+        sprite_sheet = res_container.resources['red_fighter']
         temp_rect = Rect((0, 0, 32, 32))
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
@@ -60,7 +60,7 @@ class RangedEnemy(EnemySprite):
                 target_direction.scale_to_length(self._data.vel * 0.9)
 
             # Update bullets
-            self._bullets.update()
+            self._weapon.update()
 
             # Delete enemy when it comes into contact with player
             if sprite.collide_mask(player, self) is not None and not player.invulnerable:
@@ -70,16 +70,17 @@ class RangedEnemy(EnemySprite):
 
             # Type 2 enemy specification
                 # Auto fire towards player at a given rate
-            t = time.get_ticks()
-            if (t - self._prev_shot) > self._data.attack_speed:
-                self._prev_shot = t
-                temp_angle = math.atan2(
-                    player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-                temp_angle = math.degrees(temp_angle)
-                temp_angle += random.uniform(-15, 15)
-                direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
-                    self._bullets)
+            # t = time.get_ticks()
+            # if (t - self._prev_shot) > self._data.attack_speed:
+            #     self._prev_shot = t
+            #     temp_angle = math.atan2(
+            #         player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
+            #     temp_angle = math.degrees(temp_angle)
+            #     temp_angle += random.uniform(-15, 15)
+            #     direction = Vector2(1, 0).rotate(temp_angle)
+            #     BulletSprite(self.bullet_sprite, BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
+            #         self._bullets)
+            self._weapon.fire(player, self._data.attack_speed, 15, self.rect)
 
             # Stop moving towards player at a certain distance
             if sprite.collide_circle(self, player):

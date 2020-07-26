@@ -4,13 +4,14 @@ from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.objects.hearts.heart_manager import HeartManager
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class EnemyRoom(Room):
-    def __init__(self, enemy_manager: EnemyManager):
-        super().__init__()
+    def __init__(self, res_container: ResourceContainer, heart_manager: HeartManager, enemy_manager: EnemyManager):
+        super().__init__(res_container)
         self._enemy_manager = enemy_manager
-        self._heart_manager = HeartManager()
+        self._heart_manager = heart_manager
 
     def spawn(self, level: int, _id: int):
         super().spawn(level, _id)

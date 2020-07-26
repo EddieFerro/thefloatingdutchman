@@ -7,11 +7,17 @@ from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
 from thefloatingdutchman.level.map.map_generator import MapGenerator
 from thefloatingdutchman.user_interface.map_ui import MapUI
+from thefloatingdutchman.utility.resource_container import ResourceContainer
+from thefloatingdutchman.level.room.room import Room
+from thefloatingdutchman.level.room.enemy_room import EnemyRoom
+from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
+from thefloatingdutchman.character.enemy.boss.boss_manager import BossManager
+from thefloatingdutchman.objects.hearts.heart_manager import HeartManager
 
 
 class RoomManager(Manager):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, res_container: ResourceContainer):
+        super().__init__(res_container)
         self._map_generator = MapGenerator()
         self._map_ui = MapUI()
 
@@ -20,9 +26,11 @@ class RoomManager(Manager):
         self._current_room_id = 0
         self._rooms_per_col = self._map_generator.generate_rooms_per_col(
             self._number_of_rooms, 5)
-        self._rooms = self._map_generator.generate_rooms(self._number_of_rooms)
+
         self._room_graph = self._map_generator.generate_room_graph(
             self._rooms_per_col)
+
+        self._rooms = self._generate_rooms()
 
         for i, room in enumerate(self._rooms):
             room.spawn(level, i)
@@ -66,3 +74,15 @@ class RoomManager(Manager):
         return self._map_ui.render(screen, self._rooms,
                                    self.get_available_rooms(),
                                    self._current_room_id, self.set_current_room)
+
+    def _generate_rooms(self) -> List[Room]:
+
+        rooms = []
+
+        for i in range(0, self._number_of_rooms-1):
+            rooms.append(EnemyRoom(self._res_container, HeartManager(self._res_container),
+                                   EnemyManager(self._res_container)))
+
+        rooms.append(EnemyRoom(self._res_container, HeartManager(self._res_container),
+                               BossManager(self._res_container)))
+        return rooms
