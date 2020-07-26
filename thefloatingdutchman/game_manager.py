@@ -66,8 +66,21 @@ class GameManager(Manager):
                         for e in event.get():
                             if e.type == KEYDOWN:
                                 self._room_manager.set_cleared()
+<<<<<<< HEAD
                                 enemyChooser = random.choices([1, 2, 3, 4, 5], weights=[
                                     0.25, 0.25, 0.25, 0.25, 0.25], k=1)[0]
+=======
+                                upgradeChooser = random.choices([1, 2, 3], weights=[
+                                    0.33,0.33, 0.33], k=1)[0]
+                                if upgradeChooser == 1:
+                                    self._player_manager._player._data._attack_speed += 5
+                                if upgradeChooser == 2:
+                                    self._player_manager.player._data._health += 5
+                                if upgradeChooser == 3:
+                                    self._player_manager.player._data._vel += 5
+
+
+>>>>>>> adding on
                                 self._items_dropped = True
                                 z=False
 
