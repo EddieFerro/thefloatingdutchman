@@ -43,7 +43,7 @@ class RangedEnemy(EnemySprite):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
                         target_direction.scale_to_length(
-                            self._data.vel * 0.0001)
+                            self._data.vel * 0.001)
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
 
