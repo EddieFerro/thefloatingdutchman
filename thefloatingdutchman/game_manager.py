@@ -1,5 +1,8 @@
-from pygame import display, event, time, QUIT, KEYDOWN, K_TAB, Surface
 
+import os
+import sys
+from pygame import display, event, time, K_m, K_x, K_e, QUIT, KEYDOWN, K_TAB, image, transform, Surface
+import random
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
@@ -26,6 +29,8 @@ class GameManager(Manager):
         self._pre_level_screen = ui.PreLevelScreen()
         self._game_completed_screen = ui.GameCompletedScreen()
         self._credits_screen = ui.CreditsScreen()
+        self._treasure_screen = ui.TreasureSurface()
+
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager(self._res_container)
@@ -47,6 +52,25 @@ class GameManager(Manager):
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
                     self._access_pause_screen()
+                elif e.type == KEYDOWN and e.key == K_e and self._room_manager.get_proximity():
+                    s = Surface((1920, 1080))  # the size of your rect
+                    s.set_alpha(128)  # alpha level
+                    s.fill((0, 0, 0))  # this fills the entire surface
+                    self._screen.blit(s, (0, 0))  # (0,0) are the top-left coordinates
+                    self._treasure_screen.update_treasure_screen(self._screen)
+
+                    display.flip()
+                    display.update()
+                    z =True
+                    while z:
+                        for e in event.get():
+                            if e.type == KEYDOWN:
+                                self._room_manager.set_cleared()
+                                enemyChooser = random.choices([1, 2, 3, 4, 5], weights=[
+                                    0.25, 0.25, 0.25, 0.25, 0.25], k=1)[0]
+                                self._items_dropped = True
+                                z=False
+
             self.update()
             self.draw(True)
 
@@ -86,9 +110,11 @@ class GameManager(Manager):
         if self._player_manager.player.dead:
             self._access_game_over_screen()
 
+
         if self._room_manager.is_room_cleared():  # enemies gone
             self._drop_manager.update(
                 self._player_manager.player, self._screen)
+
             if not self._items_dropped:
                 self._drop_manager.drop_items(self._level)
                 self._items_dropped = True

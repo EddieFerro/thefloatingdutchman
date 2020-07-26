@@ -15,8 +15,8 @@ class HeartSprite(ObjectSprite):
         sprite_sheet = resource_container.resources['heart']
         temp_rect = Rect((0, 0, 254, 254))
         scale = 0.3
-
         self._original_image = Surface(temp_rect.size, SRCALPHA)
+
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
             self._original_image, (int(254*scale), int(254*scale)))

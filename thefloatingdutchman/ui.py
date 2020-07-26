@@ -195,6 +195,18 @@ class MapSurface(Screen):
         self._map_surface = self._draw_surface(
             WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "Press M to close Map", YELLOW, None)
         screen.blit(self._map_surface, ((WINDOW_WIDTH - self._map_surface.get_width()) / 2, WINDOW_HEIGHT/2.5))
+class TreasureSurface(Screen):
+
+
+    # drawing surface to screen
+    def update_treasure_screen(self, screen):
+        self._treasure_surface = self._draw_surface(
+            WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "Congratulations!", YELLOW,
+            None)
+        screen.blit(self._treasure_surface, ((WINDOW_WIDTH - self._treasure_surface.get_width()) / 2, -WINDOW_HEIGHT/4))
+
+
+
 
 
 class Tutorial(Screen):
