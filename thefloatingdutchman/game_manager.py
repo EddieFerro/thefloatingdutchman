@@ -53,11 +53,25 @@ class GameManager(Manager):
                     # will eventually be moved
                     self._access_pause_screen()
                 elif e.type == KEYDOWN and e.key == K_e and self._room_manager.get_proximity():
-                    s = Surface((1920, 1080))  # the size of your rect
-                    s.set_alpha(128)  # alpha level
-                    s.fill((0, 0, 0))  # this fills the entire surface
-                    self._screen.blit(s, (0, 0))  # (0,0) are the top-left coordinates
-                    self._treasure_screen.update_treasure_screen(self._screen)
+                    self._screen.fill("BLACK")
+
+                    s = Surface((1920, 1080))  
+                    s.set_alpha(128)
+                    s.fill((0, 0, 0))
+                    self._screen.blit(s, (0, 0))
+                    upgradeChooser = random.choices([1, 2, 3], weights=[
+                        0.33, 0.33, 0.33], k=1)[0]
+                    if upgradeChooser == 1:
+                        self._player_manager._player._data._attack_speed += 5
+                        self._treasure_screen.update_treasure_screen(self._screen, "Congratulations! +5 to attack speed. press any key to continue")
+
+                    if upgradeChooser == 2:
+                        self._player_manager.player._data._health += 5
+                        self._treasure_screen.update_treasure_screen(self._screen, "Congratulations! +5 to health. press any key to continue")
+
+                    if upgradeChooser == 3:
+                        self._player_manager.player._data._vel += 5
+                        self._treasure_screen.update_treasure_screen(self._screen, "Congratulations! +5 to velocity. press any key to continue")
 
                     display.flip()
                     display.update()
@@ -66,10 +80,7 @@ class GameManager(Manager):
                         for e in event.get():
                             if e.type == KEYDOWN:
                                 self._room_manager.set_cleared()
-<<<<<<< HEAD
-                                enemyChooser = random.choices([1, 2, 3, 4, 5], weights=[
-                                    0.25, 0.25, 0.25, 0.25, 0.25], k=1)[0]
-=======
+
                                 upgradeChooser = random.choices([1, 2, 3], weights=[
                                     0.33,0.33, 0.33], k=1)[0]
                                 if upgradeChooser == 1:
@@ -79,8 +90,6 @@ class GameManager(Manager):
                                 if upgradeChooser == 3:
                                     self._player_manager.player._data._vel += 5
 
-
->>>>>>> adding on
                                 self._items_dropped = True
                                 z=False
 
