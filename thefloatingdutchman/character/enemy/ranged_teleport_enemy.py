@@ -49,7 +49,7 @@ class RangedTeleportEnemy(EnemySprite):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
                         target_direction.scale_to_length(
-                            self._data.vel * 0.0001)
+                            self._data.vel * 0.001)
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
             # Delete enemy when it comes into contact with player
@@ -75,8 +75,9 @@ class RangedTeleportEnemy(EnemySprite):
                     temp_angle += random.uniform(-15, 15)
 
                     direction = Vector2(1, 0).rotate(temp_angle)
-                    BulletSprite(BulletData(
-                        direction, 0, ((self.rect.centerx, self.rect.centery)), 25, self.bullet_sprite)).add(self._bullets)
+                    BulletSprite(
+                        BulletData(direction, 0, ((self.rect.centerx, self.rect.centery)), 25, self.bullet_sprite)).add(
+                        self._bullets)
                     self._moved = False
 
             else:
