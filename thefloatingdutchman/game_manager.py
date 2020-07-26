@@ -70,6 +70,10 @@ class GameManager(Manager):
         self._health_ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
+            if self._level == 0:
+                self._game_completed_screen.activate(self._screen)
+                self._done = True
+                return
             self.draw(False)
             self._post_level_screen.appear(self._screen)
             self._level += 1
@@ -82,7 +86,6 @@ class GameManager(Manager):
             self._access_game_over_screen()
 
         if self._room_manager.is_room_cleared():  # enemies gone
-            #self._game_completed_screen.activate(self._screen)
             self._drop_manager.update(self._player_manager.player, self._screen)
             if not self._items_dropped:
                 self._drop_manager.drop_items(self._level)
