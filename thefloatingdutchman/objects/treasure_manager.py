@@ -40,8 +40,8 @@ class TreasureManager(Manager):
     def _drop_hearts(self):
         self._hearts = sprite.Group()
 
-        rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 60)
-        rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 60)
+        rand_pos_x = WINDOW_WIDTH /2
+        rand_pos_y= (WINDOW_HEIGHT /2) -200
         self._hearts.add(
             TreasureSprite(
                 self._res_container,
