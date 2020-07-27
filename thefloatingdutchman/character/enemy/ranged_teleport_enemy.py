@@ -35,8 +35,6 @@ class RangedTeleportEnemy(WeaponEnemy):
 
         rand_pos_y = random.randint(40, WINDOW_HEIGHT / 2)
 
-        self._weapon.update()
-
         for enemy in enemies:
             if sprite.collide_circle(self, enemy) and enemy != self:
                 distance = math.hypot(
@@ -77,3 +75,4 @@ class RangedTeleportEnemy(WeaponEnemy):
         self._data.pos = Vector2(self.rect.center)
 
         self._calc_rotation(player)
+        self._weapon.update()

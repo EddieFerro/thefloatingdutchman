@@ -14,7 +14,7 @@ class MultiShotWeapon(Weapon):
     def __init__(self, res_container: ResourceContainer, bullet_type=BulletSprite):
         super().__init__(res_container, bullet_type)
 
-    def fire(self, player: PlayerSprite, attack_speed: int, spread: int, rect: Rect, life_time=0) -> bool:
+    def fire(self, player: PlayerSprite, attack_speed: int, spread: int, rect: Rect, num_bullets: int) -> bool:
         """Returns true if weapon fired"""
 
         # Auto fire towards player at a given rate
@@ -24,14 +24,16 @@ class MultiShotWeapon(Weapon):
             temp_angle = math.atan2(
                 player.rect.centery - rect.centery, player.rect.centerx - rect.centerx)
             orig_temp_angle = math.degrees(temp_angle)
-            temp_angle = orig_temp_angle + random.uniform(-15, 15)
-            direction = Vector2(1, 0).rotate(temp_angle)
-            self._bullets.add(self._bullet_type(
-                self._res_container, BulletData(direction, 0, Vector2(rect.center), 25)))
-            temp_angle = orig_temp_angle + random.uniform(-15, 15)
-            direction = Vector2(1, 0).rotate(temp_angle)
-            self._bullets.add(self._bullet_type(
-                self._res_container, BulletData(direction, 0, Vector2(rect.center), 25)))
+
+            for i in range(0, num_bullets):
+                temp_angle = orig_temp_angle + random.uniform(-spread, spread)
+                direction = Vector2(1, 0).rotate(temp_angle)
+                self._bullets.add(self._bullet_type(
+                    self._res_container, BulletData(direction, 0, Vector2(rect.center), 25)))
+                # temp_angle = orig_temp_angle + random.uniform(-spread, spread)
+                # direction = Vector2(1, 0).rotate(temp_angle)
+                # self._bullets.add(self._bullet_type(
+                #     self._res_container, BulletData(direction, 0, Vector2(rect.center), 25)))
 
             # if(BossState.TELEPORT):
             #     temp_angle = orig_temp_angle + random.uniform(-15, 15)

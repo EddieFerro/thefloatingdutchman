@@ -76,33 +76,15 @@ class ChargeTeleBoss(WeaponEnemy):
 
         self.rect = self.image.get_rect(center=self._data.pos)
         self.rect.clamp_ip(screen_rect)
-        self._weapon.fire(player, self._data.attack_speed, 15, self.rect)
-        self._weapon.update()
 
-        # Auto fire towards player at a given rate
-        # t = time.get_ticks()
-        # if (t - self._prev_shot) > self._data.attack_speed:
-        #     self._prev_shot = t
-        #     temp_angle = math.atan2(
-        #         player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-        #     orig_temp_angle = math.degrees(temp_angle)
-        #     temp_angle = orig_temp_angle+random.uniform(-15, 15)
-        #     direction = Vector2(1, 0).rotate(temp_angle)
-        #     BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-        #         self._bullets)
-        #     temp_angle = orig_temp_angle+random.uniform(-15, 15)
-        #     direction = Vector2(1, 0).rotate(temp_angle)
-        #     BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-        #         self._bullets)
-        #     if(BossState.TELEPORT):
-        #         temp_angle = orig_temp_angle + random.uniform(-15, 15)
-        #         direction = Vector2(1, 0).rotate(temp_angle)
-        #         BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-        #             self._bullets)
-        #         temp_angle = orig_temp_angle + random.uniform(-15, 15)
-        #         direction = Vector2(1, 0).rotate(temp_angle)
-        #         BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-        #             self._bullets)
+        if state is BossState.TELEPORT:
+            self._weapon.fire(
+                player, self._data.attack_speed, 15, self.rect, 4)
+        else:
+            self._weapon.fire(
+                player, self._data.attack_speed, 15, self.rect, 2)
+
+        self._weapon.update()
 
     def _avoid_player(self, player: PlayerSprite, target_direction: Vector2):
         # Stop moving towards player at a certain distance

@@ -78,13 +78,10 @@ class RoomManager(Manager):
 
         rooms = []
 
-        rooms.append(EnemyRoom(self._res_container,
-                               BossManager(self._res_container)))
-
-        for i in range(1, self._number_of_rooms):
+        for i in range(0, self._number_of_rooms-1):
             rooms.append(EnemyRoom(self._res_container,
                                    EnemyManager(self._res_container)))
 
-        # rooms.append(EnemyRoom(self._res_container,
-        #                        BossManager(self._res_container)))
+        rooms.append(EnemyRoom(self._res_container,
+                               BossManager(self._res_container)))
         return rooms
