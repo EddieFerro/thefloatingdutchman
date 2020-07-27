@@ -24,7 +24,6 @@ class BossData(EnemyData):
         self._type2 = type2
         self._type1 = type1
 
-
     @property
     def initial_spawn(self) -> Vector2:
         return self._initial_spawn

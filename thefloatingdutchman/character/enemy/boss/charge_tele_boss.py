@@ -1,22 +1,20 @@
 import random
-import math
-import os
 
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, time, Rect, image, SRCALPHA
+from pygame import Vector2, sprite, Surface, transform, time, Rect, SRCALPHA
 
-from thefloatingdutchman.character.enemy.enemy_sprite import EnemySprite
+from thefloatingdutchman.character.enemy.weapon_enemy import WeaponEnemy
 from thefloatingdutchman.character.enemy.boss.boss_data import BossData, BossState
-from thefloatingdutchman.objects.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.user_interface.enemy_health_bar import EnemyHealthBar
-from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
+from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from thefloatingdutchman.utility.resource_container import ResourceContainer
+from thefloatingdutchman.objects.weapons.multi_shot_weapon import MultiShotWeapon
 
 
-class ChargeTeleBoss(EnemySprite):
-    def __init__(self, boss_data: BossData):
-        super().__init__(boss_data)
+class ChargeTeleBoss(WeaponEnemy):
+    def __init__(self, res_container: ResourceContainer, boss_data: BossData):
+        super().__init__(res_container, boss_data, MultiShotWeapon)
         self.radius = 600
         self.flash = True
         self.health_bar = EnemyHealthBar(self._data.health, self.rect)
@@ -26,9 +24,8 @@ class ChargeTeleBoss(EnemySprite):
         self.pstart = time.get_ticks()
         self.moved = False
 
-    def _set_original_image(self):
-        sprite_sheet = image.load(os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "aliensprite.png")).convert_alpha()
+    def _set_original_image(self, res_container: ResourceContainer):
+        sprite_sheet = res_container.resources['alien_boss_sprite']
         temp_rect = Rect((0, 0, 172, 302))
 
         scale = 0.9
@@ -43,7 +40,7 @@ class ChargeTeleBoss(EnemySprite):
         if self._data.health <= 0:
             self.kill()
 
-        self._bullets.update()
+        # self._bullets.update()
         rand_pos_x = random.randint(player._data.pos.x+50, WINDOW_WIDTH)
         rand_pos_y = random.randint(player._data.pos.y+50, WINDOW_HEIGHT)
 
@@ -62,15 +59,11 @@ class ChargeTeleBoss(EnemySprite):
             self._calc_rotation(player)
             self._data.pos += target_direction
 
-
-
         elif state is BossState.STATIONARY:
             target_direction = Vector2(0, 0)
             self._data.attack_speed = 15000
             self._calc_rotation(player)
             self._data.pos += target_direction
-
-
 
         elif state is BossState.TELEPORT:
             self._data.attack_speed = 0
@@ -79,40 +72,19 @@ class ChargeTeleBoss(EnemySprite):
             self._data.pos.x = rand_pos_x
             self._data.pos.y = rand_pos_y
 
-
         screen_rect = screen.get_rect()
-
 
         self.rect = self.image.get_rect(center=self._data.pos)
         self.rect.clamp_ip(screen_rect)
 
-        # Auto fire towards player at a given rate
-        t = time.get_ticks()
-        if (t - self._prev_shot) > self._data.attack_speed:
-            self._prev_shot = t
-            temp_angle = math.atan2(
-                player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-            orig_temp_angle = math.degrees(temp_angle)
-            temp_angle = orig_temp_angle+random.uniform(-15, 15)
-            direction = Vector2(1, 0).rotate(temp_angle)
-            BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-                self._bullets)
-            temp_angle = orig_temp_angle+random.uniform(-15, 15)
-            direction = Vector2(1, 0).rotate(temp_angle)
-            BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-                self._bullets)
-            if(BossState.TELEPORT):
-                temp_angle = orig_temp_angle + random.uniform(-15, 15)
-                direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-                    self._bullets)
-                temp_angle = orig_temp_angle + random.uniform(-15, 15)
-                direction = Vector2(1, 0).rotate(temp_angle)
-                BulletSprite(BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-                    self._bullets)
+        if state is BossState.TELEPORT:
+            self._weapon.fire(
+                player, self._data.attack_speed, 15, self.rect, 4)
+        else:
+            self._weapon.fire(
+                player, self._data.attack_speed, 15, self.rect, 2)
 
-
-
+        self._weapon.update()
 
     def _avoid_player(self, player: PlayerSprite, target_direction: Vector2):
         # Stop moving towards player at a certain distance
@@ -132,10 +104,4 @@ class ChargeTeleBoss(EnemySprite):
 
     def draw(self, screen):
         self.health_bar.draw(screen, self._data.pos, self._data.health)
-        # if self._data.state is BossState.ROAM or self._data.state is BossState.STATIONARY:
         screen.blit(self.image, self.rect)
-        # elif self._data.state is BossState.RETURN:
-        #     if self.flash:
-        #         screen.blit(self.image, self.rect)
-
-        #     self.flash = not self.flash

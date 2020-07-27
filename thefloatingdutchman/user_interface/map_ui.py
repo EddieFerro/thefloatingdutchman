@@ -114,7 +114,7 @@ class MapUI:
             display.flip()
 
             for e in event.get():
-                if e.type == KEYDOWN and e.key == K_m and dropCount >0:
+                if e.type == KEYDOWN and e.key == K_m and dropCount > 0:
                     return False
 
                 if e.type == KEYDOWN and e.key == K_m and not rooms[current_room_id].cleared():
@@ -128,5 +128,3 @@ class MapUI:
                             return False
                 elif e.type == QUIT:
                     exit()
-                    #return True
-

@@ -9,6 +9,7 @@ class CharacterData():
         self._attack_speed = attack_speed
         self._pos = spawn
         self._vel = vel
+        self.invulnerable = False
 
     @property
     def health(self) -> int:

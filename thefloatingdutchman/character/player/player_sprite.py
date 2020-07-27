@@ -1,18 +1,16 @@
 import math
-import os
-from pygame import image, Rect, Surface, key, Vector2, mouse, transform
+from pygame import Rect, Surface, key, Vector2, mouse, transform
 import pygame
 
-from thefloatingdutchman.game_settings import BLACK
 from thefloatingdutchman.character.character_sprite import CharacterSprite
 from thefloatingdutchman.character.player.player_data import PlayerData
-from thefloatingdutchman.objects.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.bullets.bullet_sprite import BulletSprite
+from thefloatingdutchman.objects.weapons.player_weapon import PlayerWeapon
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class PlayerSprite(CharacterSprite):
-    def __init__(self, player_data: PlayerData):
-        super().__init__(player_data)
+    def __init__(self, res_container: ResourceContainer, player_data: PlayerData):
+        super().__init__(res_container, player_data)
         self.radius = 200
         self._damage = 34
         self._dead = False
@@ -20,34 +18,31 @@ class PlayerSprite(CharacterSprite):
         self.invulnerable = False
         self.invulnerable_start = 0
         self.flash = True
-        self.bullet_sprite = image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../objects/bullets/Cannonball.png")).convert_alpha()
+        self._weapon = PlayerWeapon(res_container)
+        self._weapon.spawn()
 
-    def _set_original_image(self):
-        # sprite_sheet = image.load("pirate_ship_00000.png").convert()
-        path = os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "pirate_ship_00000.png")
-        sprite_sheet = image.load(path).convert_alpha()
+    def _set_original_image(self, res_container: ResourceContainer):
+        sprite = res_container.resources['pirate_ship']
 
         # exact dimension of player sprite
         temp_rect = Rect((0, 0, 549, 549))
         self._original_image = Surface(temp_rect.size, pygame.SRCALPHA)
 
         # sets image to a portion of spritesheet (surface)
-        self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
+        self._original_image.blit(sprite, (0, 0), temp_rect)
 
         # makes player appropriate size
         self._original_image = transform.scale(
             self._original_image, (int(549/3), int(549/3)))
         self._original_image = transform.rotate(self._original_image, 90)
 
-    # simple player movement
-
     def update(self, screen):
         if(self._data.health <= 0):
             self._dead = True
             self.kill()
         self._calc_movement(screen)
-        self._bullets.update()
+        # self._bullets.update()
+        self._weapon.update()
 
     def _calc_movement(self, screen):
         x = 0
@@ -63,13 +58,7 @@ class PlayerSprite(CharacterSprite):
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self._data.vel
         if keys[pygame.K_SPACE] or buttons[0] == 1:
-            t = pygame.time.get_ticks()
-            if (t - self._prev_shot) > self._data.attack_speed:
-                self._prev_shot = t
-                direction = Vector2(1, 0).rotate(-self._angle)
-
-                BulletSprite(BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
-                    self._bullets)
+            self._weapon.fire(self._angle, self._data.attack_speed, self.rect)
 
         if x != 0 and y != 0:
             x *= 0.7071
@@ -109,6 +98,7 @@ class PlayerSprite(CharacterSprite):
             self.invulnerable_start = pygame.time.get_ticks()
 
     def draw(self, screen):
+        self._weapon.draw(screen)
         if not self.invulnerable:
             screen.blit(self.image, self.rect)
         else:

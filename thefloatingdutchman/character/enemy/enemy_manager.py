@@ -8,14 +8,16 @@ from thefloatingdutchman.character.enemy.ranged_teleport_enemy import RangedTele
 from thefloatingdutchman.character.enemy.charge_enemy import ChargeEnemy
 from thefloatingdutchman.character.enemy.enemyType5 import EnemyType5
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
+from thefloatingdutchman.character.enemy.weapon_enemy import WeaponEnemy
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
 from thefloatingdutchman.manager import Manager
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class EnemyManager(Manager):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, res_container: ResourceContainer):
+        super().__init__(res_container)
         self._enemies = None
 
     def spawn(self, level: int):
@@ -51,9 +53,9 @@ class EnemyManager(Manager):
 
                 self._enemies.add(
                     ChaseEnemy(
+                        self._res_container,
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5 + (level * 3)
@@ -63,9 +65,9 @@ class EnemyManager(Manager):
             elif enemyChooser == 1:
                 self._enemies.add(
                     RangedEnemy(
+                        self._res_container,
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5
@@ -75,9 +77,9 @@ class EnemyManager(Manager):
             elif enemyChooser == 4:
                 self._enemies.add(
                     RangedTeleportEnemy(
+                        self._res_container,
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5
@@ -87,9 +89,9 @@ class EnemyManager(Manager):
             elif enemyChooser == 3:
                 self._enemies.add(
                     ChargeEnemy(
+                        self._res_container,
                         EnemyData(
                             random.randint(30, 50) + (level*5),
-                            # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5
@@ -99,9 +101,9 @@ class EnemyManager(Manager):
             elif enemyChooser == 5:
                 self._enemies.add(
                     EnemyType5(
+                        self._res_container,
                         EnemyData(
                             random.randint(30, 50) + (level * 5),
-                            # random.randint(5, 15) + random.randint(0, level*2),
                             1500,
                             Vector2(rand_pos_x, rand_pos_y),
                             5
@@ -116,11 +118,12 @@ class EnemyManager(Manager):
         # enemies need reference to other enemies and the player
         self._enemies.update(player, self._enemies, screen)
         hit = sprite.groupcollide(
-            self._enemies, player.bullets, False, True, sprite.collide_mask)
+            self._enemies, player._weapon._bullets, False, True, lambda sp1, sp2: not sp1._data.invulnerable and sprite.collide_mask(sp1, sp2))
         for enemy in hit:
             enemy.take_damage(player._damage)
 
     def draw(self, screen: Surface):
         for enemy in self._enemies:
             enemy.draw(screen)
-            enemy.bullets.draw(screen)
+            if isinstance(enemy, WeaponEnemy):
+                enemy.weapon.draw(screen)

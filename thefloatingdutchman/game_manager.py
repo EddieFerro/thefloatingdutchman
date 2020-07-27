@@ -1,27 +1,26 @@
-import os
-import sys
-from pygame import display, event, time, K_m, K_x, QUIT, KEYDOWN, K_TAB, image, transform
+from pygame import display, event, time, QUIT, KEYDOWN, K_TAB, Surface
 
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
 from thefloatingdutchman.level.room.room_manager import RoomManager
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 import thefloatingdutchman.ui as ui
 from .objects.drop_manager import DropManager
 
 
 class GameManager(Manager):
-    def __init__(self):
-        super().__init__()
-        self._screen = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    def __init__(self, screen: Surface, res_container: ResourceContainer):
+        super().__init__(res_container)
+        self._screen = screen
         self._main_menu = ui.MainMenu()
         self._game_over_screen = ui.GameOverScreen()  # game over screen
         self._pause_screen = ui.PauseScreen()
         self._done = False
         self._level = 0
-        path = os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "space_images/level_1_background.jpg")
-        self._background = ui.image_fill_background(path)
+
+        self._background = ui.image_fill_background(
+            self._res_container.resources['level_1_background'])
         self._tutorial = ui.Tutorial()
         self._post_level_screen = ui.PostLevelScreen()
         self._pre_level_screen = ui.PreLevelScreen()
@@ -29,9 +28,9 @@ class GameManager(Manager):
         self._credits_screen = ui.CreditsScreen()
         # can go ahead and construct managers
         # since their spawn function controls their state
-        self._player_manager = PlayerManager()
-        self._room_manager = RoomManager()
-        self._drop_manager = DropManager()
+        self._player_manager = PlayerManager(self._res_container)
+        self._room_manager = RoomManager(self._res_container)
+        self._drop_manager = DropManager(self._res_container)
 
     def run(self, run_tutorial):
         # comment out this line to remove the tutorial
@@ -88,7 +87,8 @@ class GameManager(Manager):
             self._access_game_over_screen()
 
         if self._room_manager.is_room_cleared():  # enemies gone
-            self._drop_manager.update(self._player_manager.player, self._screen)
+            self._drop_manager.update(
+                self._player_manager.player, self._screen)
             if not self._items_dropped:
                 self._drop_manager.drop_items(self._level)
                 self._items_dropped = True
@@ -105,6 +105,7 @@ class GameManager(Manager):
                     WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
                 self._items_dropped = False
                 time.wait(200)
+
     def draw(self, show_level):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
