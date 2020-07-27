@@ -57,21 +57,21 @@ class GameManager(Manager):
 
                     upgradeChooser = random.choices([1, 2, 3], weights=[
                         0.33, 0.33, 0.33], k=1)[0]
+
                     if upgradeChooser == 1:
                         old_att = self._player_manager.player._data._attack_speed
-                        self._player_manager._player._data._attack_speed += 1
-                        self._treasure_screen.update_treasure_screen(self._screen,"+1 to Attack Speed! Press any Key to Continue")
+                        self._player_manager._player._data._attack_speed += 2
+                        self._treasure_screen.update_treasure_screen(self._screen,"+2 to Attack Speed! Press any Key to Continue")
 
                     elif upgradeChooser == 2:
                         old_hel = self._player_manager.player._data._health
-
                         self._player_manager.player._data._health += 1
                         self._treasure_screen.update_treasure_screen(self._screen, "+1 to Health! Press any Key to Continue")
 
                     elif upgradeChooser == 3:
                         old_vel = self._player_manager.player._data._vel
-                        self._player_manager.player._data._vel += 1
-                        self._treasure_screen.update_treasure_screen(self._screen, "+1 to Velocity! Press any Key to Continue")
+                        self._player_manager.player._data._vel += 2
+                        self._treasure_screen.update_treasure_screen(self._screen, "+2 to Velocity! Press any Key to Continue")
 
                     display.flip()
                     display.update()
@@ -80,16 +80,6 @@ class GameManager(Manager):
                         for e in event.get():
                             if e.type == KEYDOWN:
                                 self._room_manager.set_cleared()
-
-                                upgradeChooser = random.choices([1, 2, 3], weights=[
-                                    0.33,0.33, 0.33], k=1)[0]
-                                if upgradeChooser == 1:
-                                    self._player_manager._player._data._attack_speed += 5
-                                if upgradeChooser == 2:
-                                    self._player_manager.player._data._health += 5
-                                if upgradeChooser == 3:
-                                    self._player_manager.player._data._vel += 5
-
                                 self._items_dropped = True
                                 z=False
 
