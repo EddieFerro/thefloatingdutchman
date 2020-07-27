@@ -57,6 +57,7 @@ class GameManager(Manager):
 
                     upgradeChooser = random.choices([1, 2, 3], weights=[
                         0.33, 0.33, 0.33], k=1)[0]
+
                     if upgradeChooser == 1:
                         old_att = self._player_manager.player._data._attack_speed
                         self._player_manager._player._data._attack_speed += 2
