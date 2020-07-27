@@ -12,7 +12,6 @@ from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.game_settings import WINDOW_HEIGHT
 from thefloatingdutchman.utility.resource_container import ResourceContainer
-from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class BossManager(EnemyManager):

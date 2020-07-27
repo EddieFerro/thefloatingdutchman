@@ -17,8 +17,8 @@ class Weapon(Manager, ABC):
     def spawn(self):
         self._bullets = Group()
 
-    def update(self):
-        self._bullets.update()
+    def update(self, *args):
+        self._bullets.update(*args)
 
     @abstractmethod
     def fire(self) -> bool:

@@ -16,7 +16,7 @@ class GameManager(Manager):
         self._game_over_screen = ui.GameOverScreen()  # game over screen
         self._pause_screen = ui.PauseScreen()
         self._done = False
-        self._level = 2
+        self._level = 0
 
         self._background = ui.image_fill_background(
             self._res_container.resources['level_1_background'])
@@ -48,7 +48,7 @@ class GameManager(Manager):
 
     # resets game
     def spawn(self):
-        self._level = 2
+        self._level = 0
         self._done = False
         self._level_surface = ui.LevelSurface()
         self._health_ui = ui.HealthUI()

@@ -42,6 +42,7 @@ class ExplodeBullet(BulletSprite):
                 self.kill()
 
         else:
+            print("moving")
             self._data.pos += (self._data.direction * self._data.vel)
             self.rect.center = self._data.pos
 

@@ -36,8 +36,6 @@ class MinionBoss(WeaponEnemy):
         if self._data.health <= 0:
             self.kill()
 
-        # self._bullets.update()
-
         # Delete enemy when it comes into contact with player
         if sprite.collide_mask(player, self) is not None and not player.invulnerable:
             player.take_damage(3)
@@ -46,12 +44,14 @@ class MinionBoss(WeaponEnemy):
         state = self._data.state
         if state is BossState.RETURN:
             target_direction = self._data._initial_spawn - self._data.pos
+            self._data.invulnerable = True
             self._data.attack_speed = 10000
             self._spin()
             self.image.set_alpha(100)
 
         elif state is BossState.STATIONARY:
             target_direction = Vector2(0, 0)
+            self._data.invulnerable = True
             self._data.attack_speed = 1500
             self._calc_rotation(player)
             self.image.set_alpha(100)
@@ -61,6 +61,7 @@ class MinionBoss(WeaponEnemy):
             target_direction = player._data.pos - self._data.pos
             target_direction = self._avoid_player(player, target_direction)
             self._data.attack_speed = 200
+            self._data.invulnerable = False
             self._calc_rotation(player)
             self.image.set_alpha(255)
             self._data.vel = 5
@@ -73,18 +74,6 @@ class MinionBoss(WeaponEnemy):
         self._data.pos += target_direction
         self.rect = self.image.get_rect(center=self._data.pos)
         self.rect.clamp_ip(screen_rect)
-
-        # Auto fire towards player at a given rate
-        # t = time.get_ticks()
-        # if (t - self._prev_shot) > self._data.attack_speed:
-        #     self._prev_shot = t
-        #     temp_angle = math.atan2(
-        #         player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-        #     temp_angle = math.degrees(temp_angle)
-        #     temp_angle += random.uniform(-15, 15)
-        #     direction = Vector2(1, 0).rotate(temp_angle)
-        #     BulletSprite(self.bullet_sprite, BulletData(direction, 0, Vector2(self._data.pos), 25, self.bullet_sprite)).add(
-        #         self._bullets)
 
         self._weapon.fire(player, self._data.attack_speed, 15, self.rect)
         self._weapon.update()
@@ -115,10 +104,4 @@ class MinionBoss(WeaponEnemy):
 
     def draw(self, screen):
         self.health_bar.draw(screen, self._data.pos, self._data.health)
-        # if self._data.state is BossState.ROAM or self._data.state is BossState.STATIONARY:
         screen.blit(self.image, self.rect)
-        # elif self._data.state is BossState.RETURN:
-        #     if self.flash:
-        #         screen.blit(self.image, self.rect)
-
-        #     self.flash = not self.flash

@@ -3,11 +3,8 @@ import random
 import math
 
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, Rect, SRCALPHA, time
+from pygame import Vector2, sprite, Surface, transform, Rect, SRCALPHA
 
-
-from thefloatingdutchman.objects.weapons.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.weapons.bullets.bullet_sprite import BulletSprite
 from thefloatingdutchman.objects.weapons.bullets.explode_bullet import ExplodeBullet
 from thefloatingdutchman.objects.weapons.enemy_weapon import EnemyWeapon
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
@@ -44,7 +41,7 @@ class EnemyType5(WeaponEnemy):
                 if sprite.collide_circle(self, enemy) and enemy != self:
                     distance = math.hypot(
                         (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
-                    # print(distance)
+
                     if (distance < 400):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
@@ -71,21 +68,9 @@ class EnemyType5(WeaponEnemy):
                 self.kill()
                 enemies.remove(self)
 
-            # Type 2 enemy specification
-                # Auto fire towards player at a given rate
-            # t = time.get_ticks()
-            # if (t - self._prev_shot) > self._data.attack_speed:
-            #     self._prev_shot = t
-            #     temp_angle = math.atan2(
-            #         player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-            #     temp_angle = math.degrees(temp_angle)
-            #     temp_angle += random.uniform(-15, 15)
-            #     direction = Vector2(1, 0).rotate(temp_angle)
-            #     BulletSprite(self.bullet_sprite, BulletData(direction, 550, self._data.pos, 20, self.bullet_sprite, True)).add(
-            #         self._bullets)
-            # self._bullets.update(player, screen)
             self._weapon.fire(player, self._data.attack_speed,
                               15, self.rect, 550)
+            self._weapon.update(player, screen)
 
             # Stop moving towards player at a certain distance
             if sprite.collide_circle(self, player):
