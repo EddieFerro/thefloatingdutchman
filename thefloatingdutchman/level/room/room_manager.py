@@ -62,7 +62,7 @@ class RoomManager(Manager):
     def get_current_enemies(self) -> List[EnemySprite]:
         return self._rooms[self._current_room_id].get_enemies()
 
-    def render_map(self, screen) -> bool:
+    def render_map(self, screen, showMessage,dropCount) -> bool:
         return self._map_ui.render(screen, self._rooms,
                                    self.get_available_rooms(),
-                                   self._current_room_id, self.set_current_room)
+                                   self._current_room_id, self.set_current_room, showMessage, dropCount)
