@@ -1,5 +1,8 @@
-from pygame import display, event, time, QUIT, KEYDOWN, K_TAB, Surface
 
+import os
+import sys
+from pygame import display, event, time, K_m, K_x, K_e, QUIT, KEYDOWN, K_TAB, image, transform, Surface
+import random
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
@@ -26,6 +29,8 @@ class GameManager(Manager):
         self._pre_level_screen = ui.PreLevelScreen()
         self._game_completed_screen = ui.GameCompletedScreen()
         self._credits_screen = ui.CreditsScreen()
+        self._treasure_screen = ui.TreasureSurface()
+
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager(self._res_container)
@@ -47,6 +52,47 @@ class GameManager(Manager):
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
                     self._access_pause_screen()
+                elif e.type == KEYDOWN and e.key == K_e and self._room_manager.get_proximity():
+                    self._screen.fill("BLACK")
+
+                    upgradeChooser = random.choices([1, 2, 3], weights=[
+                        0.33, 0.33, 0.33], k=1)[0]
+                    if upgradeChooser == 1:
+                        old_att = self._player_manager.player._data._attack_speed
+                        self._player_manager._player._data._attack_speed += 1
+                        self._treasure_screen.update_treasure_screen(self._screen,"+1 to Attack Speed! Press any Key to Continue")
+
+                    elif upgradeChooser == 2:
+                        old_hel = self._player_manager.player._data._health
+
+                        self._player_manager.player._data._health += 1
+                        self._treasure_screen.update_treasure_screen(self._screen, "+1 to Health! Press any Key to Continue")
+
+                    elif upgradeChooser == 3:
+                        old_vel = self._player_manager.player._data._vel
+                        self._player_manager.player._data._vel += 1
+                        self._treasure_screen.update_treasure_screen(self._screen, "+1 to Velocity! Press any Key to Continue")
+
+                    display.flip()
+                    display.update()
+                    z =True
+                    while z:
+                        for e in event.get():
+                            if e.type == KEYDOWN:
+                                self._room_manager.set_cleared()
+
+                                upgradeChooser = random.choices([1, 2, 3], weights=[
+                                    0.33,0.33, 0.33], k=1)[0]
+                                if upgradeChooser == 1:
+                                    self._player_manager._player._data._attack_speed += 5
+                                if upgradeChooser == 2:
+                                    self._player_manager.player._data._health += 5
+                                if upgradeChooser == 3:
+                                    self._player_manager.player._data._vel += 5
+
+                                self._items_dropped = True
+                                z=False
+
             self.update()
             self.draw(True)
 
@@ -88,9 +134,11 @@ class GameManager(Manager):
         if self._player_manager.player.dead:
             self._access_game_over_screen()
 
+
         if self._room_manager.is_room_cleared():  # enemies gone
             self._drop_manager.update(
                 self._player_manager.player, self._screen)
+
             if not self._items_dropped:
                 self._drop_manager.drop_items(self._level)
                 self._items_dropped = True
