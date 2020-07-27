@@ -55,23 +55,27 @@ class GameManager(Manager):
                 elif e.type == KEYDOWN and e.key == K_e and self._room_manager.get_proximity():
                     self._screen.fill("BLACK")
 
-                    s = Surface((1920, 1080))  
+                    s = Surface((1920, 1080))
                     s.set_alpha(128)
                     s.fill((0, 0, 0))
                     self._screen.blit(s, (0, 0))
                     upgradeChooser = random.choices([1, 2, 3], weights=[
                         0.33, 0.33, 0.33], k=1)[0]
                     if upgradeChooser == 1:
-                        self._player_manager._player._data._attack_speed += 5
-                        self._treasure_screen.update_treasure_screen(self._screen, "Congratulations! +5 to attack speed. press any key to continue")
+                        old_att = self._player_manager.player._data._attack_speed
+                        self._player_manager._player._data._attack_speed += 2
+                        self._treasure_screen.update_treasure_screen(self._screen,"+2 to Attack Speed! Press any Key to Continue")
 
                     if upgradeChooser == 2:
-                        self._player_manager.player._data._health += 5
-                        self._treasure_screen.update_treasure_screen(self._screen, "Congratulations! +5 to health. press any key to continue")
+                        old_hel = self._player_manager.player._data._health
+
+                        self._player_manager.player._data._health += 2
+                        self._treasure_screen.update_treasure_screen(self._screen, "+2 to Health! Press any Key to Continue")
 
                     if upgradeChooser == 3:
-                        self._player_manager.player._data._vel += 5
-                        self._treasure_screen.update_treasure_screen(self._screen, "Congratulations! +5 to velocity. press any key to continue")
+                        old_vel = self._player_manager.player._data._vel
+                        self._player_manager.player._data._vel += 2
+                        self._treasure_screen.update_treasure_screen(self._screen, "+2 to Velocity! Press any Key to Continue")
 
                     display.flip()
                     display.update()

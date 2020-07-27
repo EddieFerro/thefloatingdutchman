@@ -7,8 +7,8 @@ from thefloatingdutchman.game_settings import WINDOW_HEIGHT, WINDOW_WIDTH
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.character.character_sprite import CharacterSprite
 #Import all necessary sprite/data file for each new drop
-from .hearts.heart_data import HeartData
-from .hearts.heart_sprite import HeartSprite
+from .treasure_chest.treasure_data import TreasureData
+from .treasure_chest.treasure_sprite import TreasureSprite
 import thefloatingdutchman.ui as ui
 
 
@@ -39,11 +39,11 @@ class TreasureManager(Manager):
     def _drop_hearts(self):
         self._hearts = sprite.Group()
 
-        rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 40)
-        rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 40)
+        rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 60)
+        rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 60)
         self._hearts.add(
-            HeartSprite(
-                HeartData(
+            TreasureSprite(
+                TreasureData(
                     1500,
                     Vector2(rand_pos_x, rand_pos_y),
                     0,
@@ -77,6 +77,6 @@ class TreasureManager(Manager):
     def draw(self, screen: Surface):
         self._hearts.draw(screen)
         if(self._proximity):
-            self._treasure.update_treasure_screen(screen, "press e key")
+            self._treasure.update_treasure_screen(screen, "Press E Key")
 
     # ***** END HEARTS *****
