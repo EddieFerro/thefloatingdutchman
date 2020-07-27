@@ -66,13 +66,13 @@ class GameManager(Manager):
                         self._player_manager._player._data._attack_speed += 2
                         self._treasure_screen.update_treasure_screen(self._screen,"+2 to Attack Speed! Press any Key to Continue")
 
-                    if upgradeChooser == 2:
+                    elif upgradeChooser == 2:
                         old_hel = self._player_manager.player._data._health
 
                         self._player_manager.player._data._health += 2
                         self._treasure_screen.update_treasure_screen(self._screen, "+2 to Health! Press any Key to Continue")
 
-                    if upgradeChooser == 3:
+                    elif upgradeChooser == 3:
                         old_vel = self._player_manager.player._data._vel
                         self._player_manager.player._data._vel += 2
                         self._treasure_screen.update_treasure_screen(self._screen, "+2 to Velocity! Press any Key to Continue")
