@@ -8,6 +8,8 @@ from networkx.classes.reportviews import OutEdgeView
 from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
 
+import thefloatingdutchman.ui as ui
+
 
 class RoomMarkerUI(sprite.Sprite):
     def __init__(self, x: int, y: int, width: int):
@@ -39,6 +41,7 @@ class MapUI:
     def __init__(self):
         self._dots = sprite.Group()
         self._paths = sprite.Group()
+        self._message = ui.MapSurface()
 
     def _fill_shape(self,
                     sprite,
@@ -94,7 +97,9 @@ class MapUI:
                rooms: List[Room],
                moveable_rooms: List[int],
                current_room_id: int,
-               set_current_room) -> bool:
+               set_current_room,
+               showMessage,
+               dropCount) -> bool:
 
         while True:
             for dot, room in zip(self._dots, rooms):
@@ -103,9 +108,15 @@ class MapUI:
             screen.fill(BLACK)
             self._paths.draw(screen)
             self._dots.draw(screen)
+            if showMessage:
+                self._message.update_map(screen)
+
             display.flip()
 
             for e in event.get():
+                if e.type == KEYDOWN and e.key == K_m and dropCount > 0:
+                    return False
+
                 if e.type == KEYDOWN and e.key == K_m and not rooms[current_room_id].cleared():
                     return False
                 elif e.type == MOUSEBUTTONDOWN:
@@ -117,4 +128,3 @@ class MapUI:
                             return False
                 elif e.type == QUIT:
                     exit()
-                    # return True

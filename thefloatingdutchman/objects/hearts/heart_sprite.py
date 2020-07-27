@@ -1,5 +1,6 @@
-from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
 from pygame import Rect, Surface, transform, mask, SRCALPHA
+
+from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT
 from thefloatingdutchman.objects.object_sprite import ObjectSprite
 from thefloatingdutchman.objects.hearts.heart_data import HeartData
 from thefloatingdutchman.utility.resource_container import ResourceContainer
@@ -13,10 +14,12 @@ class HeartSprite(ObjectSprite):
     def _set_original_image(self, resource_container: ResourceContainer):
         sprite_sheet = resource_container.resources['heart']
         temp_rect = Rect((0, 0, 254, 254))
+        scale = 0.3
+
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
-            self._original_image, (int(70), int(70)))
+            self._original_image, (int(254*scale), int(254*scale)))
 
     def update(self):
         self.rect.center = self._data.pos

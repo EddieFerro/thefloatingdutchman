@@ -44,9 +44,9 @@ class DropManager(Manager):
                 drop1Chance, drop2Chance], k=1)[0]
             if dropChooser == 1:
                 rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(
-                    random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 40)
+                    random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 60)
                 rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(
-                    random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 40)
+                    random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 60)
                 self._hearts.add(
                     HeartSprite(
                         self._res_container,
