@@ -15,7 +15,7 @@ from thefloatingdutchman.utility.resource_container import ResourceContainer
 class EnemyType5(WeaponEnemy):
 
     def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
-        super().__init__(res_container, enemy_data, ExplodeBullet)
+        super().__init__(res_container, enemy_data, bullet=ExplodeBullet)
 
     def _set_original_image(self, res_container: ResourceContainer):
         sprite_sheet = res_container.resources['red_fighter']
