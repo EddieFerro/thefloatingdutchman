@@ -12,7 +12,9 @@ from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.level.room.enemy_room import EnemyRoom
 from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.enemy.boss.boss_manager import BossManager
-
+import random
+from thefloatingdutchman.level.room.treasure_room  import TreasureRoom
+from thefloatingdutchman.objects.treasure_manager import TreasureManager
 
 class RoomManager(Manager):
     def __init__(self, res_container: ResourceContainer):
@@ -49,6 +51,7 @@ class RoomManager(Manager):
         return [v2 for v1, v2 in edges]
 
     def is_room_cleared(self) -> bool:
+
         return self._rooms[self._current_room_id].cleared()
 
     def is_level_cleared(self) -> bool:
@@ -79,9 +82,19 @@ class RoomManager(Manager):
         rooms = []
 
         for i in range(0, self._number_of_rooms-1):
-            rooms.append(EnemyRoom(self._res_container,
-                                   EnemyManager(self._res_container)))
+            roomChooser = random.choices([1, 2], weights=[0.9, 0.1], k=1)[0]
+            if roomChooser == 1:
+                rooms.append(EnemyRoom(self._res_container,
+                                       EnemyManager(self._res_container)))
+            else:
+                rooms.append(TreasureRoom(self._res_container,
+                                       TreasureManager(self._res_container)))
 
         rooms.append(EnemyRoom(self._res_container,
                                BossManager(self._res_container)))
         return rooms
+    def get_proximity(self) -> bool:
+        return self._rooms[self._current_room_id].get_proximity()
+    def set_cleared(self):
+        self._rooms[self._current_room_id].set_cleared()
+

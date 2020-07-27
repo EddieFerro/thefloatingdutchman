@@ -5,6 +5,7 @@ from ordered_set import OrderedSet
 from networkx import DiGraph
 
 
+
 class MapGenerator:
     def generate_rooms_per_col(self, num_rooms: int, max_per_col: int) -> List[int]:
         """Generate a list of ints that represent the number of rooms in each column"""
