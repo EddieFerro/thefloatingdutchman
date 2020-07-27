@@ -81,6 +81,8 @@ class GameManager(Manager):
             self._level_surface.draw_new_level(self._level)
             self._room_manager.spawn(self._level)
             self._post_level_screen.update_level(self._level)
+            self._player_manager.player._data.pos.update(
+                    WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
             self._load_pre_level_screen()
 
         if self._player_manager.player.dead:
