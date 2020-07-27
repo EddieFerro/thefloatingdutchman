@@ -17,7 +17,6 @@ class EnemySprite(CharacterSprite, ABC):
         self._prev_shot = 0
         self.invulnerable_start = 0
         self.mask = mask.from_surface(self.image)
-        # self.bullet_sprite = res_container.resources['laser_shot_1']
 
     @abstractmethod
     def _set_original_image(self, res_container: ResourceContainer):

@@ -1,8 +1,5 @@
-import math
+from pygame import Rect, Surface, SRCALPHA
 
-from pygame import Rect, mask, Surface, SRCALPHA, time, draw, display
-
-from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, RED
 from thefloatingdutchman.objects.weapons.bullets.bullet_sprite import BulletSprite
 from thefloatingdutchman.objects.weapons.bullets.bullet_data import BulletData
 from thefloatingdutchman.utility.resource_container import ResourceContainer

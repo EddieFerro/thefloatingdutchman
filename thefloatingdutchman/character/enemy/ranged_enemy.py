@@ -3,12 +3,10 @@ import math
 
 
 from pygame.sprite import Group
-from pygame import Vector2, sprite, Surface, transform, time, Rect, SRCALPHA
+from pygame import Vector2, sprite, Surface, transform, Rect, SRCALPHA
 
 from thefloatingdutchman.character.enemy.weapon_enemy import WeaponEnemy
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
-from thefloatingdutchman.objects.weapons.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.weapons.bullets.bullet_sprite import BulletSprite
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.utility.resource_container import ResourceContainer
 
@@ -43,7 +41,7 @@ class RangedEnemy(WeaponEnemy):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
                         target_direction.scale_to_length(
-                            self._data.vel * 0.0001)
+                            self._data.vel * 0.001)
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
 
@@ -68,18 +66,6 @@ class RangedEnemy(WeaponEnemy):
                 self.kill()
                 enemies.remove(self)
 
-            # Type 2 enemy specification
-                # Auto fire towards player at a given rate
-            # t = time.get_ticks()
-            # if (t - self._prev_shot) > self._data.attack_speed:
-            #     self._prev_shot = t
-            #     temp_angle = math.atan2(
-            #         player.rect.centery - self.rect.centery, player.rect.centerx - self.rect.centerx)
-            #     temp_angle = math.degrees(temp_angle)
-            #     temp_angle += random.uniform(-15, 15)
-            #     direction = Vector2(1, 0).rotate(temp_angle)
-            #     BulletSprite(self.bullet_sprite, BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
-            #         self._bullets)
             self._weapon.fire(player, self._data.attack_speed, 15, self.rect)
 
             # Stop moving towards player at a certain distance

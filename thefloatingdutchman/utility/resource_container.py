@@ -24,6 +24,9 @@ class ResourceContainer:
 
         self._resources['minion_boss'] = self._load_sprite("minion_boss.png")
 
+        self._resources['alien_boss_sprite'] = self._load_sprite(
+            "alien_boss_sprite.png")
+
         self._resources['level_1_background'] = self._load_path(
             "../space_images/level_1_background.jpg")
 

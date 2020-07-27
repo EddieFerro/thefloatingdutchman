@@ -4,7 +4,6 @@ from thefloatingdutchman.utility.resource_container import ResourceContainer
 from thefloatingdutchman.objects.weapons.weapon import Weapon
 from thefloatingdutchman.objects.weapons.bullets.player_bullet import PlayerBullet
 
-from thefloatingdutchman.objects.weapons.bullets.bullet_sprite import BulletSprite
 from thefloatingdutchman.objects.weapons.bullets.bullet_data import BulletData
 
 

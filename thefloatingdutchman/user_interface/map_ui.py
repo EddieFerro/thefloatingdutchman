@@ -117,4 +117,4 @@ class MapUI:
                             return False
                 elif e.type == QUIT:
                     exit()
-                    #return True
+                    # return True

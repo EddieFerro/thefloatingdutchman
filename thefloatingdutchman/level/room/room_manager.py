@@ -12,7 +12,6 @@ from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.level.room.enemy_room import EnemyRoom
 from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.enemy.boss.boss_manager import BossManager
-from thefloatingdutchman.objects.hearts.heart_manager import HeartManager
 
 
 class RoomManager(Manager):
@@ -79,10 +78,13 @@ class RoomManager(Manager):
 
         rooms = []
 
-        for i in range(0, self._number_of_rooms-1):
-            rooms.append(EnemyRoom(self._res_container, HeartManager(self._res_container),
+        rooms.append(EnemyRoom(self._res_container,
+                               BossManager(self._res_container)))
+
+        for i in range(1, self._number_of_rooms):
+            rooms.append(EnemyRoom(self._res_container,
                                    EnemyManager(self._res_container)))
 
-        rooms.append(EnemyRoom(self._res_container, HeartManager(self._res_container),
-                               BossManager(self._res_container)))
+        # rooms.append(EnemyRoom(self._res_container,
+        #                        BossManager(self._res_container)))
         return rooms

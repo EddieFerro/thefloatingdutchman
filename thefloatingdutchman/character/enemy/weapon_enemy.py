@@ -8,12 +8,13 @@ from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.utility.resource_container import ResourceContainer
 from thefloatingdutchman.objects.weapons.enemy_weapon import EnemyWeapon
+from thefloatingdutchman.objects.weapons.weapon import Weapon
 
 
 class WeaponEnemy(EnemySprite, ABC):
-    def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
+    def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData, weapon: Weapon = EnemyWeapon):
         super().__init__(res_container, enemy_data)
-        self._weapon = EnemyWeapon(res_container)
+        self._weapon = weapon(res_container)
         self._weapon.spawn()
 
     @abstractmethod

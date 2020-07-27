@@ -4,13 +4,6 @@ from ordered_set import OrderedSet
 
 from networkx import DiGraph
 
-from thefloatingdutchman.level.room.room import Room
-from thefloatingdutchman.level.room.enemy_room import EnemyRoom
-from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
-from thefloatingdutchman.character.enemy.boss.boss_manager import BossManager
-from thefloatingdutchman.utility.resource_container import ResourceContainer
-from thefloatingdutchman.objects.hearts.heart_manager import HeartManager
-
 
 class MapGenerator:
     def generate_rooms_per_col(self, num_rooms: int, max_per_col: int) -> List[int]:

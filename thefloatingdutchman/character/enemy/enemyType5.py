@@ -16,9 +16,7 @@ from thefloatingdutchman.utility.resource_container import ResourceContainer
 class EnemyType5(WeaponEnemy):
 
     def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
-        super().__init__(res_container, enemy_data)
-        self._weapon = EnemyWeapon(res_container, ExplodeBullet)
-        self._weapon.spawn()
+        super().__init__(res_container, enemy_data, ExplodeBullet)
         self._prev_shot = 0
 
     def _set_original_image(self, res_container: ResourceContainer):
@@ -46,7 +44,7 @@ class EnemyType5(WeaponEnemy):
                         target_direction = Vector2(
                             (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
                         target_direction.scale_to_length(
-                            self._data.vel * 0.0001)
+                            self._data.vel * 0.001)
                         self.rect.x += target_direction.x
                         self.rect.y += target_direction.y
 
