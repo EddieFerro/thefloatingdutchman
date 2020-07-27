@@ -25,6 +25,8 @@ class GameManager(Manager):
         self._tutorial = ui.Tutorial()
         self._post_level_screen = ui.PostLevelScreen()
         self._pre_level_screen = ui.PreLevelScreen()
+        self._game_completed_screen = ui.GameCompletedScreen()
+        self._credits_screen = ui.CreditsScreen()
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
@@ -69,6 +71,11 @@ class GameManager(Manager):
         self._health_ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
+            if self._level == 2:
+                self._game_completed_screen.activate(self._screen)
+                self._credits_screen.activate(self._screen)
+                self._done = True
+                return
             self.draw(False)
             self._post_level_screen.appear(self._screen)
             self._level += 1
@@ -110,19 +117,19 @@ class GameManager(Manager):
         display.update()
 
     def _access_game_over_screen(self):
-        result = self._game_over_screen.open(self._game_over_screen.draw(
-            self._screen, 0, self._game_over_screen._y_locations, False, None, False))
-        if result == 0:  # play again
+        result = self._game_over_screen.open(self._game_over_screen.draw(self._screen, 0, self._game_over_screen._y_locations, False, None))
+        if result == 0: #play again
             self.spawn()
         if result == 1:  # return to main menu
             self._done = True
+        if result == 2: #exit application
+            exit()
 
     def _access_pause_screen(self):
         result = 0
         while True:
-            result = self._pause_screen.open(self._pause_screen.draw(
-                self._screen, result, self._pause_screen._y_locations, False, None, False), result)
-            if result == 0:  # resume game
+            result = self._pause_screen.open(self._pause_screen.draw(self._screen, result, self._pause_screen._y_locations, False, None), result)
+            if result == 0: #resume game
                 break
             elif result == 1:  # show map
                 dropCount =self._drop_manager.dropped_count()
@@ -131,7 +138,6 @@ class GameManager(Manager):
                 self._tutorial.show_game_controls(self._screen)
             elif result == 3:  # restart game
                 self.spawn()
-                self._load_pre_level_screen()
                 break
             elif result == 4:  # end game
                 self._done = True
