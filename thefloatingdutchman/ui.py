@@ -189,6 +189,13 @@ class LevelSurface(Screen):
     def update_screen_level(self, screen):
         screen.blit(self._level_surface, ((WINDOW_WIDTH - self._level_surface.get_width()) / 2, -WINDOW_HEIGHT/3))
 
+class MapSurface(Screen):
+    # drawing surface to screen
+    def update_map(self, screen):
+        self._map_surface = self._draw_surface(
+            WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), "Press M to close Map", YELLOW, None)
+        screen.blit(self._map_surface, ((WINDOW_WIDTH - self._map_surface.get_width()) / 2, WINDOW_HEIGHT/2.5))
+
 
 class Tutorial(Screen):
     # initialize surface elements and background image
