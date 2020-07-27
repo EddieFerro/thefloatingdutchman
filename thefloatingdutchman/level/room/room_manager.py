@@ -88,7 +88,7 @@ class RoomManager(Manager):
                                        EnemyManager(self._res_container)))
             else:
                 rooms.append(TreasureRoom(self._res_container,
-                                       EnemyManager(self._res_container)))
+                                       TreasureManager(self._res_container)))
 
         rooms.append(EnemyRoom(self._res_container,
                                BossManager(self._res_container)))

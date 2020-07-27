@@ -28,13 +28,9 @@ class BossManager(EnemyManager):
                 300, WINDOW_HEIGHT/2), 5, BossState.RETURN, False, False, True))
             self._enemies.add(self._boss)
         elif (level+1) == 2:
-<<<<<<< HEAD
             self._boss = ChargeTeleBoss(self._res_container, BossData(700, 1500, Vector2(
                 300, WINDOW_HEIGHT/2), 5, BossState.CHARGE, False, True, False))
-=======
-            self._boss = ChargeTeleBoss(
-                BossData(100, 1500, Vector2(300, WINDOW_HEIGHT/2), 5, BossState.CHARGE, False, True, False))
->>>>>>> adding on
+
             self._enemies.add(self._boss)
 
     def update(self, player: PlayerSprite, screen: Surface):

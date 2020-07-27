@@ -12,6 +12,7 @@ class ResourceContainer:
 
     def _load_resources(self):
         self._resources['heart'] = self._load_sprite("heart.png")
+        self._resources['treasure'] = self._load_sprite("treasure.png")
 
         self._resources['cannonball'] = self._load_sprite("cannonball.png")
         self._resources['laser_shot_1'] = self._load_sprite("laser_shot_1.png")

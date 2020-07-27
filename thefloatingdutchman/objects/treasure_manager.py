@@ -10,11 +10,12 @@ from thefloatingdutchman.character.character_sprite import CharacterSprite
 from .treasure_chest.treasure_data import TreasureData
 from .treasure_chest.treasure_sprite import TreasureSprite
 import thefloatingdutchman.ui as ui
+from thefloatingdutchman.utility.resource_container import ResourceContainer
 
 
 class TreasureManager(Manager):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, res_container: ResourceContainer):
+        super().__init__(res_container)
         self._hearts = sprite.Group()
         self._treasure = ui.TreasureSurface()
         self._proximity = False
@@ -43,10 +44,10 @@ class TreasureManager(Manager):
         rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 60)
         self._hearts.add(
             TreasureSprite(
+                self._res_container,
                 TreasureData(
-                    1500,
                     Vector2(rand_pos_x, rand_pos_y),
-                    0,
+                    0
                 )
             )
         )
