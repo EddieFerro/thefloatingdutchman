@@ -55,10 +55,6 @@ class GameManager(Manager):
                 elif e.type == KEYDOWN and e.key == K_e and self._room_manager.get_proximity():
                     self._screen.fill("BLACK")
 
-                    s = Surface((1920, 1080))
-                    s.set_alpha(128)
-                    s.fill((0, 0, 0))
-                    self._screen.blit(s, (0, 0))
                     upgradeChooser = random.choices([1, 2, 3], weights=[
                         0.33, 0.33, 0.33], k=1)[0]
                     if upgradeChooser == 1:
