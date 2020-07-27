@@ -283,13 +283,32 @@ class GameCompletedScreen(Screen):
         self._surfaces = []
         features = [["CONGRATULATIONS!", LIME, None]]
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10))
-        features = [["You have rescued your crew", LIME, None], ["and defeated the Ghost Bustas", LIME, None], ["Press any Key to Continue", WHITE, None]]
+        features = [["You have rescued your crew", LIME, None], ["and defeated the Ghost Bustas", LIME, None], ["Press any Key to Continue", YELLOW, None]]
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
 
     def activate(self, screen):
         y_locations = [-WINDOW_HEIGHT/5, -WINDOW_HEIGHT/12, 0, WINDOW_HEIGHT/3]
         screen.blit(self._background, self._background.get_rect())
         screen.blit(self._logo, ((WINDOW_WIDTH - self._logo.get_width()) / 2, WINDOW_HEIGHT*.1))
+        self.draw(screen, 0, y_locations, True, None)
+        wait_for_user(float('inf'), False)
+
+
+class CreditsScreen(Screen):
+    def __init__(self):
+        self._initialize()
+
+    def _initialize(self):
+        self._background = image_fill_background(os.path.join(os.path.dirname(os.path.realpath(__file__)), "space_images/main_menu_background.jpg"))
+        self._surfaces = []
+        features = [["Thanks for Playing!", YELLOW, None], ["Developed By", YELLOW, None], ["Press any Key to Continue", YELLOW, None]]
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
+        features = [["Eddie Ferro", YELLOW, None], ["Kayton Fletcher", YELLOW, None], ["Santosh Tirumala", YELLOW, None], ["JJ Thurber", YELLOW, None], ["Ben Berlin", YELLOW, None]]
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 18))
+
+    def activate(self, screen):
+        y_locations = [-WINDOW_HEIGHT/(5/2), -WINDOW_HEIGHT/4, WINDOW_HEIGHT/3, -WINDOW_HEIGHT/9, -WINDOW_HEIGHT/18, 0, WINDOW_HEIGHT/18, WINDOW_HEIGHT/9]
+        screen.blit(self._background, self._background.get_rect())
         self.draw(screen, 0, y_locations, True, None)
         wait_for_user(float('inf'), False)
 

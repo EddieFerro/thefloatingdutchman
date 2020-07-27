@@ -26,6 +26,7 @@ class GameManager(Manager):
         self._post_level_screen = ui.PostLevelScreen()
         self._pre_level_screen = ui.PreLevelScreen()
         self._game_completed_screen = ui.GameCompletedScreen()
+        self._credits_screen = ui.CreditsScreen()
         # can go ahead and construct managers
         # since their spawn function controls their state
         self._player_manager = PlayerManager()
@@ -72,6 +73,7 @@ class GameManager(Manager):
         if self._room_manager.is_level_cleared():
             if self._level == 0:
                 self._game_completed_screen.activate(self._screen)
+                self._credits_screen.activate(self._screen)
                 self._done = True
                 return
             self.draw(False)
