@@ -4,8 +4,6 @@ import pygame
 
 from thefloatingdutchman.character.character_sprite import CharacterSprite
 from thefloatingdutchman.character.player.player_data import PlayerData
-from thefloatingdutchman.objects.weapons.bullets.bullet_data import BulletData
-from thefloatingdutchman.objects.weapons.bullets.bullet_sprite import BulletSprite
 from thefloatingdutchman.objects.weapons.player_weapon import PlayerWeapon
 from thefloatingdutchman.utility.resource_container import ResourceContainer
 
@@ -22,7 +20,6 @@ class PlayerSprite(CharacterSprite):
         self.flash = True
         self._weapon = PlayerWeapon(res_container)
         self._weapon.spawn()
-        # self.bullet_sprite = res_container.resources['cannonball']
 
     def _set_original_image(self, res_container: ResourceContainer):
         sprite = res_container.resources['pirate_ship']
@@ -61,13 +58,6 @@ class PlayerSprite(CharacterSprite):
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self._data.vel
         if keys[pygame.K_SPACE] or buttons[0] == 1:
-            # t = pygame.time.get_ticks()
-            # if (t - self._prev_shot) > self._data.attack_speed:
-            #     self._prev_shot = t
-            #     direction = Vector2(1, 0).rotate(-self._angle)
-
-            #     BulletSprite(self.bullet_sprite, BulletData(direction, 0, self._data.pos, 25, self.bullet_sprite)).add(
-            #         self._bullets)
             self._weapon.fire(self._angle, self._data.attack_speed, self.rect)
 
         if x != 0 and y != 0:

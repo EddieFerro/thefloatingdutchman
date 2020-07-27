@@ -30,17 +30,3 @@ class MultiShotWeapon(Weapon):
                 direction = Vector2(1, 0).rotate(temp_angle)
                 self._bullets.add(self._bullet_type(
                     self._res_container, BulletData(direction, 0, Vector2(rect.center), 25)))
-                # temp_angle = orig_temp_angle + random.uniform(-spread, spread)
-                # direction = Vector2(1, 0).rotate(temp_angle)
-                # self._bullets.add(self._bullet_type(
-                #     self._res_container, BulletData(direction, 0, Vector2(rect.center), 25)))
-
-            # if(BossState.TELEPORT):
-            #     temp_angle = orig_temp_angle + random.uniform(-15, 15)
-            #     direction = Vector2(1, 0).rotate(temp_angle)
-            #     self._bullets.add(self._bullet_type(
-            #         BulletData(direction, 0, Vector2(rect.center), 25)))
-            #     temp_angle = orig_temp_angle + random.uniform(-15, 15)
-            #     direction = Vector2(1, 0).rotate(temp_angle)
-            #     self._bullets.add(self._bullet_type(
-            #         BulletData(direction, 0, Vector2(rect.center), 25)))

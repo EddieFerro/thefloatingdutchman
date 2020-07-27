@@ -28,48 +28,39 @@ class ChaseEnemy(EnemySprite):
         if(self._data.health <= 0):
             self.kill()
             enemies.remove(self)
-        # Check for nearby enemies, only move in certain case
 
-        # Enemy moves toward player given that they are either type 1 or sufficiently far enough from player
-        try:
-            for enemy in enemies:
-                # Check for nearby enemies to avoid collision
-                if sprite.collide_circle(self, enemy) and enemy != self:
-                    distance = math.hypot(
-                        (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
+        for enemy in enemies:
+            # Check for nearby enemies to avoid collision
+            if sprite.collide_circle(self, enemy) and enemy != self:
+                distance = math.hypot(
+                    (enemy.rect.x - self.rect.x), (enemy.rect.y - self.rect.y))
 
-                    if (distance < 400):
-                        target_direction = Vector2(
-                            (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
-                        target_direction.scale_to_length(
-                            self._data.vel * 0.001)
-                        self.rect.x += target_direction.x
-                        self.rect.y += target_direction.y
+                if (distance < 400):
+                    target_direction = Vector2(
+                        (self.rect.x - enemy.rect.x), (self.rect.y - enemy.rect.y))
+                    target_direction.scale_to_length(
+                        self._data.vel * 0.001)
+                    self.rect.x += target_direction.x
+                    self.rect.y += target_direction.y
 
-            target_direction = Vector2(
-                - self.rect.x + player.rect.x + random.randrange(0, 30),
-                - self.rect.y + player.rect.y + random.randrange(0, 30))
-            target_direction.scale_to_length(self._data.vel * 0.7)
+        target_direction = Vector2(
+            - self.rect.x + player.rect.x + random.randrange(0, 30),
+            - self.rect.y + player.rect.y + random.randrange(0, 30))
+        target_direction.scale_to_length(self._data.vel * 0.7)
 
-            # Update bullets
-            self._bullets.update()
+        # Delete enemy when it comes into contact with player
+        if sprite.collide_mask(player, self) is not None and not player.invulnerable:
+            player.take_damage(1)
+            self.kill()
+            enemies.remove(self)
 
-            # Delete enemy when it comes into contact with player
-            if sprite.collide_mask(player, self) is not None and not player.invulnerable:
-                player.take_damage(1)
-                self.kill()
-                enemies.remove(self)
+        self.rect.x += target_direction.x
+        self.rect.y += target_direction.y
 
-            self.rect.x += target_direction.x
-            self.rect.y += target_direction.y
+        screen_rect = screen.get_rect()
 
-            screen_rect = screen.get_rect()
+        self.rect.clamp_ip(screen_rect)
 
-            self.rect.clamp_ip(screen_rect)
+        self._data.pos = Vector2(self.rect.center)
 
-            self._data.pos = Vector2(self.rect.center)
-
-            self._calc_rotation(player)
-
-        except ValueError:
-            return
+        self._calc_rotation(player)

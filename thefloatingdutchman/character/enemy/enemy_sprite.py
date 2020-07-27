@@ -14,7 +14,6 @@ class EnemySprite(CharacterSprite, ABC):
         super().__init__(res_container, enemy_data)
         self.radius = 80
         self._damage = 0.5
-        self._prev_shot = 0
         self.invulnerable_start = 0
         self.mask = mask.from_surface(self.image)
 

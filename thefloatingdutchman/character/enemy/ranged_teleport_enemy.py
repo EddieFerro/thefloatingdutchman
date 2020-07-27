@@ -16,7 +16,6 @@ class RangedTeleportEnemy(WeaponEnemy):
     def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
         super().__init__(res_container, enemy_data)
         self._moved = True
-        self._prev_shot = 0
 
     def _set_original_image(self, res_container: ResourceContainer):
         sprite_sheet = res_container.resources['red_fighter']
@@ -53,13 +52,12 @@ class RangedTeleportEnemy(WeaponEnemy):
             enemies.remove(self)
 
         n = time.get_ticks()
-        if (n - self._prev_shot) > 2000 and not self._moved:
+        if (n - self.weapon.prev_shot) > 2000 and not self._moved:
             self.rect.x = rand_pos_x
             self.rect.y = rand_pos_y
-            # t = time.get_ticks()
             self._moved = True
 
-        elif (n - self._prev_shot) > 3000 and self._moved:
+        elif (n - self.weapon.prev_shot) > 3000 and self._moved:
 
             if self._weapon.fire(player, self._data.attack_speed, 15, self.rect):
                 self._moved = False

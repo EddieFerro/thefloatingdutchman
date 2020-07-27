@@ -6,7 +6,6 @@ from pygame.sprite import Group
 from pygame import Vector2, sprite, Surface, transform, Rect, SRCALPHA
 
 from thefloatingdutchman.objects.weapons.bullets.explode_bullet import ExplodeBullet
-from thefloatingdutchman.objects.weapons.enemy_weapon import EnemyWeapon
 from thefloatingdutchman.character.player.player_sprite import PlayerSprite
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
 from thefloatingdutchman.character.enemy.weapon_enemy import WeaponEnemy
@@ -17,7 +16,6 @@ class EnemyType5(WeaponEnemy):
 
     def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
         super().__init__(res_container, enemy_data, ExplodeBullet)
-        self._prev_shot = 0
 
     def _set_original_image(self, res_container: ResourceContainer):
         sprite_sheet = res_container.resources['red_fighter']

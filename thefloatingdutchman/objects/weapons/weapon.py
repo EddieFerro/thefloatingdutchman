@@ -27,3 +27,7 @@ class Weapon(Manager, ABC):
 
     def draw(self, screen):
         self._bullets.draw(screen)
+
+    @property
+    def prev_shot(self):
+        return self._prev_shot

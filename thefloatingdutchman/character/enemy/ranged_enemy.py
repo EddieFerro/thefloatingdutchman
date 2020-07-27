@@ -15,7 +15,6 @@ class RangedEnemy(WeaponEnemy):
 
     def __init__(self, res_container: ResourceContainer, enemy_data: EnemyData):
         super().__init__(res_container, enemy_data)
-        self._prev_shot = 0
 
     def _set_original_image(self, res_container: ResourceContainer):
         sprite_sheet = res_container.resources['red_fighter']
