@@ -40,6 +40,13 @@ class BossManager(EnemyManager):
                 5, BossState.MOVEDOWN, True, False, False))
             self._enemies.add(self._boss2)
             self._enemies.add(self._boss)
+        elif (level+1) == 1:
+            self._boss = FirstBoss(self._res_container, BossData(300, 2000, Vector2(300, WINDOW_HEIGHT/2), 
+                5, BossState.MOVEUP, True, False, False))
+            self._boss2 = FirstBoss(self._res_container, BossData(300, 2000, Vector2(1620, WINDOW_HEIGHT/2), 
+                5, BossState.MOVEDOWN, True, False, False))
+            self._enemies.add(self._boss2)
+            self._enemies.add(self._boss)
 
     def update(self, player: PlayerSprite, screen: Surface):
         super().update(player, screen)
