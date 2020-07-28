@@ -44,7 +44,7 @@ class EnemyManager(Manager):
                 type4Chance = 0.25
             if(level+1) >= 3:
                 type5Chance = type2Chance
-                type2Chance = type2Chance - 0.01
+                type2Chance = type2Chance - 0.02
 
             enemyChooser = random.choices([1, 2, 3, 4, 5], weights=[
                                           type2Chance, type1Chance, type4Chance, type3Chance, type5Chance], k=1)[0]
