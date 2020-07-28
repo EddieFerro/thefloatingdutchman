@@ -11,8 +11,10 @@ class BossState(Enum):
     STATIONARY = 2,
     CHARGE = 3,
     TELEPORT = 4,
-    TRANSITION = 5,
-    ENRAGED = 6
+    MOVEDOWN = 5,
+    MOVEUP = 6
+    TRANSITION = 7,
+    ENRAGED = 8
 
 
 class BossData(EnemyData):
