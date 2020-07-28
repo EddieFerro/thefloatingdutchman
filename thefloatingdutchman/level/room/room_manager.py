@@ -80,15 +80,21 @@ class RoomManager(Manager):
     def _generate_rooms(self) -> List[Room]:
 
         rooms = []
+        treasure_count =0
 
         for i in range(0, self._number_of_rooms-1):
-            roomChooser = random.choices([1, 2], weights=[0.9, 0.1], k=1)[0]
+            roomChooser = random.choices([1, 2], weights=[0.8, 0.2], k=1)[0]
             if roomChooser == 1:
                 rooms.append(EnemyRoom(self._res_container,
                                        EnemyManager(self._res_container)))
-            else:
+            elif treasure_count<2 and i != 0:
                 rooms.append(TreasureRoom(self._res_container,
                                        TreasureManager(self._res_container)))
+                treasure_count += 1
+            else:
+                rooms.append(EnemyRoom(self._res_container,
+                                       EnemyManager(self._res_container)))
+
 
         rooms.append(EnemyRoom(self._res_container,
                                BossManager(self._res_container)))
