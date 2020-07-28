@@ -5,6 +5,7 @@ from pygame import Vector2, Surface, time
 
 from thefloatingdutchman.character.enemy.boss.minion_boss import MinionBoss
 from thefloatingdutchman.character.enemy.boss.charge_tele_boss import ChargeTeleBoss
+from thefloatingdutchman.character.enemy.boss.first_boss import FirstBoss
 
 from thefloatingdutchman.character.enemy.chase_enemy import ChaseEnemy
 from thefloatingdutchman.character.enemy.enemy_data import EnemyData
@@ -31,6 +32,13 @@ class BossManager(EnemyManager):
             self._boss = ChargeTeleBoss(self._res_container, BossData(700, 1500, Vector2(
                 300, WINDOW_HEIGHT/2), 5, BossState.CHARGE, False, True, False))
 
+            self._enemies.add(self._boss)
+        elif (level+1) == 1:
+            self._boss = FirstBoss(self._res_container, BossData(300, 2000, Vector2(300, WINDOW_HEIGHT/2-200), 
+                5, BossState.STATIONARY, True, False, False))
+            self._boss2 = FirstBoss(self._res_container, BossData(300, 2000, Vector2(300, WINDOW_HEIGHT/2+200), 
+                5, BossState.STATIONARY, True, False, False))
+            self._enemies.add(self._boss2)
             self._enemies.add(self._boss)
 
     def update(self, player: PlayerSprite, screen: Surface):
@@ -74,6 +82,17 @@ class BossManager(EnemyManager):
                 self._boss.pausing = 0
                 self._boss.start = time.get_ticks()
                 self._boss.moved = False
+        elif self._boss._data._type1:
+
+            if self._boss.dead is True:
+                self._boss2._data.state = BossState.TRANSITION
+            elif self._boss2.dead is True:
+                self._boss._data.state = BossState.TRANSITION
+            
+            if self._boss._data.state == BossState.TRANSITION and (time.get_ticks() - self._boss.invulnerable_start ) > 2500:
+                self._boss._data.state = BossState.ENRAGED
+            elif self._boss2._data.state == BossState.TRANSITION and (time.get_ticks() - self._boss2.invulnerable_start) > 2500:
+                self._boss2._data.state = BossState.ENRAGED
 
     def _spawn_minions(self, player: PlayerSprite) -> List[EnemySprite]:
 
