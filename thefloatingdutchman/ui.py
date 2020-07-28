@@ -8,7 +8,7 @@ from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLAC
 
 class Screen:
     #create surfaces from features
-    def _gather_surfaces(self, surfaces, features, width, height, font_size):
+    def _gather_surfaces(self, surfaces, features, width, height, font_size) -> pygame.Surface:
         for txt, color, fill in features:
             surfaces.append(self._draw_surface(width,
                                                     height, font_size, txt, color, fill))
@@ -16,7 +16,7 @@ class Screen:
 
     # create surface
     def _draw_surface(self, width, height, font_size, text,
-                           text_color, fill):
+                           text_color, fill) -> pygame.Surface:
 
         # inserts surface onto screen
         surface = pygame.Surface(
@@ -36,7 +36,7 @@ class Screen:
     # draw pre-defined surfaces onto screen
 
     # screen, surfaces being attached to screen, y_value of surfaces being attached, index highlights surface to be highlighted
-    def draw(self, screen, index, y_locations, tutorial, sleep_times):
+    def draw(self, screen, index, y_locations, tutorial, sleep_times) -> pygame.Surface:
         if not tutorial:
             if len(self._surfaces) == 7: # game over screen
                 screen.fill(BLACK)
@@ -66,7 +66,7 @@ class Screen:
         return screen
 
 
-    def _access_menu(self, screen, result, num_options, bounds): # allows player to toggle between options in given menu 
+    def _access_menu(self, screen, result, num_options, bounds) -> int: # allows player to toggle between options in given menu 
         curr_index = result # indicates option currently chosen
         prev_index = result # previous option chosen
 
@@ -124,7 +124,7 @@ class GameOverScreen(Screen):
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20))
         self._y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.45, WINDOW_HEIGHT*.6, WINDOW_HEIGHT*.75]
 
-    def open(self, screen):
+    def open(self, screen) -> int:
         return self._access_menu(screen, 0, len(GAME_OVER_BOUNDS), GAME_OVER_BOUNDS)
 
 
@@ -145,7 +145,7 @@ class PauseScreen(Screen):
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 14, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
         self._y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.35, WINDOW_HEIGHT*.44, WINDOW_HEIGHT*.53, WINDOW_HEIGHT*.62, WINDOW_HEIGHT*.71, WINDOW_HEIGHT*.8]
 
-    def open(self, screen, result):
+    def open(self, screen, result) -> int:
         return self._access_menu(screen, result, len(PAUSE_BOUNDS), PAUSE_BOUNDS)
         
 
@@ -171,7 +171,7 @@ class MainMenu(Screen):
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 12, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
         self._y_locations = [WINDOW_HEIGHT*.9, WINDOW_HEIGHT*.4, WINDOW_HEIGHT*.5, WINDOW_HEIGHT*.6, WINDOW_HEIGHT*.7]
 
-    def open(self, screen, result):
+    def open(self, screen, result) -> int:
         return self._access_menu(screen, result, len(MAIN_MENU_BOUNDS), MAIN_MENU_BOUNDS)
 
 
@@ -204,9 +204,6 @@ class TreasureSurface(Screen):
             WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20), txt, YELLOW,
             None)
         screen.blit(self._treasure_surface, ((WINDOW_WIDTH - self._treasure_surface.get_width()) / 2, -WINDOW_HEIGHT/4))
-
-
-
 
 
 class Tutorial(Screen):
@@ -371,5 +368,5 @@ def wait_for_user(sleep_time, auto):
         for event in pygame.event.get():
             if event.type == QUIT:  # user closes application
                 exit()
-            if (not auto and event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN):
+            if (not auto and event.type == pygame.KEYDOWN):
                 return

@@ -106,7 +106,7 @@ class GameManager(Manager):
         self._health_ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
-            if self._level == 2:
+            if self._level == 1:
                 self._game_completed_screen.activate(self._screen)
                 self._credits_screen.activate(self._screen)
                 self._done = True
