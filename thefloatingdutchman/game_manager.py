@@ -22,8 +22,10 @@ class GameManager(Manager):
         self._done = False
         self._level = 0
 
-        self._background = ui.image_fill_background(
-            self._res_container.resources['level_1_background'])
+        self._backgrounds = [ui.image_fill_background(
+            self._res_container.resources['level_1_background']), ui.image_fill_background(
+            self._res_container.resources['level_2_background']), ui.image_fill_background(
+            self._res_container.resources['level_3_background'])]
         self._tutorial = ui.Tutorial()
         self._post_level_screen = ui.PostLevelScreen()
         self._pre_level_screen = ui.PreLevelScreen()
@@ -95,6 +97,7 @@ class GameManager(Manager):
         self._player_manager.spawn()
         self._room_manager.spawn(self._level)
         self._post_level_screen.update_level(self._level)
+        self._background = self._backgrounds[0]
         self._load_pre_level_screen()
         self._drop_manager.spawn(self._level)
         self._items_dropped = False
@@ -114,6 +117,7 @@ class GameManager(Manager):
             self.draw(False)
             self._post_level_screen.appear(self._screen)
             self._level += 1
+            self._background = self._backgrounds[self._level]
             self._level_surface.draw_new_level(self._level)
             self._room_manager.spawn(self._level)
             self._post_level_screen.update_level(self._level)
