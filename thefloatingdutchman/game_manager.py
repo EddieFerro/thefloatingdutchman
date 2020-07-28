@@ -70,8 +70,8 @@ class GameManager(Manager):
 
                     elif upgradeChooser == 3:
                         old_vel = self._player_manager.player._data._vel
-                        self._player_manager.player._data._vel += 2
-                        self._treasure_screen.update_treasure_screen(self._screen, "+2 to Velocity! Press any Key to Continue")
+                        self._player_manager.player._data._vel += 1
+                        self._treasure_screen.update_treasure_screen(self._screen, "+1 to Velocity! Press any Key to Continue")
 
                     display.flip()
                     display.update()
