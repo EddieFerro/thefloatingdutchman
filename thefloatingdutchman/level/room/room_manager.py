@@ -83,7 +83,7 @@ class RoomManager(Manager):
         treasure_count =0
 
         for i in range(0, self._number_of_rooms-1):
-            roomChooser = random.choices([1, 2], weights=[0.8, 0.2], k=1)[0]
+            roomChooser = random.choices([1, 2], weights=[0.5, 0.5], k=1)[0]
             if roomChooser == 1:
                 rooms.append(EnemyRoom(self._res_container,
                                        EnemyManager(self._res_container)))
