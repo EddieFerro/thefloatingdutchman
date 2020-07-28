@@ -74,10 +74,10 @@ class DropManager(Manager):
 
     def _heart_update(self, player: PlayerSprite, screen: Surface):
         self._hearts.update()
+        hits = sprite.spritecollide(
+            player, self._hearts, True, sprite.collide_mask)
         if player._data.health < player._data._max_health:
             self._need_health = True
-            hits = sprite.spritecollide(
-                player, self._hearts, True, sprite.collide_mask)
             for pickups in hits:
                 player._data.gain_health(1)
         else:
