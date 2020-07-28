@@ -21,15 +21,14 @@ class FirstBoss(WeaponEnemy):
         self.temp_weapon = MultiShotWeapon(res_container)
 
     def _set_original_image(self, res_container: ResourceContainer):
-        sprite_sheet = res_container.resources['minion_boss']
-        temp_rect = Rect((0, 0, 512, 512))
+        sprite_sheet = res_container.resources['first_boss']
+        temp_rect = Rect((0, 0, 904, 862))
 
-        scale = 0.9
+        scale = 0.4
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
         self._original_image = transform.scale(
-            self._original_image, (int(512*scale), int(512*scale)))
-        self._original_image = transform.rotate(self._original_image, -90) 
+            self._original_image, (int(512*scale), int(512*scale))) 
     
     def update(self, player: PlayerSprite, enemies: Group, screen: Surface):
         if self._data.health <= 0:
@@ -37,18 +36,29 @@ class FirstBoss(WeaponEnemy):
             self.kill()
         
         if sprite.collide_mask(player, self) is not None and not player.invulnerable:
-            player.take_damage(2.5)
+            player.take_damage(1.5)
             self.take_damage(50)
         
         state = self._data.state
-        if state is BossState.STATIONARY:
-            target_direction = Vector2(0,0)
-            self._data.attack_speed = 1500
+        if state is BossState.MOVEDOWN:
+            target_direction = Vector2(0,1)
+            self._data.attack_speed = 2000
             self._calc_rotation(player)
             self.image.set_alpha(255)
-            self._data.vel = 5
+            self._data.vel = 6
             self._weapon.fire(player, self._data.attack_speed, 10, self.rect)
             self._weapon.update()
+            self.invulnerable_start = time.get_ticks()
+        
+        elif state is BossState.MOVEUP:
+            target_direction = Vector2(0,-1)
+            self._data.attack_speed = 2000
+            self._calc_rotation(player)
+            self.image.set_alpha(255)
+            self._data.vel = 6
+            self._weapon.fire(player, self._data.attack_speed, 10, self.rect)
+            self._weapon.update()
+            self.invulnerable_start = time.get_ticks()
 
         elif state is BossState.TRANSITION:
             target_direction = Vector2(0,0)
@@ -56,17 +66,18 @@ class FirstBoss(WeaponEnemy):
             self._weapon.spawn()
             self._data.invulnerable = True
             self.image.set_alpha(100)
-            self.invulnerable_start = time.get_ticks()
+            self._set_enraged_image(ResourceContainer())
+            
 
         elif state is BossState.ENRAGED:
             self._data.invulnerable = False
             target_direction = player._data.pos - self._data.pos
             target_direction = self._avoid_player(player, target_direction)
-            self._data.attack_speed = 700
+            self._data.attack_speed = 900
             self._calc_rotation(player)
             self.image.set_alpha(255)
             self._data.vel = 7
-            self._weapon.fire(player, self._data.attack_speed, 20, self.rect, 5)
+            self._weapon.fire(player, self._data.attack_speed, 20, self.rect, 3)
             self._weapon.update()
 
         if target_direction.length() != 0:
@@ -89,3 +100,17 @@ class FirstBoss(WeaponEnemy):
                 return Vector2(0, 0)
         else:
             return target_direction
+    
+    def _set_enraged_image(self, res_container: ResourceContainer):
+        sprite_sheet = res_container.resources['first_boss_enraged']
+        temp_rect = Rect((0, 0, 904, 862))
+
+        scale = 0.4
+        self._original_image = Surface(temp_rect.size, SRCALPHA)
+        self._original_image.blit(sprite_sheet, (0, 0), temp_rect)
+        self._original_image = transform.scale(
+            self._original_image, (int(512*scale), int(512*scale))) 
+
+    def draw(self, screen):
+        self.health_bar.draw(screen, self._data.pos, self._data.health)
+        screen.blit(self.image, self.rect)

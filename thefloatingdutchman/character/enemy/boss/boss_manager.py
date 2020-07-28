@@ -33,10 +33,10 @@ class BossManager(EnemyManager):
                 300, WINDOW_HEIGHT/2), 5, BossState.CHARGE, False, True, False))
             self._enemies.add(self._boss)
         elif (level+1) == 1:
-            self._boss = FirstBoss(self._res_container, BossData(300, 2000, Vector2(300, WINDOW_HEIGHT/2-200), 
-                5, BossState.STATIONARY, True, False, False))
-            self._boss2 = FirstBoss(self._res_container, BossData(300, 2000, Vector2(300, WINDOW_HEIGHT/2+200), 
-                5, BossState.STATIONARY, True, False, False))
+            self._boss = FirstBoss(self._res_container, BossData(300, 2000, Vector2(300, WINDOW_HEIGHT/2), 
+                5, BossState.MOVEUP, True, False, False))
+            self._boss2 = FirstBoss(self._res_container, BossData(300, 2000, Vector2(1620, WINDOW_HEIGHT/2), 
+                5, BossState.MOVEDOWN, True, False, False))
             self._enemies.add(self._boss2)
             self._enemies.add(self._boss)
 
@@ -82,15 +82,33 @@ class BossManager(EnemyManager):
                 self._boss.start = time.get_ticks()
                 self._boss.moved = False
         elif self._boss._data._type1:
+            
+            if self._boss._data.state == BossState.MOVEUP:
+                curr_dist = self._boss._data.pos.distance_to((300,0))
+                if curr_dist < 115:
+                    self._boss._data.state = BossState.MOVEDOWN
+            elif self._boss._data.state == BossState.MOVEDOWN:
+                curr_dist = self._boss._data.pos.distance_to((300,1080))
+                if curr_dist < 115:
+                    self._boss._data.state = BossState.MOVEUP
+
+            if self._boss2._data.state == BossState.MOVEUP:
+                curr_dist = self._boss2._data.pos.distance_to((1620,0))
+                if curr_dist < 115:
+                    self._boss2._data.state = BossState.MOVEDOWN
+            elif self._boss2._data.state == BossState.MOVEDOWN:
+                curr_dist = self._boss2._data.pos.distance_to((1620,1080))
+                if curr_dist < 115:
+                    self._boss2._data.state = BossState.MOVEUP
 
             if self._boss.dead is True:
                 self._boss2._data.state = BossState.TRANSITION
             elif self._boss2.dead is True:
                 self._boss._data.state = BossState.TRANSITION
             
-            if self._boss._data.state == BossState.TRANSITION and (time.get_ticks() - self._boss.invulnerable_start ) > 2500:
+            if self._boss._data.state == BossState.TRANSITION and (time.get_ticks() - self._boss.invulnerable_start ) > 1500:
                 self._boss._data.state = BossState.ENRAGED
-            elif self._boss2._data.state == BossState.TRANSITION and (time.get_ticks() - self._boss2.invulnerable_start) > 2500:
+            elif self._boss2._data.state == BossState.TRANSITION and (time.get_ticks() - self._boss2.invulnerable_start) > 1500:
                 self._boss2._data.state = BossState.ENRAGED
 
     def _spawn_minions(self, player: PlayerSprite) -> List[EnemySprite]:
