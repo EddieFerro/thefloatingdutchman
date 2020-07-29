@@ -161,7 +161,6 @@ class GameManager(Manager):
                 time.wait(200)
 
 
-
     def draw(self, show_level):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
