@@ -36,10 +36,10 @@ class ResourceContainer:
             "../utility/space_images/level_1_background.jpg")
 
         self._resources['level_2_background'] = self._load_path(
-            "../utility/space_images/space2.jpg")
+            "../utility/space_images/level_2_background.jpg")
 
         self._resources['level_3_background'] = self._load_path(
-            "../utility/space_images/space8.jpg")
+            "../utility/space_images/level_3_background.jpg")
 
     def _load_sprite(self, file: str):
         return image.load(path.join(path.dirname(

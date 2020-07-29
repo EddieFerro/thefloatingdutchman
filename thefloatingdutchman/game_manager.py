@@ -125,10 +125,11 @@ class GameManager(Manager):
             self._level += 1
             self._background = self._backgrounds[self._level]
             self._level_surface.draw_new_level(self._level)
+            self._player_manager.player._data.pos.update(
+                    WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+            self._player_manager.draw(self._screen)
             self._room_manager.spawn(self._level)
             self._post_level_screen.update_level(self._level)
-            self._player_manager.player._data.pos.update(
-                    WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
             self._load_pre_level_screen()
 
         if self._player_manager.player.dead:
@@ -144,7 +145,6 @@ class GameManager(Manager):
             if not self._items_dropped:
                 self._drop_manager.drop_items(self._level)
                 self._items_dropped = True
-
             # must check if player died to last enemy exploding
             if self._player_manager.player.dead:
                 self._access_game_over_screen()
