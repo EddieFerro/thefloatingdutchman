@@ -133,3 +133,5 @@ class BossManager(EnemyManager):
             ChaseEnemy(self._res_container, EnemyData(randint(30, 50), 10, Vector2(
                 500, WINDOW_HEIGHT/2 - 200), randint(10, 12))),
         ]
+    def is_boss(self):
+        return True

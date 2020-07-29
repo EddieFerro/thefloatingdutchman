@@ -32,3 +32,6 @@ class EnemyRoom(Room):
 
     def draw(self, screen: Surface):
         self._enemy_manager.draw(screen)
+
+    def is_boss(self):
+        return self._enemy_manager.is_boss()

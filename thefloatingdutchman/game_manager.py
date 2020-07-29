@@ -162,7 +162,7 @@ class GameManager(Manager):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         self._health_ui.health_bar(self._screen, self._player_manager)
-        if self._room_manager.is_room_cleared():  # enemies gone
+        if self._room_manager.is_room_cleared() and not self._room_manager.is_boss():  # enemies gone
             self._map_screen.update_map(self._screen)
         if show_level:
             self._level_surface.update_screen_level(self._screen)

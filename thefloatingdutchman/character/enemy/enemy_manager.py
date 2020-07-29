@@ -127,3 +127,5 @@ class EnemyManager(Manager):
             enemy.draw(screen)
             if isinstance(enemy, WeaponEnemy):
                 enemy.weapon.draw(screen)
+    def is_boss(self):
+        return False
