@@ -80,4 +80,7 @@ class TreasureManager(Manager):
         if(self._proximity):
             self._treasure.update_treasure_screen(screen, "Press E Key")
 
+    def is_boss(self):
+        return False
+
     # ***** END HEARTS *****

@@ -28,7 +28,7 @@ class ExplodeBullet(BulletSprite):
                 display.update()
                 self.kill()
 
-                player.take_damage(3)
+                player.take_damage(1)
 
             else:
                 draw.circle(screen, RED, (self.rect.x, self.rect.y), 100, 100)

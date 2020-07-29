@@ -103,4 +103,5 @@ class RoomManager(Manager):
         return self._rooms[self._current_room_id].get_proximity()
     def set_cleared(self):
         self._rooms[self._current_room_id].set_cleared()
-
+    def  is_boss(self):
+        return self._rooms[self._current_room_id].is_boss()
