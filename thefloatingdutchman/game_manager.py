@@ -157,6 +157,8 @@ class GameManager(Manager):
                 self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self._items_dropped = False
+                self._newRoom = True
+
                 time.wait(200)
 
 
