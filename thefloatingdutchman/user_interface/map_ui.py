@@ -119,7 +119,7 @@ class MapUI:
                     return False
                 if e.type == KEYDOWN and e.key == K_m and not rooms[current_room_id].cleared():
                     return False
-                elif e.type == MOUSEBUTTONDOWN and aMode:
+                elif e.type == MOUSEBUTTONDOWN:
                     x, y = e.pos
                     for _id in moveable_rooms:
 
