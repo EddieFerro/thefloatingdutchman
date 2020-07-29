@@ -21,7 +21,7 @@ class GameManager(Manager):
         self._pause_screen = ui.PauseScreen()
         self._done = False
         self._level = 0
-        self._tab_up=False
+        self._newRoom = False
 
         self._background = ui.image_fill_background(
             self._res_container.resources['level_1_background'])
@@ -41,6 +41,7 @@ class GameManager(Manager):
 
     def run(self, run_tutorial):
         # comment out this line to remove the tutorial
+
         if run_tutorial == 1:
             self._tutorial.begin_tutorial(self._screen)
 
@@ -58,7 +59,7 @@ class GameManager(Manager):
                     self._done = self._room_manager.render_map(self._screen, False, 0, True)
                     self._player_manager.player._data.pos.update(
                         WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
-
+                    self._newRoom = True
                     self._items_dropped = False
                     time.wait(200)
                 elif e.type == KEYDOWN and e.key == K_e and self._room_manager.get_proximity():
@@ -68,7 +69,7 @@ class GameManager(Manager):
                         0.33, 0.33, 0.33], k=1)[0]
 
                     if upgradeChooser == 1:
-                        self._player_manager._player._data._attack_speed += 2
+                        self._player_manager._player._data._attack_speed -= 2
                         self._treasure_screen.update_treasure_screen(self._screen,"+2 to Attack Speed! Press any Key to Continue")
 
                     elif upgradeChooser == 2:
@@ -108,7 +109,9 @@ class GameManager(Manager):
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
         self._player_manager.update(
-            self._screen, self._room_manager.get_current_enemies())
+            self._screen, self._room_manager.get_current_enemies(), self._newRoom)
+        if(self._newRoom):
+           self._newRoom = False
         self._health_ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
@@ -154,6 +157,8 @@ class GameManager(Manager):
                 self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self._items_dropped = False
+                self._newRoom = True
+
                 time.wait(200)
 
 

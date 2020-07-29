@@ -36,15 +36,15 @@ class PlayerSprite(CharacterSprite):
             self._original_image, (int(549/3), int(549/3)))
         self._original_image = transform.rotate(self._original_image, 90)
 
-    def update(self, screen):
+    def update(self, screen, newRoom):
         if(self._data.health <= 0):
             self._dead = True
             self.kill()
-        self._calc_movement(screen)
+        self._calc_movement(screen, newRoom)
         # self._bullets.update()
         self._weapon.update()
 
-    def _calc_movement(self, screen):
+    def _calc_movement(self, screen, newRoom):
         x = 0
         y = 0
         buttons = mouse.get_pressed()
@@ -57,7 +57,7 @@ class PlayerSprite(CharacterSprite):
             y = -self._data.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             y = self._data.vel
-        if keys[pygame.K_SPACE] or buttons[0] == 1:
+        if keys[pygame.K_SPACE] or buttons[0] == 1 and not newRoom:
             self._weapon.fire(self._angle, self._data.attack_speed, self.rect)
 
         if x != 0 and y != 0:
