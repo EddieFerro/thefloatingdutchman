@@ -99,7 +99,8 @@ class MapUI:
                current_room_id: int,
                set_current_room,
                showMessage,
-               dropCount) -> bool:
+               dropCount,
+               aMode) -> bool:
 
         while True:
             for dot, room in zip(self._dots, rooms):
@@ -114,12 +115,11 @@ class MapUI:
             display.flip()
 
             for e in event.get():
-                if e.type == KEYDOWN and e.key == K_m and dropCount > 0:
+                if e.type == KEYDOWN and e.key == K_m and dropCount >= 0 and not aMode:
                     return False
-
                 if e.type == KEYDOWN and e.key == K_m and not rooms[current_room_id].cleared():
                     return False
-                elif e.type == MOUSEBUTTONDOWN:
+                elif e.type == MOUSEBUTTONDOWN and aMode:
                     x, y = e.pos
                     for _id in moveable_rooms:
 
