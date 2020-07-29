@@ -21,6 +21,7 @@ class GameManager(Manager):
         self._pause_screen = ui.PauseScreen()
         self._done = False
         self._level = 0
+        self._tab_up=False
 
         self._backgrounds = [ui.image_fill_background(
             self._res_container.resources['level_1_background']), ui.image_fill_background(
@@ -32,6 +33,7 @@ class GameManager(Manager):
         self._game_completed_screen = ui.GameCompletedScreen()
         self._credits_screen = ui.CreditsScreen()
         self._treasure_screen = ui.TreasureSurface()
+        self._map_screen = ui.MapSurface2()
 
         # can go ahead and construct managers
         # since their spawn function controls their state
@@ -54,6 +56,13 @@ class GameManager(Manager):
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
                     self._access_pause_screen()
+                elif e.type == KEYDOWN and e.key == K_m and self._room_manager.is_room_cleared():
+                    self._done = self._room_manager.render_map(self._screen, False, 0, True)
+                    self._player_manager.player._data.pos.update(
+                        WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+
+                    self._items_dropped = False
+                    time.wait(200)
                 elif e.type == KEYDOWN and e.key == K_e and self._room_manager.get_proximity():
                     self._screen.fill("BLACK")
 
@@ -61,17 +70,14 @@ class GameManager(Manager):
                         0.33, 0.33, 0.33], k=1)[0]
 
                     if upgradeChooser == 1:
-                        old_att = self._player_manager.player._data._attack_speed
                         self._player_manager._player._data._attack_speed += 2
                         self._treasure_screen.update_treasure_screen(self._screen,"+2 to Attack Speed! Press any Key to Continue")
 
                     elif upgradeChooser == 2:
-                        old_hel = self._player_manager.player._data._health
                         self._player_manager.player._data._health += 1
                         self._treasure_screen.update_treasure_screen(self._screen, "+1 to Health! Press any Key to Continue")
 
                     elif upgradeChooser == 3:
-                        old_vel = self._player_manager.player._data._vel
                         self._player_manager.player._data._vel += 1
                         self._treasure_screen.update_treasure_screen(self._screen, "+1 to Velocity! Press any Key to Continue")
 
@@ -130,6 +136,8 @@ class GameManager(Manager):
 
 
         if self._room_manager.is_room_cleared():  # enemies gone
+
+            self._map_screen.update_map(self._screen)
             self._drop_manager.update(
                 self._player_manager.player, self._screen)
 
@@ -144,16 +152,22 @@ class GameManager(Manager):
 
             elif self._drop_manager.dropped_count() == 0:
                 dropCount =self._drop_manager.dropped_count()
-                self._done = self._room_manager.render_map(self._screen, False, dropCount)
+
+            if self._room_manager.get_proximity():
+                self._done = self._room_manager.render_map(self._screen, False, 0, True)
                 self._player_manager.player._data.pos.update(
-                    WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+                    WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self._items_dropped = False
                 time.wait(200)
+
+
 
     def draw(self, show_level):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         self._health_ui.health_bar(self._screen, self._player_manager)
+        if self._room_manager.is_room_cleared():  # enemies gone
+            self._map_screen.update_map(self._screen)
         if show_level:
             self._level_surface.update_screen_level(self._screen)
         self._room_manager.draw(self._screen)
@@ -178,7 +192,7 @@ class GameManager(Manager):
                 break
             elif result == 1:  # show map
                 dropCount =self._drop_manager.dropped_count()
-                self._done = self._room_manager.render_map(self._screen, True, dropCount)
+                self._done = self._room_manager.render_map(self._screen, True, dropCount, False)
             elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
             elif result == 3:  # restart game

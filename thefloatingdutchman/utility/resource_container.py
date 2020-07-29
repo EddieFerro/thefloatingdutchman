@@ -23,6 +23,10 @@ class ResourceContainer:
 
         self._resources['pirate_ship'] = self._load_sprite("pirate_ship.png")
 
+        self._resources['first_boss'] = self._load_sprite("first_boss.png")
+
+        self.resources['first_boss_enraged'] = self._load_sprite("first_boss_enraged.png")
+
         self._resources['minion_boss'] = self._load_sprite("minion_boss.png")
 
         self._resources['alien_boss_sprite'] = self._load_sprite(
