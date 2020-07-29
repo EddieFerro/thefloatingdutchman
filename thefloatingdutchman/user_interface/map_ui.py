@@ -10,7 +10,6 @@ from thefloatingdutchman.game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW,
 
 import thefloatingdutchman.ui as ui
 
-
 class RoomMarkerUI(sprite.Sprite):
     def __init__(self, x: int, y: int, width: int):
         sprite.Sprite.__init__(self)
@@ -18,6 +17,7 @@ class RoomMarkerUI(sprite.Sprite):
         self.image = Surface((width, width))
         self.rect = self.image.get_rect(center=self.pos)
         self.image.fill(GRAY)
+
 
 
 class RoomPathUI(sprite.Sprite):

@@ -36,3 +36,6 @@ class TreasureRoom(Room):
 
     def set_cleared(self):
         self._cleared=True
+
+    def is_boss(self):
+        return self._treasure_manager.is_boss()

@@ -165,7 +165,7 @@ class GameManager(Manager):
         self._screen.blit(self._background, self._background.get_rect())
         self._player_manager.draw(self._screen)
         self._health_ui.health_bar(self._screen, self._player_manager)
-        if self._room_manager.is_room_cleared():  # enemies gone
+        if self._room_manager.is_room_cleared() and not self._room_manager.is_boss():  # enemies gone
             self._map_screen.update_map(self._screen)
         if show_level:
             self._level_surface.update_screen_level(self._screen)
@@ -188,9 +188,13 @@ class GameManager(Manager):
         while True:
             result = self._pause_screen.open(self._pause_screen.draw(self._screen, result, self._pause_screen._y_locations, False, None), result)
             if result == 0: #resume game
+                if(self._room_manager.is_room_cleared()):
+                    self._items_dropped = True
                 break
             elif result == 1:  # show map
                 dropCount =self._drop_manager.dropped_count()
+                if(self._room_manager.is_room_cleared()):
+                    self._items_dropped = False
                 self._done = self._room_manager.render_map(self._screen, True, dropCount, False)
             elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
@@ -208,3 +212,6 @@ class GameManager(Manager):
         for i in range(1, 4):
             self.draw(False)
             self._pre_level_screen.appear(self._screen, i)
+
+    def set_items_dropped_false(self):
+        self._items_dropped = False
