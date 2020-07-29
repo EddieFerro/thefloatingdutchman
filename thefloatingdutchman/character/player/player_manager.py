@@ -21,8 +21,8 @@ class PlayerManager(Manager):
     def draw(self, screen):
         self._player.draw(screen)
 
-    def update(self, screen, enemies: sprite.Group()):
-        self._player.update(screen)
+    def update(self, screen, enemies: sprite.Group(), newRoom):
+        self._player.update(screen, newRoom)
         if enemies is not None:
             for enemy in enemies:
                 if isinstance(enemy, WeaponEnemy):
