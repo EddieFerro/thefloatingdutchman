@@ -69,7 +69,7 @@ class ChargeEnemy(EnemySprite):
             elif (self._charging > 1000):
                 self._pausing = time.get_ticks() - self._pstart
 
-            if(self._pausing) > 1800:
+            if(self._pausing) > 550:
                 self._charging = 0
                 self._pausing = 0
                 self._start = time.get_ticks()

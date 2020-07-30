@@ -23,13 +23,23 @@ class ResourceContainer:
 
         self._resources['pirate_ship'] = self._load_sprite("pirate_ship.png")
 
+        self._resources['first_boss'] = self._load_sprite("first_boss.png")
+
+        self.resources['first_boss_enraged'] = self._load_sprite("first_boss_enraged.png")
+
         self._resources['minion_boss'] = self._load_sprite("minion_boss.png")
 
         self._resources['alien_boss_sprite'] = self._load_sprite(
             "alien_boss_sprite.png")
 
         self._resources['level_1_background'] = self._load_path(
-            "../space_images/level_1_background.jpg")
+            "../utility/space_images/level_1_background.jpg")
+
+        self._resources['level_2_background'] = self._load_path(
+            "../utility/space_images/level_2_background.jpg")
+
+        self._resources['level_3_background'] = self._load_path(
+            "../utility/space_images/level_3_background.jpg")
 
     def _load_sprite(self, file: str):
         return image.load(path.join(path.dirname(

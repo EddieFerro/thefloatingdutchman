@@ -72,23 +72,29 @@ class RoomManager(Manager):
     def get_current_enemies(self) -> List[EnemySprite]:
         return self._rooms[self._current_room_id].get_enemies()
 
-    def render_map(self, screen, showMessage, dropCount) -> bool:
+    def render_map(self, screen, showMessage, dropCount, aMode) -> bool:
         return self._map_ui.render(screen, self._rooms,
                                    self.get_available_rooms(),
-                                   self._current_room_id, self.set_current_room, showMessage, dropCount)
+                                   self._current_room_id, self.set_current_room, showMessage, dropCount, aMode)
 
     def _generate_rooms(self) -> List[Room]:
 
         rooms = []
+        treasure_count =0
 
         for i in range(0, self._number_of_rooms-1):
-            roomChooser = random.choices([1, 2], weights=[0.92, 0.08], k=1)[0]
+            roomChooser = random.choices([1, 2], weights=[0.6, 0.4], k=1)[0]
             if roomChooser == 1:
                 rooms.append(EnemyRoom(self._res_container,
                                        EnemyManager(self._res_container)))
-            else:
+            elif treasure_count<2 and i != 0:
                 rooms.append(TreasureRoom(self._res_container,
                                        TreasureManager(self._res_container)))
+                treasure_count += 1
+            else:
+                rooms.append(EnemyRoom(self._res_container,
+                                       EnemyManager(self._res_container)))
+
 
         rooms.append(EnemyRoom(self._res_container,
                                BossManager(self._res_container)))
@@ -97,4 +103,5 @@ class RoomManager(Manager):
         return self._rooms[self._current_room_id].get_proximity()
     def set_cleared(self):
         self._rooms[self._current_room_id].set_cleared()
-
+    def  is_boss(self):
+        return self._rooms[self._current_room_id].is_boss()
