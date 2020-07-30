@@ -1,4 +1,5 @@
 from typing import List
+import random
 
 from pygame import Surface
 
@@ -12,9 +13,9 @@ from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.level.room.enemy_room import EnemyRoom
 from thefloatingdutchman.character.enemy.enemy_manager import EnemyManager
 from thefloatingdutchman.character.enemy.boss.boss_manager import BossManager
-import random
-from thefloatingdutchman.level.room.treasure_room  import TreasureRoom
+from thefloatingdutchman.level.room.treasure_room import TreasureRoom
 from thefloatingdutchman.objects.treasure_manager import TreasureManager
+
 
 class RoomManager(Manager):
     def __init__(self, res_container: ResourceContainer):
@@ -80,30 +81,33 @@ class RoomManager(Manager):
     def _generate_rooms(self) -> List[Room]:
 
         rooms = []
-        treasure_count =0
+        treasure_count = 0
 
         for i in range(0, self._number_of_rooms-1):
             roomChooser = random.choices([1, 2], weights=[0.6, 0.4], k=1)[0]
             if roomChooser == 1:
                 rooms.append(EnemyRoom(self._res_container,
                                        EnemyManager(self._res_container)))
-            elif treasure_count<2 and i != 0:
+            elif treasure_count < 2 and i != 0:
                 rooms.append(TreasureRoom(self._res_container,
-                                       TreasureManager(self._res_container)))
+                                          TreasureManager(self._res_container)))
                 treasure_count += 1
             else:
                 rooms.append(EnemyRoom(self._res_container,
                                        EnemyManager(self._res_container)))
 
-
         rooms.append(EnemyRoom(self._res_container,
                                BossManager(self._res_container)))
         return rooms
+
     def get_proximity(self) -> bool:
         return self._rooms[self._current_room_id].get_proximity()
+
     def set_cleared(self):
         self._rooms[self._current_room_id].set_cleared()
-    def  is_boss(self):
+
+    def is_boss(self):
         return self._rooms[self._current_room_id].is_boss()
-    def  get_id(self):
+
+    def get_id(self):
         return self._current_room_id

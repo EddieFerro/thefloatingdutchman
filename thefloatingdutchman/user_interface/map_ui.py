@@ -7,8 +7,9 @@ from networkx.classes.reportviews import OutEdgeView
 
 from thefloatingdutchman.level.room.room import Room
 from thefloatingdutchman.game_settings import WHITE, GREEN, BLACK, GRAY, YELLOW, RED, WINDOW_HEIGHT, WINDOW_WIDTH
-
+from thefloatingdutchman.ui import Screen
 import thefloatingdutchman.ui as ui
+
 
 class RoomMarkerUI(sprite.Sprite):
     def __init__(self, x: int, y: int, width: int):
@@ -17,7 +18,6 @@ class RoomMarkerUI(sprite.Sprite):
         self.image = Surface((width, width))
         self.rect = self.image.get_rect(center=self.pos)
         self.image.fill(GRAY)
-
 
 
 class RoomPathUI(sprite.Sprite):
@@ -103,10 +103,14 @@ class MapUI:
                aMode) -> bool:
 
         while True:
+            screen.fill(BLACK)
+
             for dot, room in zip(self._dots, rooms):
                 self._fill_shape(dot, room, moveable_rooms, current_room_id)
+                if room.is_boss():
+                    screen.blit(Screen()._draw_surface(100,  100, 30, "Boss",
+                                                       RED, None), (dot.rect.x, dot.rect.y+10))
 
-            screen.fill(BLACK)
             self._paths.draw(screen)
             self._dots.draw(screen)
             if showMessage:
