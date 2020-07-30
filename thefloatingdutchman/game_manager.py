@@ -50,9 +50,11 @@ class GameManager(Manager):
         self.spawn()
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
+            if self._initiate_countdown: # activate pre level screen
+                self._load_pre_level_screen()
+                self._initiate_countdown = False
             for e in event.get():
                 if e.type == QUIT:  # user closes application
-                    # self._done = True  # game over
                     exit()
                 elif e.type == KEYDOWN and e.key == K_TAB:
                     # will eventually be moved
@@ -107,9 +109,9 @@ class GameManager(Manager):
         self._room_manager.spawn(self._level)
         self._post_level_screen.update_level(self._level)
         self._background = self._backgrounds[0]
-        self._load_pre_level_screen()
         self._drop_manager.spawn(self._level)
         self._items_dropped = False
+        self._initiate_countdown = True
 
     def update(self):
         self._room_manager.update(self._player_manager.player, self._screen)
@@ -130,16 +132,16 @@ class GameManager(Manager):
             self._level += 1
             self._background = self._backgrounds[self._level]
             self._level_surface.draw_new_level(self._level)
+            self._room_manager.spawn(self._level)
             self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
-            self._player_manager.draw(self._screen)
-            self._room_manager.spawn(self._level)
+            self._initiate_countdown = True
+            self.update()
+            time.wait(200)
             self._post_level_screen.update_level(self._level)
-            self._load_pre_level_screen()
 
         if self._player_manager.player.dead:
             self._access_game_over_screen()
-
 
         if self._room_manager.is_room_cleared():  # enemies gone
 
@@ -156,10 +158,10 @@ class GameManager(Manager):
                 time.wait(200)
 
             elif self._drop_manager.dropped_count() == 0:
-                dropCount =self._drop_manager.dropped_count()
-
+                dropCount = self._drop_manager.dropped_count()
             if self._room_manager.get_proximity():
                 self._done = self._room_manager.render_map(self._screen, False, 0, True)
+
                 self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self._items_dropped = False
@@ -167,6 +169,7 @@ class GameManager(Manager):
                 self._drop_manager.clearHearts()
 
                 time.wait(200)
+
 
 
     def draw(self, show_level):
@@ -209,7 +212,6 @@ class GameManager(Manager):
                 new_id = self._room_manager.get_id()
                 if old_id != new_id:
                     self._drop_manager.clearHearts()
-
             elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
             elif result == 3:  # restart game
