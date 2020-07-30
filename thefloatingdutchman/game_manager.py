@@ -218,7 +218,8 @@ class GameManager(Manager):
                 new_id = self._room_manager.get_id()
                 if old_id != new_id:
                     self._drop_manager.clearHearts()
-                    self._player_manager.spawn()
+                    self._player_manager.player._data.pos.update(
+                        WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
 
             elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
