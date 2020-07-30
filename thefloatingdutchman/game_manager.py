@@ -220,6 +220,7 @@ class GameManager(Manager):
                     self._drop_manager.clearHearts()
                     self._player_manager.player._data.pos.update(
                         WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+                    self._newRoom = True
 
             elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
