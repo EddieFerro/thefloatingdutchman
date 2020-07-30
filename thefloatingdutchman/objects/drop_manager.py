@@ -38,52 +38,16 @@ class DropManager(Manager):
         self._hearts = sprite.Group()
 
         if self._need_health:
-            drop1Chance = 5
-            drop2Chance = 1 + (level * 0.1)
-            dropChooser = random.choices([1, 2], weights=[
-                drop1Chance, drop2Chance], k=1)[0]
-            if dropChooser == 1:
-                rand_pos_x: int = random.randint(60, WINDOW_WIDTH / 2 - 200)
-                rand_pos_y: int = random.randint(60, WINDOW_HEIGHT / 2 - 100)
-
+            if self._need_health:
                 self._hearts.add(
                     HeartSprite(
                         self._res_container,
                         HeartData(
-                            Vector2(rand_pos_x, rand_pos_y),
+                            Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2),
                             0
                         )
                     )
                 )
-            elif dropChooser == 2:
-                for i in range(2):
-                    rand_pos_x: int = random.randint(40, WINDOW_WIDTH / 2 - 200) if bool(
-                        random.randint(0, 1)) else random.randint(WINDOW_WIDTH / 2 + 200, WINDOW_WIDTH - 40)
-                    rand_pos_y: int = random.randint(40, WINDOW_HEIGHT / 2 - 100) if bool(
-                        random.randint(0, 1)) else random.randint(WINDOW_HEIGHT / 2 + 100, WINDOW_HEIGHT - 40)
-                    self._hearts.add(
-                        HeartSprite(
-                            self._res_container,
-                            HeartData(
-                                Vector2(rand_pos_x, rand_pos_y),
-                                0
-                            )
-                        )
-                    )
-
-            elif dropChooser == 2:
-                for i in range(2):
-                    rand_pos_x: int = random.randint(60, WINDOW_WIDTH / 2 - 200)
-                    rand_pos_y: int = random.randint(60, WINDOW_HEIGHT / 2 - 100)
-                    self._hearts.add(
-                        HeartSprite(
-                            self._res_container,
-                            HeartData(
-                                Vector2(rand_pos_x, rand_pos_y),
-                                0
-                            )
-                        )
-                    )
 
     def _heart_update(self, player: PlayerSprite, screen: Surface):
         self._hearts.update()
