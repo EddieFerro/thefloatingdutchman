@@ -218,6 +218,8 @@ class GameManager(Manager):
                 new_id = self._room_manager.get_id()
                 if old_id != new_id:
                     self._drop_manager.clearHearts()
+                    self._player_manager.spawn()
+
             elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
             elif result == 3:  # restart game
