@@ -35,8 +35,7 @@ class DropManager(Manager):
 
     #Add sprite groups to be despawned upon function call
     def despawn_drops(self):
-        for sprites in self._hearts:
-            sprites.kill()
+        self._hearts.empty()
 
     # ***** HEARTS *****
     def _drop_hearts(self, level: int):

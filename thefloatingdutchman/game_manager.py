@@ -61,6 +61,7 @@ class GameManager(Manager):
                     self._done = self._room_manager.render_map(self._screen, False, 0, True)
                     self._player_manager.player._data.pos.update(
                         WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+                    self._drop_manager.despawn_drops()
                     self._newRoom = True
                     self._items_dropped = False
                     time.wait(200)
@@ -97,6 +98,7 @@ class GameManager(Manager):
 
     # resets game
     def spawn(self):
+        self._drop_manager.despawn_drops()
         self._level = 0
         self._done = False
         self._level_surface = ui.LevelSurface()
@@ -154,11 +156,10 @@ class GameManager(Manager):
                 time.wait(200)
 
             elif self._drop_manager.dropped_count() == 0:
-                dropCount = self._drop_manager.dropped_count()
+                dropCount =self._drop_manager.dropped_count()
 
-        if self._room_manager.get_proximity():
+            if self._room_manager.get_proximity():
                 self._done = self._room_manager.render_map(self._screen, False, 0, True)
-
                 self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self._drop_manager.despawn_drops()
@@ -199,7 +200,7 @@ class GameManager(Manager):
                     self._items_dropped = True
                 break
             elif result == 1:  # show map
-                dropCount =self._drop_manager.dropped_count()
+                dropCount = self._drop_manager.dropped_count()
                 if(self._room_manager.is_room_cleared()):
                     self._items_dropped = False
                     self._drop_manager.despawn_drops()
