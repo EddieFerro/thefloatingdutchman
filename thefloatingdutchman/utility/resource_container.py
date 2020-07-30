@@ -16,16 +16,17 @@ class ResourceContainer:
 
         self._resources['cannonball'] = self._load_sprite("cannonball.png")
         self._resources['laser_shot_1'] = self._load_sprite("laser_shot_1.png")
+        
         self._resources['red_fighter'] = self._load_sprite("red_fighter.png")
-
-        self._resources['green_fighter'] = self._load_sprite(
-            "green_fighter.png")
-
+        self._resources['green_fighter'] = self._load_sprite("green_fighter.png")
+        self._resources['green_bomber'] = self._load_sprite("green_bomber.png")
+        self._resources['blue_fighter'] = self._load_sprite("blue_fighter.png")
+        self._resources['blue_bomber'] = self._load_sprite("blue_bomber.png")
         self._resources['pirate_ship'] = self._load_sprite("pirate_ship.png")
 
         self._resources['first_boss'] = self._load_sprite("first_boss.png")
 
-        self.resources['first_boss_enraged'] = self._load_sprite("first_boss_enraged.png")
+        self._resources['first_boss_enraged'] = self._load_sprite("first_boss_enraged.png")
 
         self._resources['minion_boss'] = self._load_sprite("minion_boss.png")
 

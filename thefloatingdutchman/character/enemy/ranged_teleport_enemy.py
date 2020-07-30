@@ -18,7 +18,7 @@ class RangedTeleportEnemy(WeaponEnemy):
         self._moved = True
 
     def _set_original_image(self, res_container: ResourceContainer):
-        sprite_sheet = res_container.resources['red_fighter']
+        sprite_sheet = res_container.resources['green_bomber']
         temp_rect = Rect((0, 0, 32, 32))
         self._original_image = Surface(temp_rect.size, SRCALPHA)
         self._original_image.blit(sprite_sheet, (0, 0), temp_rect)

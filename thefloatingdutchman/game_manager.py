@@ -101,7 +101,7 @@ class GameManager(Manager):
     # resets game
     def spawn(self):
         self._drop_manager.clearHearts()
-        self._level = 0
+        self._level = 3
         self._done = False
         self._level_surface = ui.LevelSurface()
         self._health_ui = ui.HealthUI()
