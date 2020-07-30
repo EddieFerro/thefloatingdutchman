@@ -1,8 +1,7 @@
-
-import os
-import sys
-from pygame import display, event, time, K_m, K_x, K_e, QUIT, KEYDOWN, K_TAB, image, transform, Surface
 import random
+
+from pygame import display, event, time, K_m, K_e, QUIT, KEYDOWN, K_TAB, Surface
+
 from thefloatingdutchman.character.player.player_manager import PlayerManager
 from thefloatingdutchman.manager import Manager
 from thefloatingdutchman.game_settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
@@ -50,7 +49,7 @@ class GameManager(Manager):
         self.spawn()
         while not self._done:
             time.Clock().tick(FPS)  # setting fps not sure if it works tho
-            if self._initiate_countdown: # activate pre level screen
+            if self._initiate_countdown:  # activate pre level screen
                 self._load_pre_level_screen()
                 self._initiate_countdown = False
             for e in event.get():
@@ -60,7 +59,8 @@ class GameManager(Manager):
                     # will eventually be moved
                     self._access_pause_screen()
                 elif e.type == KEYDOWN and e.key == K_m and self._room_manager.is_room_cleared():
-                    self._done = self._room_manager.render_map(self._screen, False, 0, True)
+                    self._done = self._room_manager.render_map(
+                        self._screen, False, 0, True)
                     self._player_manager.player._data.pos.update(
                         WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                     self._newRoom = True
@@ -75,25 +75,29 @@ class GameManager(Manager):
 
                     if upgradeChooser == 1:
                         self._player_manager._player._data._attack_speed -= 2
-                        self._treasure_screen.update_treasure_screen(self._screen,"+2 to Attack Speed! Press any Key to Continue")
+                        self._treasure_screen.update_treasure_screen(
+                            self._screen, "+2 to Attack Speed! Press any Key to Continue")
 
                     elif upgradeChooser == 2:
+                        self._player_manager.player._data._max_health += 1
                         self._player_manager.player._data._health += 1
-                        self._treasure_screen.update_treasure_screen(self._screen, "+1 to Health! Press any Key to Continue")
+                        self._treasure_screen.update_treasure_screen(
+                            self._screen, "+1 to Health! Press any Key to Continue")
 
                     elif upgradeChooser == 3:
                         self._player_manager.player._data._vel += 1
-                        self._treasure_screen.update_treasure_screen(self._screen, "+1 to Velocity! Press any Key to Continue")
+                        self._treasure_screen.update_treasure_screen(
+                            self._screen, "+1 to Velocity! Press any Key to Continue")
 
                     display.flip()
                     display.update()
-                    z =True
+                    z = True
                     while z:
                         for e in event.get():
                             if e.type == KEYDOWN:
                                 self._room_manager.set_cleared()
                                 self._items_dropped = True
-                                z=False
+                                z = False
 
             self.update()
             self.draw(True)
@@ -118,7 +122,7 @@ class GameManager(Manager):
         self._player_manager.update(
             self._screen, self._room_manager.get_current_enemies(), self._newRoom)
         if(self._newRoom):
-           self._newRoom = False
+            self._newRoom = False
         self._health_ui.health_bar(self._screen, self._player_manager)
 
         if self._room_manager.is_level_cleared():
@@ -134,7 +138,7 @@ class GameManager(Manager):
             self._level_surface.draw_new_level(self._level)
             self._room_manager.spawn(self._level)
             self._player_manager.player._data.pos.update(
-                    WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+                WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
             self._initiate_countdown = True
             self.update()
             time.wait(200)
@@ -160,7 +164,8 @@ class GameManager(Manager):
             elif self._drop_manager.dropped_count() == 0:
                 dropCount = self._drop_manager.dropped_count()
             if self._room_manager.get_proximity():
-                self._done = self._room_manager.render_map(self._screen, False, 0, True)
+                self._done = self._room_manager.render_map(
+                    self._screen, False, 0, True)
 
                 self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
@@ -169,8 +174,6 @@ class GameManager(Manager):
                 self._drop_manager.clearHearts()
 
                 time.wait(200)
-
-
 
     def draw(self, show_level):
         self._screen.blit(self._background, self._background.get_rect())
@@ -186,29 +189,32 @@ class GameManager(Manager):
         display.update()
 
     def _access_game_over_screen(self):
-        result = self._game_over_screen.open(self._game_over_screen.draw(self._screen, 0, self._game_over_screen._y_locations, False, None))
-        if result == 0: #play again
+        result = self._game_over_screen.open(self._game_over_screen.draw(
+            self._screen, 0, self._game_over_screen._y_locations, False, None))
+        if result == 0:  # play again
             self.spawn()
         if result == 1:  # return to main menu
             self._done = True
-        if result == 2: #exit application
+        if result == 2:  # exit application
             exit()
 
     def _access_pause_screen(self):
         result = 0
         while True:
-            result = self._pause_screen.open(self._pause_screen.draw(self._screen, result, self._pause_screen._y_locations, False, None), result)
-            if result == 0: #resume game
+            result = self._pause_screen.open(self._pause_screen.draw(
+                self._screen, result, self._pause_screen._y_locations, False, None), result)
+            if result == 0:  # resume game
                 if(self._room_manager.is_room_cleared()):
                     self._items_dropped = True
                 break
             elif result == 1:  # show map
-                dropCount =self._drop_manager.dropped_count()
+                dropCount = self._drop_manager.dropped_count()
                 if(self._room_manager.is_room_cleared()):
                     self._items_dropped = False
                 old_id = self._room_manager.get_id()
 
-                self._done = self._room_manager.render_map(self._screen, True, dropCount, False)
+                self._done = self._room_manager.render_map(
+                    self._screen, True, dropCount, False)
                 new_id = self._room_manager.get_id()
                 if old_id != new_id:
                     self._drop_manager.clearHearts()
