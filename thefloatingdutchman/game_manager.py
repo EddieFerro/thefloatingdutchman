@@ -159,16 +159,16 @@ class GameManager(Manager):
 
             elif self._drop_manager.dropped_count() == 0:
                 dropCount = self._drop_manager.dropped_count()
-        if self._room_manager.get_proximity():
-            self._done = self._room_manager.render_map(self._screen, False, 0, True)
+            if self._room_manager.get_proximity():
+                self._done = self._room_manager.render_map(self._screen, False, 0, True)
 
-            self._player_manager.player._data.pos.update(
-                WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
-            self._items_dropped = False
-            self._newRoom = True
-            self._drop_manager.clearHearts()
+                self._player_manager.player._data.pos.update(
+                    WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+                self._items_dropped = False
+                self._newRoom = True
+                self._drop_manager.clearHearts()
 
-            time.wait(200)
+                time.wait(200)
 
 
 

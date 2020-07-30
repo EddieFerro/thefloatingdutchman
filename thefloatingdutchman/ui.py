@@ -1,4 +1,5 @@
 import pygame
+import pygame.freetype
 from pygame import QUIT
 import time
 import os
@@ -7,6 +8,9 @@ from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLAC
 
 
 class Screen:
+    def _get_font_type(self):
+        return 'utility/Retro_Gaming.ttf'
+
     #create surfaces from features
     def _gather_surfaces(self, surfaces, features, width, height, font_size) -> pygame.Surface:
         for txt, color, fill in features:
@@ -24,7 +28,7 @@ class Screen:
         if fill:  # fill surface with color
             surface.fill(fill)
 
-        font = pygame.font.SysFont('Comic Sans MS', font_size)  # font
+        font = pygame.font.Font((os.path.join(os.path.dirname(os.path.realpath(__file__)), self._get_font_type())), font_size)  # font
         text = font.render(text, True, text_color)  # create text
 
         # center text onto surface
@@ -121,7 +125,7 @@ class GameOverScreen(Screen):
         features = [["PLAY AGAIN", WHITE, BLACK], ["RETURN TO MAIN MENU", WHITE, BLACK], ["EXIT GAME", WHITE, BLACK],
                     ["PLAY AGAIN", WHITE, MANTIS], ["RETURN TO MAIN MENU", WHITE, RUFOUS], ["EXIT GAME", WHITE, RUFOUS]]
 
-        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 30))
         self._y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.45, WINDOW_HEIGHT*.6, WINDOW_HEIGHT*.75]
 
     def open(self, screen) -> int:
@@ -142,7 +146,7 @@ class PauseScreen(Screen):
         features = [["RESUME", WHITE, BLACK], ["VIEW MAP", WHITE, BLACK], ["VIEW GAME CONTROLS", WHITE, BLACK], ["RESTART GAME", WHITE, BLACK], ["RETURN TO MAIN MENU", WHITE, BLACK], ["EXIT GAME", WHITE, BLACK],
                     ["RESUME", WHITE, MANTIS], ["VIEW MAP", WHITE, MANTIS], ["VIEW GAME CONTROLS", WHITE, MANTIS], ["RESTART GAME", WHITE, MANTIS], ["RETURN TO MAIN MENU", WHITE, RUFOUS], ["EXIT GAME", WHITE, RUFOUS]]
 
-        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 14, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 3, WINDOW_HEIGHT / 14, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 30))
         self._y_locations = [WINDOW_HEIGHT*.2, WINDOW_HEIGHT*.35, WINDOW_HEIGHT*.44, WINDOW_HEIGHT*.53, WINDOW_HEIGHT*.62, WINDOW_HEIGHT*.71, WINDOW_HEIGHT*.8]
 
     def open(self, screen, result) -> int:
@@ -168,7 +172,7 @@ class MainMenu(Screen):
         features = [["BEGIN GAME", WHITE, None], ["BEGIN GAME WITH TUTORIAL", WHITE, None], ["VIEW GAME CONTROLS", WHITE, None], ["EXIT GAME", WHITE, None],
                     ["BEGIN GAME", WHITE, MANTIS], ["BEGIN GAME WITH TUTORIAL", WHITE, MANTIS], ["VIEW GAME CONTROLS", WHITE, MANTIS], ["EXIT GAME", WHITE, RUFOUS]]
 
-        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 4, WINDOW_HEIGHT / 12, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH / 3, WINDOW_HEIGHT / 12, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 30))
         self._y_locations = [WINDOW_HEIGHT*.9, WINDOW_HEIGHT*.4, WINDOW_HEIGHT*.5, WINDOW_HEIGHT*.6, WINDOW_HEIGHT*.7]
 
     def open(self, screen, result) -> int:
@@ -231,7 +235,7 @@ class Tutorial(Screen):
         ["has been captured by the Ghost Bustas", YELLOW, None], ["It is up to you to rescue your crew", YELLOW, None],
         ["and defeat the Ghost Bustas", YELLOW, None], ["Press any Key to Continue", BLUE, None]]
         
-        self._story_surfaces = self._gather_surfaces(self._story_surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
+        self._story_surfaces = self._gather_surfaces(self._story_surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20))
 
     # initialize elements for game controls
     def _generate_game_controls_elements(self):
@@ -272,10 +276,10 @@ class PostLevelScreen(Screen):
     def __init__(self):
         self._surfaces = []
         features = [["LEVEL " + str(1), YELLOW, None], ["COMPLETE", YELLOW, None], ["Press any Key to Continue", YELLOW, None]]
-        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
 
     def update_level(self, level):
-        self._surfaces[0] = self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10), "LEVEL " + str(level+1), YELLOW, None)
+        self._surfaces[0] = self._draw_surface(WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15), "LEVEL " + str(level+1), YELLOW, None)
 
     def appear(self, screen):
         y_locations = [-WINDOW_HEIGHT/5, -WINDOW_HEIGHT/9, WINDOW_HEIGHT/3]
@@ -288,7 +292,7 @@ class PreLevelScreen(Screen):
     def __init__(self):
         self._all_surfaces = []
         features = [["LEVEL BEGINS IN", YELLOW, None], ["3", YELLOW, None], ["2", YELLOW, None], ["1", YELLOW, None]]
-        self._all_surfaces = self._gather_surfaces(self._all_surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10))
+        self._all_surfaces = self._gather_surfaces(self._all_surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
 
 
     def appear(self, screen, index):
@@ -307,9 +311,9 @@ class GameCompletedScreen(Screen):
         self._logo = pygame.image.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), "utility/logo.png"))
         self._surfaces = []
         features = [["CONGRATULATIONS!", LIME, None]]
-        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 10))
-        features = [["You have rescued your crew", LIME, None], ["and defeated the Ghost Bustas", LIME, None], ["Press any Key to Continue", YELLOW, None]]
         self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
+        features = [["You have rescued your crew", LIME, None], ["and defeated the Ghost Bustas", LIME, None], ["Press any Key to Continue", YELLOW, None]]
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 25))
 
     def activate(self, screen):
         y_locations = [-WINDOW_HEIGHT/5, -WINDOW_HEIGHT/12, 0, WINDOW_HEIGHT/3]
@@ -327,9 +331,9 @@ class CreditsScreen(Screen):
         self._background = image_fill_background(os.path.join(os.path.dirname(os.path.realpath(__file__)), "utility/space_images/main_menu_background.jpg"))
         self._surfaces = []
         features = [["Thanks for Playing!", YELLOW, None], ["Developed By", YELLOW, None], ["Press any Key to Continue", YELLOW, None]]
-        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 15))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 20))
         features = [["Eddie Ferro", YELLOW, None], ["Kayton Fletcher", YELLOW, None], ["Santosh Tirumala", YELLOW, None], ["JJ Thurber", YELLOW, None], ["Ben Berlin", YELLOW, None]]
-        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 18))
+        self._surfaces = self._gather_surfaces(self._surfaces, features, WINDOW_WIDTH, WINDOW_HEIGHT, (int)(min(WINDOW_HEIGHT, WINDOW_WIDTH) / 24))
 
     def activate(self, screen):
         y_locations = [-WINDOW_HEIGHT/(5/2), -WINDOW_HEIGHT/4, WINDOW_HEIGHT/3, -WINDOW_HEIGHT/9, -WINDOW_HEIGHT/18, 0, WINDOW_HEIGHT/18, WINDOW_HEIGHT/9]
