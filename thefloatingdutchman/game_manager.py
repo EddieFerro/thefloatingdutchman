@@ -204,6 +204,7 @@ class GameManager(Manager):
                 if(self._room_manager.is_room_cleared()):
                     self._items_dropped = False
                 old_id = self._room_manager.get_id()
+
                 self._done = self._room_manager.render_map(self._screen, True, dropCount, False)
                 new_id = self._room_manager.get_id()
                 if old_id != new_id:
