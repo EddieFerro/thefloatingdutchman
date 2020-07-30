@@ -137,7 +137,8 @@ class GameManager(Manager):
                 time.wait(200)
 
             elif self._drop_manager.dropped_count() == 0:
-                dropCount =self._drop_manager.dropped_count()
+                dropCount = self._drop_manager.dropped_count()
+                self._drop_manager.despawn_drops()
                 self._done = self._room_manager.render_map(self._screen, False, dropCount)
                 self._player_manager.player._data.pos.update(
                     WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
@@ -171,7 +172,8 @@ class GameManager(Manager):
             if result == 0: #resume game
                 break
             elif result == 1:  # show map
-                dropCount =self._drop_manager.dropped_count()
+                dropCount = self._drop_manager.dropped_count()
+                self._drop_manager.despawn_drops()
                 self._done = self._room_manager.render_map(self._screen, True, dropCount)
             elif result == 2:  # show game controls
                 self._tutorial.show_game_controls(self._screen)
