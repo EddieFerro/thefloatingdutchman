@@ -39,7 +39,7 @@ class MinionBoss(WeaponEnemy):
         # Delete enemy when it comes into contact with player
         if sprite.collide_mask(player, self) is not None and not player.invulnerable:
             player.take_damage(3)
-            enemies.remove(self)
+            self.take_damage(100)
 
         state = self._data.state
         if state is BossState.RETURN:

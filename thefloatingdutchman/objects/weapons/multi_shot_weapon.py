@@ -16,6 +16,9 @@ class MultiShotWeapon(Weapon):
 
     def fire(self, player: PlayerSprite, attack_speed: int, spread: int, rect: Rect, num_bullets: int) -> bool:
         """Returns true if weapon fired"""
+        if self._first_shot:
+            self._prev_shot = time.get_ticks() - 500
+            self._first_shot = False
 
         # Auto fire towards player at a given rate
         t = time.get_ticks()
