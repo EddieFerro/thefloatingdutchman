@@ -13,6 +13,7 @@ class Weapon(Manager, ABC):
         self._bullet_type = bullet_type
         self._bullets = None
         self._prev_shot = 0
+        self._first_shot = True
 
     def spawn(self):
         self._bullets = Group()
