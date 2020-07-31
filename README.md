@@ -7,7 +7,7 @@ The Floating Dutchman is a Rouguelike, Shoot-Em-Up game where you play as the ca
 https://github.com/EddieFerro/thefloatingdutchman
 
 ## Installing package through pip
-#### Ensure you have the latest python installed (3.8.3) and pip
+#### Ensure you have the latest python installed (3.8.5) and pip
 
 Python: https://www.python.org/downloads/  
 Pip: https://pip.pypa.io/en/stable/installing/
@@ -15,10 +15,10 @@ Pip: https://pip.pypa.io/en/stable/installing/
 #### Run the following command in the terminal to install the game and its dependencies:    
 `pip install TheFloatingDutchman`
 **or**
-`pip install TheFloatingDutchman==0.0.7`
+`pip install TheFloatingDutchman==1.0.5`
 
 ## Installing from source
-#### Ensure you have the latest python installed (3.8.3) and pip
+#### Ensure you have the latest python installed (3.8.5) and pip
 
 Python: https://www.python.org/downloads/  
 Pip: https://pip.pypa.io/en/stable/installing/
@@ -32,6 +32,7 @@ Pip: https://pip.pypa.io/en/stable/installing/
     python3 -m pip install -U pygame==2.0.0.dev8 --user  
     python3 -m pip install -U networkx --user  
     python3 -m pip install -U numpy --user
+    python3 -m pip install -U ordered-set --user
 
 ## Running the game
 #### If installed through pip type the following command into the terminal:

@@ -8,8 +8,6 @@ from thefloatingdutchman.game_settings import (WINDOW_WIDTH, WINDOW_HEIGHT, BLAC
 
 
 class Screen:
-    def _get_font_type(self):
-        return 'utility/Retro_Gaming.ttf'
 
     #create surfaces from features
     def _gather_surfaces(self, surfaces, features, width, height, font_size) -> pygame.Surface:
@@ -28,7 +26,7 @@ class Screen:
         if fill:  # fill surface with color
             surface.fill(fill)
 
-        font = pygame.font.Font((os.path.join(os.path.dirname(os.path.realpath(__file__)), self._get_font_type())), font_size)  # font
+        font = pygame.font.Font((os.path.join(os.path.dirname(os.path.realpath(__file__)), "utility/Retro_Gaming.ttf")), font_size)  # font
         text = font.render(text, True, text_color)  # create text
 
         # center text onto surface

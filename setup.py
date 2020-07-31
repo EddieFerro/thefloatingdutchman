@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="TheFloatingDutchman",
-    version="0.0.6",
+    version="1.0.5",
     author="Eddie Ferro",
     author_email="eferro1@ufl.edu",
     description="Package for The Floating Dutchman game",
@@ -13,9 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/EddieFerro/the-floating-dutchman",
     packages=setuptools.find_namespace_packages(include=['thefloatingdutchman','thefloatingdutchman.*']),
-    install_requires=['pygame==2.0.0.dev8','numpy>=1.19.0','networkx==2.4'],
+    install_requires=['pygame==2.0.0.dev8','numpy>=1.19.0','networkx==2.4','ordered-set>=3.1.1'],
     entry_points={'console_scripts': ['TheFloatingDutchman=thefloatingdutchman.main:main']},
-    package_data={'':['*.png','*.jpg']},
+    package_data={'':['*.png','*.jpg','*.ttf']},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
