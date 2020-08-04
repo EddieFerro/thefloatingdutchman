@@ -1,7 +1,7 @@
 # TheFloatingDutchman
 **GAME WORKS BEST ON 1920 X 1080**
 
-The Floating Dutchman is a Rouguelike, Shoot-Em-Up game where you play as the captain of The Flying Dutchman and you've just been lost in space. Travel the galaxies in search of your missing crew members while fighting off the waves of Ghost Bustas as they try and stop you.
+The Floating Dutchman is a Roguelike, Shoot-Em-Up game where you play as the captain of The Flying Dutchman and you've just been lost in space. Travel the galaxies in search of your missing crew members while fighting off the waves of Ghost Bustas as they try and stop you.
 
 ## Version Control
 https://github.com/EddieFerro/thefloatingdutchman
